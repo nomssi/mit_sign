@@ -1,0 +1,57 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+		controllerName="mit_sign.controller.Home" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Auslieferungen {viewProperties>/updateTime}">
+		<content>
+			<PullToRefresh
+				id="pullToRefresh"
+				visible="{device>/support/touch}"
+				refresh=".onRefresh"/>
+			<!-- This list shows the search results -->
+			<List
+				visible="true"
+				id="eventsList"
+				selectionChange=".onEventListSelect"
+				noDataText="{i18n>homeNoData}"
+				busyIndicatorDelay="0"
+				updateFinished="onUpdateFinished"
+				items="{
+					path : '/Events',
+					sorter : {
+						path : 'VBELN',
+						descending : false
+					}
+				}">
+				<items>
+					<!-- <StandardListItem
+						type="Navigation"
+						title="{ReceiverName}"
+						info="{VBELN}"
+						press="onEventListItemPress"
+					>&nbsp;
+					
+					</StandardListItem>-->
+					 <ObjectListItem
+						type="Navigation"
+						title="{ReceiverName}"
+						press="onEventListItemPress"
+						iconDensityAware="false">
+						<attributes>
+							<ObjectAttribute text="{VBELN}"/>
+						</attributes>
+						<firstStatus>
+							<ObjectStatus
+								text="{
+									path : 'Status',
+									formatter : '.formatter.statusText'
+								}"
+								state="{
+									path : 'Status',
+									formatter : '.formatter.statusState'
+								}"/>
+						</firstStatus>
+					</ObjectListItem>
+				</items>
+			</List>
+		</content>
+	</Page>
+</core:View>

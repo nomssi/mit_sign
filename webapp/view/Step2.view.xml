@@ -1,0 +1,51 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	xmlns:C="mit_sign.controls"
+	 xmlns:f="sap.ui.layout.form"
+	 xmlns:l="sap.ui.layout"
+		controllerName="Signature.controller.Step2" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Unterschrift"  showNavButton="true" navButtonPress="onNav">
+		<content>
+		<f:Form id="FormDisplay354" >
+			                        <f:layout>
+			                          <f:ResponsiveGridLayout labelSpanL="3" labelSpanM="3" emptySpanL="1" emptySpanM="1" columnsL="1" columnsM="1" />
+			                        </f:layout>
+			
+									<f:formContainers>
+			                          <f:FormContainer>
+			                            <f:formElements>
+			                              <f:FormElement label="{i18n>lbl.Signer}">
+			                                <f:fields>
+													<Input id="sName" value="{SignerName}" change="onInputChange"/>
+			                                </f:fields>
+			                              </f:FormElement>
+			                              <f:FormElement label="{i18n>lbl.Signature}">
+			                                <f:fields>
+													<C:SignPad id="signature-pad" value="{SignatureString}"
+													change="onInputChange"
+													bgColor="#d6f5ff"
+													width="500px"/>
+			                                </f:fields>
+			                              </f:FormElement>
+			                              <f:FormElement label="">
+			                                <f:fields>
+			                                	<Button text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear"/>
+												<Button text="{i18n>Save}" press="onSaveButton" type="Accept" id="btnSave"/>
+			                                </f:fields>
+			                                </f:FormElement>
+			                            </f:formElements>
+			                          </f:FormContainer>
+			                        </f:formContainers>
+								<!-- </f:SimpleForm> -->
+								</f:Form>
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button
+					text="Weiter"
+					type="Emphasized"
+					press=".onNext" />
+			</Toolbar>
+		</footer>
+	</Page>
+</core:View>

@@ -1,0 +1,44 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+		controllerName="Signature.controller.Step1" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Details"
+		backgroundDesign="Solid"  showNavButton="true" navButtonPress="onNav">
+	
+		<content>
+			<List
+									visible="true"
+									id="lDelPos"
+									noDataText="{i18n>homeNoData}"
+									busyIndicatorDelay="0"
+									items="{path:'EventPositions'}"
+									class="sapUiForceWidthAuto sapUiResponsiveMargin">
+									<headerToolbar>
+										
+									</headerToolbar>
+									<items>
+										<CustomListItem >
+											<VBox class="sapUiResponsiveMargin">
+												<Label text="Position {Posnr}" />
+												<HBox>
+													<Label text="{Matnr}" />
+													<Label text="{Maktx}" design="Bold" class="sapUiTinyMarginBegin"/>
+												</HBox>
+												<HBox>
+												<Label text="{ path:'Lfimg', formatter:'.formatter.float'}" />
+												<Label text="{Meins}" class="sapUiTinyMarginBegin" />
+												</HBox>
+											</VBox>
+										</CustomListItem>
+									</items>
+								</List>
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button
+					text="Weiter"
+					type="Emphasized"
+					press=".onNext" />
+			</Toolbar>
+		</footer>
+	</Page>
+</core:View>

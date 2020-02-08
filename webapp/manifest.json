@@ -1,0 +1,161 @@
+{
+	"_version": "1.1.0",
+	"sap.app": {
+		"_version": "1.1.0",
+		"id": "mit_sign",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "${project.version}"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"resources": "resources.json",
+		"ach": "ach",
+		"sourceTemplate": {
+			"id": "servicecatalog.connectivityComponent",
+			"version": "0.0.0"
+		},
+		"dataSources": {
+			"mainService": {
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadata.xml"
+				},
+				"uri": "localService/metadata.xml"
+			}
+		}
+	},
+	"sap.ui": {
+	    "_version": "1.1.0",
+		"technology": "UI5",
+		"icons": {
+			"icon": "sap-icon://cart",
+			"favIcon": "img/favicon.ico",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": ["sap_hcb", "sap_bluecrystal"]
+	},
+	"sap.ui5": {
+		"_version": "1.1.0",
+		"rootView": {
+			"viewName": "mit_sign.view.App",
+			"type": "XML",
+			"async": true,
+			"id": "idAppControl"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.ui.layout": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "mit_sign.i18n.i18n"
+				}
+			},
+			"": {
+				"dataSource": "mainService"
+			}
+		},
+		"handleValidation": true,		
+		"resources": {
+			"css": [{
+				"uri": "css/style.css"
+			}]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"async": true,
+				"viewPath": "mit_sign.view",
+				"controlAggregation": "pages",
+				"controlId": "idAppControl",
+				"bypassed": {
+					"target": "home"
+				}
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "home",
+					"target": "home"
+				},
+				{
+					"pattern": "sign/{id}",
+					"name": "sign",
+					"target": "step1",
+					"subroutes":[
+					]
+				},
+				{
+							"pattern": "sign/{id}/step2",
+							"name": "step2",
+							"target": "step2"
+						},
+						{
+							"pattern": "sign/{id}/step3",
+							"name": "step3",
+							"target": "step3"
+						},
+				{
+					"pattern": "signcompleted",
+					"name": "signcompleted",
+					"target": "signcompleted"
+				}
+			],
+			"targets": {
+				"home": {
+					"viewName": "Home",
+					"viewLevel": 1,
+					"viewId": "appView",
+					"controlAggregation": "pages",
+					"title": "{i18n>appTitle}"
+				},
+				"sign": {
+					"viewName": "Sign",
+					"viewLevel": 2,
+					"viewId": "signView",
+					"controlAggregation": "pages"
+				},
+				"step1": {
+					"viewName": "Step1",
+					"viewLevel": 2,
+					"viewId": "signView1",
+					"controlAggregation": "pages"
+				},
+				"step2": {
+					"viewName": "Step2",
+					"viewLevel": 2,
+					"viewId": "signView2",
+					"controlAggregation": "pages"
+				},
+				"step3": {
+					"viewName": "Step3",
+					"viewLevel": 2,
+					"viewId": "signView3",
+					"controlAggregation": "pages"
+				}
+			}
+		}
+	}
+}
