@@ -46,9 +46,9 @@ sap.ui.define([
 		},
 
 		_reloadData :function(){
-			var oView = this.getView(),
-			oModel = oView.getModel(),
-			oList = this.byId("eventsList");
+			// var oView = this.getView(),
+			// oModel = oView.getModel(),
+			var oList = this.byId("eventsList");
 			oList.getBinding("items").refresh(true);
 			var date = new Date();
 			this._oViewProperties.setProperty("/updateTime", date.toLocaleTimeString("de-DE"));
