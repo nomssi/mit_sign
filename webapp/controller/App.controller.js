@@ -4,7 +4,7 @@ sap.ui.define([
 ], function (BaseController, JSONModel) {
 	"use strict";
 
-	return BaseController.extend("Signature.controller.App", {
+	return BaseController.extend("mit_sign.controller.App", {
 
 		onInit : function () {
 			var oViewModel,

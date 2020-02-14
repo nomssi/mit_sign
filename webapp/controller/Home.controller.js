@@ -14,7 +14,7 @@ sap.ui.define([
 	Device) {
 	"use strict";
 
-	return BaseController.extend("Signature.controller.Home", {
+	return BaseController.extend("mit_sign.controller.Home", {
 		formatter : formatter,
 
 		onInit: function () {

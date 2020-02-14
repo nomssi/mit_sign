@@ -2,7 +2,7 @@
 	"_version": "1.1.0",
 	"sap.app": {
 		"_version": "1.1.0",
-		"id": "mit_sign",
+		"id": "Signature",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
 		"applicationVersion": {

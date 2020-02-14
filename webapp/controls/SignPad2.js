@@ -5,7 +5,7 @@ sap.ui.define(
 		    "sap/m/Image"],
 	function(Control,MessageBox,Button,Image) {
 		"use strict";
-		return Control.extend("Signature.controls.SignPad", {	
+		return Control.extend("mit_sign.controls.SignPad", {	
   metadata: {
       properties: {
     	  /* other (configuration) properties */

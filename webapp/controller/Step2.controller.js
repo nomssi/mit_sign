@@ -12,7 +12,7 @@ sap.ui.define([
 	MessageToast) {
 	"use strict";
 
-	return BaseController.extend("Signature.controller.Step2", {
+	return BaseController.extend("mit_sign.controller.Step2", {
 		formatter : formatter,
 
 		onInit: function () {

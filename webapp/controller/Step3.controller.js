@@ -10,7 +10,7 @@ sap.ui.define([
 	Signature) {
 	"use strict";
 
-	return BaseController.extend("Signature.controller.Step3", {
+	return BaseController.extend("mit_sign.controller.Step3", {
 		formatter : formatter,
 
 		onInit: function () {
