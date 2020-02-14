@@ -1,6 +1,6 @@
-sap.ui.define(
-		["sap/ui/core/Control",
-		    "sap/m/Image",],
+sap.ui.define([
+		"sap/ui/core/Control",
+	    "sap/m/Image"],
 	function(Control,Image) {
 		"use strict";
 		return Control.extend("mit_sign.controls.SignPad", {	
@@ -30,7 +30,7 @@ sap.ui.define(
     },
 
     init: function(){
-    	var oControl = this;
+    	// var oControl = this;
     	
     },
 
@@ -151,16 +151,6 @@ sap.ui.define(
 		var xyAddLast = {};
 		var calculate = false;
 		 	//functions
-			function remove_event_listeners() {
-				canvas.removeEventListener('mousemove', on_mousemove, false);
-				canvas.removeEventListener('mouseup', on_mouseup, false);
-				canvas.removeEventListener('touchmove', on_mousemove, false);
-				canvas.removeEventListener('touchend', on_mouseup, false);
-
-				document.body.removeEventListener('mouseup', on_mouseup, false);
-				document.body.removeEventListener('touchend', on_mouseup, false);
-			}
-
 			function get_coords(e) {
 				var x, y;
 
@@ -170,10 +160,10 @@ sap.ui.define(
 
 					x = e.changedTouches[0].pageX - offsetx;
 					y = e.changedTouches[0].pageY - offsety;
-				} else if (e.layerX || 0 == e.layerX) {
+				} else if (e.layerX || e.layerX === 0) {
 					x = e.layerX;
 					y = e.layerY;
-				} else if (e.offsetX || 0 == e.offsetX) {
+				} else if (e.offsetX || e.offsetX === 0) {
 					x = e.offsetX;
 					y = e.offsetY;
 				}
@@ -181,27 +171,7 @@ sap.ui.define(
 				return {
 					x : x, y : y
 				};
-			};
-
-			function on_mousedown(e) {
-				e.preventDefault();
-				e.stopPropagation();
-
-				canvas.addEventListener('mouseup', on_mouseup, false);
-				canvas.addEventListener('mousemove', on_mousemove, false);
-				canvas.addEventListener('touchend', on_mouseup, false);
-				canvas.addEventListener('touchmove', on_mousemove, false);
-				document.body.addEventListener('mouseup', on_mouseup, false);
-				document.body.addEventListener('touchend', on_mouseup, false);
-
-				//empty = false;
-				var xy = get_coords(e);
-				context.beginPath();
-				pixels.push('moveStart');
-				context.moveTo(xy.x, xy.y);
-				pixels.push(xy.x, xy.y);
-				xyLast = xy;
-			};
+			}
 
 			function on_mousemove(e, finish) {
 				e.preventDefault();
@@ -229,24 +199,54 @@ sap.ui.define(
 				xyAddLast = xyAdd;
 				xyLast = xy;
 
-			};
+			}
 
 			function on_mouseup(e) {
 				remove_event_listeners();
 				disableSave = false;
 				context.stroke();
-				pixels.push('e');
+				pixels.push("e");
 				calculate = false;
 				var url = canvas.toDataURL("image/jpeg", 1.0);
 				that.setValue(url);
 				that.fireEvent("change", {
 					value: url
 				});
-			};
+			}
 			
-		
-		canvas.addEventListener('touchstart', on_mousedown, false);
-		canvas.addEventListener('mousedown', on_mousedown, false); 
+
+			function on_mousedown(e) {
+				e.preventDefault();
+				e.stopPropagation();
+
+				canvas.addEventListener("mouseup", on_mouseup, false);
+				canvas.addEventListener("mousemove", on_mousemove, false);
+				canvas.addEventListener("touchend", on_mouseup, false);
+				canvas.addEventListener("touchmove", on_mousemove, false);
+				document.body.addEventListener("mouseup", on_mouseup, false);
+				document.body.addEventListener("touchend", on_mouseup, false);
+
+				//empty = false;
+				var xy = get_coords(e);
+				context.beginPath();
+				pixels.push("moveStart");
+				context.moveTo(xy.x, xy.y);
+				pixels.push(xy.x, xy.y);
+				xyLast = xy;
+			}
+
+			function remove_event_listeners() {
+				canvas.removeEventListener("mousemove", on_mousemove, false);
+				canvas.removeEventListener("mouseup", on_mouseup, false);
+				canvas.removeEventListener("touchmove", on_mousemove, false);
+				canvas.removeEventListener("touchend", on_mouseup, false);
+
+				document.body.removeEventListener("mouseup", on_mouseup, false);
+				document.body.removeEventListener("touchend", on_mouseup, false);
+			}
+			
+		canvas.addEventListener("touchstart", on_mousedown, false);
+		canvas.addEventListener("mousedown", on_mousedown, false); 
     },
     
 	clear : function(oEvent){

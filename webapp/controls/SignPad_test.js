@@ -39,7 +39,7 @@ sap.ui.define(
                 'shape-rendering="crispEdges" pointer-events="none"/>');
 
       oRm.write('<path id="' + id + '_p" stroke="' + pen + '" stroke-width="2" ' +
-                'fill="'+ pen +'" pointer-events="none"/>');
+                'fill="' + pen +'" pointer-events="none"/>');
       oRm.write('</svg>');
       oRm.write("</div>");
     },

@@ -28,7 +28,7 @@
 		}
 	},
 	"sap.ui": {
-	    "_version": "1.1.0",
+		"_version": "1.1.0",
 		"technology": "UI5",
 		"icons": {
 			"icon": "sap-icon://cart",
@@ -76,7 +76,7 @@
 				"dataSource": "mainService"
 			}
 		},
-		"handleValidation": true,		
+		"handleValidation": true,
 		"resources": {
 			"css": [{
 				"uri": "css/style.css"
@@ -89,71 +89,59 @@
 				"async": true,
 				"viewPath": "mit_sign.view",
 				"controlAggregation": "pages",
-				"controlId": "idAppControl",
+				"controlId": "app",
 				"bypassed": {
 					"target": "home"
 				}
 			},
-			"routes": [
-				{
-					"pattern": "",
-					"name": "home",
-					"target": "home"
-				},
-				{
-					"pattern": "sign/{id}",
-					"name": "sign",
-					"target": "step1",
-					"subroutes":[
-					]
-				},
-				{
-							"pattern": "sign/{id}/step2",
-							"name": "step2",
-							"target": "step2"
-						},
-						{
-							"pattern": "sign/{id}/step3",
-							"name": "step3",
-							"target": "step3"
-						},
-				{
-					"pattern": "signcompleted",
-					"name": "signcompleted",
-					"target": "signcompleted"
-				}
-			],
+			"routes": [{
+				"pattern": "",
+				"name": "home",
+				"target": "home"
+			}, {
+				"pattern": "sign/{id}",
+				"name": "sign",
+				"target": "step1",
+				"subroutes": []
+			}, {
+				"pattern": "sign/{id}/step2",
+				"name": "step2",
+				"target": "step2"
+			}, {
+				"pattern": "sign/{id}/step3",
+				"name": "step3",
+				"target": "step3"
+			}, {
+				"pattern": "signcompleted",
+				"name": "signcompleted",
+				"target": "signcompleted"
+			}],
 			"targets": {
 				"home": {
 					"viewName": "Home",
 					"viewLevel": 1,
 					"viewId": "appView",
-					"controlAggregation": "pages",
 					"title": "{i18n>appTitle}"
 				},
 				"sign": {
 					"viewName": "Sign",
 					"viewLevel": 2,
-					"viewId": "signView",
-					"controlAggregation": "pages"
+					"viewId": "signView"
 				},
 				"step1": {
 					"viewName": "Step1",
 					"viewLevel": 2,
-					"viewId": "signView1",
-					"controlAggregation": "pages"
+					"viewId": "signView1"
 				},
 				"step2": {
 					"viewName": "Step2",
 					"viewLevel": 2,
-					"viewId": "signView2",
-					"controlAggregation": "pages"
+					"viewId": "signView2"
 				},
 				"step3": {
 					"viewName": "Step3",
 					"viewLevel": 2,
-					"viewId": "signView3",
-					"controlAggregation": "pages"
+					"viewId": "signView3"
 				}
 			}
 		}
