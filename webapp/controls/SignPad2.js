@@ -89,7 +89,7 @@ sap.ui.define(
 
     onAfterRendering: function() {
     	var that = this;
-    	var canvas = document.getElementById("signature-pad");
+    	var canvas = $("#signature-pad")[0];  //	var canvas = document.getElementById("signature-pad");
 		var context = canvas.getContext("2d");	
 		canvas.width = this.getWidth();
 		canvas.height = this.getHeight();
@@ -118,14 +118,14 @@ sap.ui.define(
 			}
 		}.bind(this), 1000);
 		
-		// var disableSave = true;
+		var disableSave = true;
 		var pixels = [];
 		// var cpixels = [];
 		var xyLast = {};
 		var xyAddLast = {};
 		var calculate = false;
 		 	//functions
-			function get_coords(e) {
+			function getCoords(e) {
 				var x, y;
 
 				if (e.changedTouches && e.changedTouches[0]) {
@@ -151,7 +151,7 @@ sap.ui.define(
 				e.preventDefault();
 				e.stopPropagation();
 
-				var xy = get_coords(e);
+				var xy = getCoords(e);
 				var xyAdd = {
 					x : (xyLast.x + xy.x) / 2,
 					y : (xyLast.y + xy.y) / 2
@@ -175,19 +175,6 @@ sap.ui.define(
 
 			}
 
-			function on_mouseup(e) {
-				remove_event_listeners();
-				disableSave = false;
-				context.stroke();
-				pixels.push('e');
-				calculate = false;
-				var url = canvas.toDataURL("image/jpeg", 1.0);
-				that.setValue(url);
-				that.fireEvent("change", {
-					value: url
-				});
-			}
-			
 			function on_mousedown(e) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -196,13 +183,13 @@ sap.ui.define(
 				canvas.addEventListener("mousemove", on_mousemove, false);
 				canvas.addEventListener("touchend", on_mouseup, false);
 				canvas.addEventListener("touchmove", on_mousemove, false);
-				document.body.addEventListener('mouseup', on_mouseup, false);
-				document.body.addEventListener('touchend', on_mouseup, false);
+				document.body.addEventListener("mouseup", on_mouseup, false);
+				document.body.addEventListener("touchend", on_mouseup, false);
 
 				//empty = false;
-				var xy = get_coords(e);
+				var xy = getCoords(e);
 				context.beginPath();
-				pixels.push('moveStart');
+				pixels.push("moveStart");
 				context.moveTo(xy.x, xy.y);
 				pixels.push(xy.x, xy.y);
 				xyLast = xy;
@@ -218,8 +205,21 @@ sap.ui.define(
 				document.body.removeEventListener("touchend", on_mouseup, false);
 			}
 		
-		canvas.addEventListener('touchstart', on_mousedown, false);
-		canvas.addEventListener('mousedown', on_mousedown, false);
+			function on_mouseup(e) {
+				remove_event_listeners();
+				disableSave = false;
+				context.stroke();
+				pixels.push("e");
+				calculate = false;
+				var url = canvas.toDataURL("image/jpeg", 1.0);
+				that.setValue(url);
+				that.fireEvent("change", {
+					value: url
+				});
+			}
+					
+		canvas.addEventListener("touchstart", on_mousedown, false);
+		canvas.addEventListener("mousedown", on_mousedown, false);
 
     },
 

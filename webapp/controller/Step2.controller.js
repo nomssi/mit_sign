@@ -65,7 +65,7 @@ sap.ui.define([
 						// reset to default
 						oView.setBusyIndicatorDelay(null);
 						//this._checkIfProductAvailable(sPath);
-					}.bind(this));
+					});
 				}
 				
 				
@@ -88,13 +88,13 @@ sap.ui.define([
 		},
 		
 		onSaveButton: function(){
-			var oHelper = this._oHelper;
+			// var oHelper = this._oHelper;
 
 			var fnAfterSave = function(oData){
-				if(oData.PDFUrl!=""){
+				if(oData.PDFUrl !== ""){
 					MessageToast.show("PDF erzeugt");
 				}
-			}.bind(this);
+			};
 			this._oHelper.saveSignature(this.sVbeln, fnAfterSave);
 		},
 		

@@ -63,7 +63,7 @@ sap.ui.define([
 						// reset to default
 						oView.setBusyIndicatorDelay(null);
 						//this._checkIfProductAvailable(sPath);
-					}.bind(this));
+					});
 				}
 				
 				

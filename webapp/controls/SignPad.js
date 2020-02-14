@@ -151,7 +151,7 @@ sap.ui.define([
 		var xyAddLast = {};
 		var calculate = false;
 		 	//functions
-			function get_coords(e) {
+			function getCoords(e) {
 				var x, y;
 
 				if (e.changedTouches && e.changedTouches[0]) {
@@ -177,7 +177,7 @@ sap.ui.define([
 				e.preventDefault();
 				e.stopPropagation();
 
-				var xy = get_coords(e);
+				var xy = getCoords(e);
 				var xyAdd = {
 					x : (xyLast.x + xy.x) / 2,
 					y : (xyLast.y + xy.y) / 2
@@ -227,7 +227,7 @@ sap.ui.define([
 				document.body.addEventListener("touchend", on_mouseup, false);
 
 				//empty = false;
-				var xy = get_coords(e);
+				var xy = getCoords(e);
 				context.beginPath();
 				pixels.push("moveStart");
 				context.moveTo(xy.x, xy.y);

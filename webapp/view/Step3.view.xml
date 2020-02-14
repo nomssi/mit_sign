@@ -8,10 +8,7 @@
 			horizontal="true"
 			vertical="true">
 			<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
-				<PDFViewer source="{PDFUrl}" title="{/Title}" height="2048px" id="PDF" displayType="Embedded" failToRenderHeight="10rem" >
-				   <failToRenderAlternative>
-				    <Link text="Download/Open PDF" href="{PDFUrl}" />
-				  </failToRenderAlternative>
+				<PDFViewer source="{PDFUrl}" title="{/Title}" height="2048px" id="PDF" displayType="Embedded" >
 					<layoutData>
 						<FlexItemData growFactor="1" />
 					</layoutData>

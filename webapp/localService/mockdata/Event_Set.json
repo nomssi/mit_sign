@@ -1,0 +1,41 @@
+[{
+	"VBELN": "VBELN",
+	"SignatureString": "MySignatureString ",
+	"PDFUrl": "PDFUrl ",
+	"SignerName": "Jacques Nomssi",
+	"ReceiverName": "Conny Richter",
+	"__metadata": {
+		"uri": "Event_Set('VBELN%201')",
+		"type": "/MAK/SIGNATURE_SRV.Event"
+	},
+	"ToHead": {
+		"__deferred": {
+			"uri": "Event_Set('VBELN%201')/ToHead"
+		}
+	},
+	"ToPositions": {
+		"__deferred": {
+			"uri": "Event_Set('VBELN%201')/ToPositions"
+		}
+	}
+}, {
+	"VBELN": "Auslieferung2",
+	"SignatureString": "YourSignatureString",
+	"PDFUrl": "PDFUrl2",
+	"SignerName": "Nomssi Nzali",
+	"ReceiverName": "Conny Richter",
+	"__metadata": {
+		"uri": "Event_Set('VBELN%202')",
+		"type": "/MAK/SIGNATURE_SRV.Event"
+	},
+	"ToHead": {
+		"__deferred": {
+			"uri": "Event_Set('VBELN%202')/ToHead"
+		}
+	},
+	"ToPositions": {
+		"__deferred": {
+			"uri": "Event_Set('VBELN%202')/ToPositions"
+		}
+	}
+}]

@@ -2,37 +2,72 @@
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
 	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
 	<edmx:DataServices m:DataServiceVersion="2.0">
-		<Schema Namespace="Demo" sap:schema-version="1" xml:lang="en" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-			<EntityType Name="Entity1">
+		<Schema Namespace="/MAK/SIGNATURE_SRV" sap:schema-version="1" xml:lang="en" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="Event">
 				<Key>
+					<PropertyRef Name="VBELN"/>
+				</Key>
+				<Property Name="VBELN" Nullable="false" Type="Edm.String" MaxLength="10" sap:label="Auslieferung" />
+				<Property Name="SignatureString" Nullable="false" Type="Edm.String"/>
+				<Property Name="PDFUrl" Nullable="false" Type="Edm.String"/>
+				<Property Name="SignerName" Nullable="false" MaxLength="80" Type="Edm.String"/>
+				<Property Name="ReceiverName" Nullable="false" MaxLength="80" Type="Edm.String"/>
+                <NavigationProperty Name="ToHead" Relationship="/MAK/SIGNATURE_SRV.Assoc_Event_Head" FromRole="FromRole_Assoc_Event_Head" ToRole="ToRole_Assoc_Event_Head"/>
+                <NavigationProperty Name="ToPositions" Relationship="/MAK/SIGNATURE_SRV.Assoc_Event_Items" FromRole="FromRole_Assoc_Event_Items" ToRole="ToRole_Assoc_Event_Items"/>
+            </EntityType>
+			<EntityType Name="Head">
+				<Key>
+					<PropertyRef Name="Vbeln"/>
+				</Key>
+				<Property Name="Vbeln" Nullable="false" Type="Edm.String" />
+				<Property Name="Kunnr" Nullable="false" Type="Edm.String"/>
+				<Property Name="Name1" Nullable="false" Type="Edm.String"/>
+			</EntityType>
+			<EntityType Name="Positions">
+			<Key>
+					<PropertyRef Name="Vbeln"/>
+				</Key>
+				<Property Name="Vbeln" Nullable="false" Type="Edm.String" />
+				<Property Name="Matnr" Nullable="false" Type="Edm.String"/>
+				<Property Name="Posnr" Nullable="false" Type="Edm.String"/>
+				<Property Name="Lfimg" Nullable="false" Type="Edm.Float" />
+				<Property Name="Meins" Nullable="false" Type="Edm.String"/>
+				<Property Name="Maktx" Nullable="false" Type="Edm.String"/>				
+			</EntityType>
+			<EntityType Name="LiefSIG">
+			    <Key>
 					<PropertyRef Name="Id"/>
 				</Key>
-				<Property Name="Id" Nullable="false" Type="Edm.String"/>
-				<Property Name="field1" Nullable="false" Type="Edm.String"/>
-				<Property Name="field2" Nullable="false" Type="Edm.String"/>
-			</EntityType>
-			<EntityType Name="Entity2">
-				<Key>
-					<PropertyRef Name="Id"/>
+				<Property Name="Id" Nullable="false" Type="Edm.String" MaxLength="10" sap:label="Auslieferung" />
+				<Property Name="SignatureString" Nullable="false" Type="Edm.String"/>
+			</EntityType>			
+			<EntityType Name="Signatures">
+			    <Key>
+					<PropertyRef Name="Vbeln"/>
 				</Key>
-				<Property Name="Id" Nullable="false" Type="Edm.String"/>
-				<Property Name="field1" Nullable="false" Type="Edm.String"/>
-				<Property Name="field2" Nullable="false" Type="Edm.Decimal"/>
-				<Property Name="field3" Nullable="false" Type="Edm.String"/>
-			</EntityType>
-			<EntityType Name="Entity3">
-				<Key>
-					<PropertyRef Name="Id"/>
-				</Key>
-				<Property Name="Id" Nullable="false" Type="Edm.String"/>
-				<Property Name="field1" Type="Edm.Int16"/>
-				<Property Name="field2" Nullable="false" Type="Edm.String"/>
-			</EntityType>
-			<EntityContainer Name="DemoSetContainer" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
-				<EntitySet EntityType="Demo.Entity1" Name="Entity1_Set"/>
-				<EntitySet EntityType="Demo.Entity2" Name="Entity2_Set"/>
-				<EntitySet EntityType="Demo.Entity3" Name="Entity3_Set"/>
+				<Property Name="Vbeln" Nullable="false" Type="Edm.String" MaxLength="10" sap:label="Auslieferung" />
+				<Property Name="SignatureString" Nullable="false" Type="Edm.String"/>
+			</EntityType>			
+
+			<EntityContainer Name="/MAK/SIGNATURE_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet EntityType="/MAK/SIGNATURE_SRV.Event" Name="Event_Set"/>
+				<EntitySet EntityType="/MAK/SIGNATURE_SRV.Head" Name="Head_Set"/>
+				<EntitySet EntityType="/MAK/SIGNATURE_SRV.Positions" Name="Positions_Set"/>
+				
+				<EntitySet EntityType="/MAK/SIGNATURE_SRV.LiefSIG" Name="LiefSIG_Set"/>
+				<EntitySet EntityType="/MAK/SIGNATURE_SRV.Signatures" Name="Signatures_Set"/>
 			</EntityContainer>
+			
+            <Association Name="Assoc_Event_Head" sap:content-version="1">
+                <End Type="/MAK/SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_Assoc_Event_Head"/>
+                <End Type="/MAK/SIGNATURE_SRV.Head" Multiplicity="*" Role="ToRole_Assoc_Event_Head"/>
+            </Association>	
+            
+            <Association Name="Assoc_Event_Items" sap:content-version="1">
+                <End Type="/MAK/SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_Assoc_Event_Items"/>
+                <End Type="/MAK/SIGNATURE_SRV.Positions" Multiplicity="*" Role="ToRole_Assoc_Event_Items"/>
+            </Association>
+
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>

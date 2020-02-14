@@ -38,15 +38,15 @@ sap.ui.define([
 			/*this._router.getTarget("product").attachDisplay(function (oEvent) {
 				this.fnUpdateProduct(oEvent.getParameter("data").productId);// update the binding based on products cart selection
 			}, this);*/
-			//Binding f�r die Signatur erstellen, am besten die Kopfdaten der Lieferung mit den zwei Feldern f�r die Signatur verkn�pfen
-			//so kann die Signatur als base64 an SAP gesendet werden und im n�chsten schritt angezeigr werden
+			//Binding für die Signatur erstellen, am besten die Kopfdaten der Lieferung mit den zwei Feldern für die Signatur verknüpfen
+			//so kann die Signatur als base64 an SAP gesendet werden und im nächsten schritt angezeigr werden
 		},
 
 		_routePatternMatched: function(oEvent) {
 				
 			var sVbeln = oEvent.getParameter("arguments").id,
-				oView = this.getView(),
-				oModel = oView.getModel();
+				oView = this.getView();
+			// var	oModel = oView.getModel();
 
 			this.sVbeln = sVbeln;
 			
@@ -81,7 +81,7 @@ sap.ui.define([
 						// reset to default
 						oView.setBusyIndicatorDelay(null);
 						//this._checkIfProductAvailable(sPath);
-					}.bind(this));
+					});
 				}
 				
 				
@@ -108,7 +108,7 @@ sap.ui.define([
 		},
 		
 		onSaveButton: function(){
-			var oHelper = this._oHelper;
+			//var oHelper = this._oHelper;
 
 			/*var fnSave = function(oBlob){
 				console.log(oBlob);
@@ -134,7 +134,7 @@ sap.ui.define([
 			oCtrl.getSignature(fnSave);*/
 
 			var fnAfterSave = function(oData){
-				if(oData.PDFUrl!=""){
+				if(oData.PDFUrl !== ""){
 					var step = this.byId("signStep");
 					step.setValidated(true);
 					

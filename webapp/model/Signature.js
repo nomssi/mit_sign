@@ -185,7 +185,7 @@ sap.ui.define([
 			return function(oError) {
 				//this._oApplicationProperties.setProperty("/" + sProcessingProperty, false);
 				MessageToast.show(oError);
-			}.bind(this);
+			};
 		},
 		
 		clearSignature: function(sVbeln){
