@@ -1,0 +1,57 @@
+[{
+	"VBELN": "0080055875",
+	"SignatureString": "SignatureString1",
+	"PDFUrl": "PDFUrl1",
+	"SignerName": "Jacques Nomssi Signer1",
+	"ReceiverName": "Conny Richter Receiver1",
+	"__metadata": {
+		"uri": "Events('VBELN%201')",
+		"type": "MAK.SIGNATURE_SRV.Event"
+	},
+	"EventPositions": {
+		"__deferred": {
+			"uri": "Events('VBELN%201')/EventPositions"
+		}
+	},
+	"EventHead": {
+		"__deferred": {
+			"uri": "Events('VBELN%201')/EventHead"
+		}
+	}
+}, {
+	"VBELN": "0080054160",
+	"SignatureString": "SignatureString2",
+	"PDFUrl": "PDFUrl2",
+	"SignerName": "Felix Lemke Signer2",
+	"ReceiverName": "Nomssi Nzali Receiver2",
+	"__metadata": {
+		"uri": "Events('VBELN%202')",
+		"type": "MAK.SIGNATURE_SRV.Event"
+	},
+	"EventPositions": {
+		"__deferred": {
+			"uri": "Events('VBELN%202')/EventPositions"
+		}
+	},
+	"EventHead": {
+		"__deferred": {
+			"uri": "Events('VBELN%202')/EventHead"
+		}
+	}
+}, {
+	"VBELN": "0080055880",
+	"SignatureString": "SignatureString3",
+	"PDFUrl": "PDFUrl3",
+	"SignerName": "Nomssi Jacques Signer3",
+	"ReceiverName": "Jacques Nomssi Receiver3"
+}, {
+	"VBELN": "0080055813",
+	"SignerName": "Signer4",
+	"ReceiverName": "Receiver4",
+	"PDFUrl": "PDFUrl4"
+}, {
+	"VBELN": "0080054199",
+	"PDFUrl": "PDFUrl5",
+	"SignerName": "Signer5",
+	"ReceiverName": "Receiver5"
+}]

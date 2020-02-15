@@ -2,72 +2,54 @@
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx"
 	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
 	<edmx:DataServices m:DataServiceVersion="2.0">
-		<Schema Namespace="/MAK/SIGNATURE_SRV" sap:schema-version="1" xml:lang="en" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-			<EntityType Name="Event">
-				<Key>
-					<PropertyRef Name="VBELN"/>
-				</Key>
-				<Property Name="VBELN" Nullable="false" Type="Edm.String" MaxLength="10" sap:label="Auslieferung" />
-				<Property Name="SignatureString" Nullable="false" Type="Edm.String"/>
-				<Property Name="PDFUrl" Nullable="false" Type="Edm.String"/>
-				<Property Name="SignerName" Nullable="false" MaxLength="80" Type="Edm.String"/>
-				<Property Name="ReceiverName" Nullable="false" MaxLength="80" Type="Edm.String"/>
-                <NavigationProperty Name="ToHead" Relationship="/MAK/SIGNATURE_SRV.Assoc_Event_Head" FromRole="FromRole_Assoc_Event_Head" ToRole="ToRole_Assoc_Event_Head"/>
-                <NavigationProperty Name="ToPositions" Relationship="/MAK/SIGNATURE_SRV.Assoc_Event_Items" FromRole="FromRole_Assoc_Event_Items" ToRole="ToRole_Assoc_Event_Items"/>
-            </EntityType>
-			<EntityType Name="Head">
-				<Key>
-					<PropertyRef Name="Vbeln"/>
-				</Key>
-				<Property Name="Vbeln" Nullable="false" Type="Edm.String" />
-				<Property Name="Kunnr" Nullable="false" Type="Edm.String"/>
-				<Property Name="Name1" Nullable="false" Type="Edm.String"/>
-			</EntityType>
-			<EntityType Name="Positions">
-			<Key>
-					<PropertyRef Name="Vbeln"/>
-				</Key>
-				<Property Name="Vbeln" Nullable="false" Type="Edm.String" />
-				<Property Name="Matnr" Nullable="false" Type="Edm.String"/>
-				<Property Name="Posnr" Nullable="false" Type="Edm.String"/>
-				<Property Name="Lfimg" Nullable="false" Type="Edm.Float" />
-				<Property Name="Meins" Nullable="false" Type="Edm.String"/>
-				<Property Name="Maktx" Nullable="false" Type="Edm.String"/>				
-			</EntityType>
-			<EntityType Name="LiefSIG">
-			    <Key>
-					<PropertyRef Name="Id"/>
-				</Key>
-				<Property Name="Id" Nullable="false" Type="Edm.String" MaxLength="10" sap:label="Auslieferung" />
-				<Property Name="SignatureString" Nullable="false" Type="Edm.String"/>
-			</EntityType>			
-			<EntityType Name="Signatures">
-			    <Key>
-					<PropertyRef Name="Vbeln"/>
-				</Key>
-				<Property Name="Vbeln" Nullable="false" Type="Edm.String" MaxLength="10" sap:label="Auslieferung" />
-				<Property Name="SignatureString" Nullable="false" Type="Edm.String"/>
-			</EntityType>			
-
-			<EntityContainer Name="/MAK/SIGNATURE_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
-				<EntitySet EntityType="/MAK/SIGNATURE_SRV.Event" Name="Event_Set"/>
-				<EntitySet EntityType="/MAK/SIGNATURE_SRV.Head" Name="Head_Set"/>
-				<EntitySet EntityType="/MAK/SIGNATURE_SRV.Positions" Name="Positions_Set"/>
-				
-				<EntitySet EntityType="/MAK/SIGNATURE_SRV.LiefSIG" Name="LiefSIG_Set"/>
-				<EntitySet EntityType="/MAK/SIGNATURE_SRV.Signatures" Name="Signatures_Set"/>
+		<Schema Namespace="MAK.SIGNATURE_SRV" xml:lang="de" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+			<EntityType Name="Event" sap:content-version="1">
+				<Key><PropertyRef Name="VBELN"/></Key><Property Name="VBELN" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="SignatureString" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="PDFUrl" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="SignerName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="ReceiverName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><NavigationProperty Name="EventPositions" Relationship="MAK.SIGNATURE_SRV.EventPosition" FromRole="FromRole_EventPosition"
+					ToRole="ToRole_EventPosition"/><NavigationProperty Name="EventHead" Relationship="MAK.SIGNATURE_SRV.EventHead" FromRole="FromRole_EventHead" ToRole="ToRole_EventHead"/></EntityType>
+			<EntityType Name="Head" sap:content-version="1">
+				<Key><PropertyRef Name="Vbeln"/></Key><Property Name="Vbeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Lieferung" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Kunnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Warenempfänger"
+					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Name1" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/></EntityType>
+			<EntityType Name="Position" sap:content-version="1">
+				<Key><PropertyRef Name="Vbeln"/></Key><Property Name="Vbeln" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Matnr" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Posnr" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Untzeich.INT2/int16" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Lfimg" Type="Edm.Float" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Meins" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/><Property Name="Maktx" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/></EntityType>
+			<Association Name="EventPosition" sap:content-version="1"><End Type="MAK.SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_EventPosition"/><End Type="MAK.SIGNATURE_SRV.Position" Multiplicity="*" Role="ToRole_EventPosition"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_EventPosition"><PropertyRef Name="VBELN"/></Principal>
+					<Dependent Role="ToRole_EventPosition"><PropertyRef Name="Vbeln"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<Association Name="EventHead" sap:content-version="1"><End Type="MAK.SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_EventHead"/><End Type="MAK.SIGNATURE_SRV.Head" Multiplicity="1" Role="ToRole_EventHead"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_EventHead"><PropertyRef Name="VBELN"/></Principal>
+					<Dependent Role="ToRole_EventHead"><PropertyRef Name="Vbeln"/></Dependent>
+				</ReferentialConstraint>
+			</Association>
+			<EntityContainer Name="MAK_SIGNATURE_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx"><EntitySet Name="Events" EntityType="MAK.SIGNATURE_SRV.Event" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+				sap:pageable="false" sap:addressable="false" sap:content-version="1"/><EntitySet Name="Heads" EntityType="MAK.SIGNATURE_SRV.Head" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+				sap:pageable="false" sap:content-version="1"/><EntitySet Name="Positions" EntityType="MAK.SIGNATURE_SRV.Position" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+				sap:pageable="false" sap:content-version="1"/>
+				<AssociationSet Name="EventHeadSet" Association="MAK.SIGNATURE_SRV.EventHead" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1"><End EntitySet="Events" Role="FromRole_EventHead"/><End EntitySet="Heads" Role="ToRole_EventHead"/></AssociationSet>
+				<AssociationSet Name="EventPositions" Association="MAK.SIGNATURE_SRV.EventPosition" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:content-version="1"><End EntitySet="Events" Role="FromRole_EventPosition"/><End EntitySet="Positions" Role="ToRole_EventPosition"/></AssociationSet>
+				<FunctionImport Name="ClearSignature" ReturnType="MAK.SIGNATURE_SRV.Event" EntitySet="Events" m:HttpMethod="POST"><Parameter Name="Vbeln" Type="Edm.String" Mode="In"/></FunctionImport>
+				<FunctionImport Name="SaveSignature" ReturnType="MAK.SIGNATURE_SRV.Event" EntitySet="Events" m:HttpMethod="POST"><Parameter Name="Vbeln" Type="Edm.String" Mode="In"/></FunctionImport>
 			</EntityContainer>
-			
-            <Association Name="Assoc_Event_Head" sap:content-version="1">
-                <End Type="/MAK/SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_Assoc_Event_Head"/>
-                <End Type="/MAK/SIGNATURE_SRV.Head" Multiplicity="*" Role="ToRole_Assoc_Event_Head"/>
-            </Association>	
-            
-            <Association Name="Assoc_Event_Items" sap:content-version="1">
-                <End Type="/MAK/SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_Assoc_Event_Items"/>
-                <End Type="/MAK/SIGNATURE_SRV.Positions" Multiplicity="*" Role="ToRole_Assoc_Event_Items"/>
-            </Association>
-
-		</Schema>
+			<atom:link rel="self" href="http://OBELIX3.1net.dom:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" 
+			    xmlns:atom="http://www.w3.org/2005/Atom"/><atom:link rel="latest-version" 
+			    href="http://OBELIX3.1net.dom:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/></Schema>
 	</edmx:DataServices>
 </edmx:Edmx>
