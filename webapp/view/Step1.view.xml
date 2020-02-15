@@ -17,7 +17,7 @@
 				<items>
 					<CustomListItem >
 						<VBox class="sapUiResponsiveMargin">
-							<Label text="Position {Posnr}" />
+							<Label text="{i18n>lbl.item} {Posnr}" />
 							<HBox>
 								<Label text="{Matnr}" />
 								<Label text="{Maktx}" design="Bold" class="sapUiTinyMarginBegin"/>

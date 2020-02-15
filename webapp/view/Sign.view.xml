@@ -1,92 +1,45 @@
-<core:View
-		controllerName="mit_sign.controller.Sign"
-	    xmlns:layout="sap.ui.layout"
-	    xmlns:form="sap.ui.layout.form"
-		xmlns:mvc="sap.ui.core.mvc"
-	    xmlns="sap.m"
-     	xmlns:core="sap.ui.core"
-		 xmlns:C="mit_sign.controls"
-		 xmlns:f="sap.ui.layout.form"
-		 xmlns:l="sap.ui.layout"
-	 >
+<core:View xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:C="mit_sign.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" controllerName="mit_sign.controller.Sign">
 	<NavContainer id="wizardNavContainer">
 		<pages>
-			<Page
-				id="wizardContentPage"
-				title="{i18n>signTitle} {VBELN}">
+			<Page id="wizardContentPage" title="{i18n>signTitle} {VBELN}">
 				<landmarkInfo>
-					<PageAccessibleLandmarkInfo
-						rootRole="Region"
-						rootLabel="{i18n>Checkout_rootLabel}"
-						contentRole="Main"
-						contentLabel="{i18n>Checkout_contentLabel}"
-						footerRole="Region"
-						footerLabel="{i18n>Checkout_footerLabel}"/>
+					<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n>Checkout_rootLabel}" contentRole="Main" contentLabel="{i18n>Checkout_contentLabel}" footerRole="Region" footerLabel="{i18n>Checkout_footerLabel}"/>
 				</landmarkInfo>
 				<headerContent>
-					<Button
-						id="homeButton"
-						type="Emphasized"
-						text="{i18n>homeButtonText}"
-						press=".onBack"/>
-					<Button
-						id="settingsButton"
-						type="Emphasized"
-						text="{i18n>settingsButtonText}"
-						press=".onSettingsButtonPress"/>
+					<Button id="homeButton" type="Emphasized" text="{i18n>homeButtonText}" press=".onBack"/>
+					<Button id="settingsButton" type="Emphasized" text="{i18n>settingsButtonText}" press=".onSettingsButtonPress"/>
 				</headerContent>
 				<content>
-					<Wizard
-						id="signWizard"
-						complete="signingCompleted"
-						enableBranching="true"
-						finishButtonText="{i18n>checkoutWizardReviewbtn}">
+					<Wizard id="signWizard" complete="signingCompleted" enableBranching="true" finishButtonText="{i18n>checkoutWizardReviewbtn}">
 						<steps>
-							<WizardStep
-								id="contentStep"
-								nextStep="signStep"
-								icon="sap-icon://detail-view"
-								complete="onCompleteSigning"
-								validated="true"
-								title="{i18n>contentTitle} {Name1}"
-								>
-								<List
-									visible="true"
-									id="lDelPos"
-									noDataText="{i18n>homeNoData}"
-									busyIndicatorDelay="0"
-									items="{path:'EventPositions'}"
-									class="sapUiForceWidthAuto sapUiResponsiveMargin">
+							<WizardStep id="contentStep" nextStep="signStep" icon="sap-icon://detail-view" complete="onCompleteSigning" validated="true" title="{i18n>contentTitle} {Name1}">
+								<List visible="true" id="lDelPos" noDataText="{i18n>homeNoData}" busyIndicatorDelay="0" 
+								      items="{EventPositions'}" 
+								      class="sapUiForceWidthAuto sapUiResponsiveMargin">
 									<headerToolbar>
 										
 									</headerToolbar>
 									<items>
-										<CustomListItem >
+										<CustomListItem>
 											<VBox class="sapUiResponsiveMargin">
-												<Label text="Position {Posnr}" />
+												<Label text="{i18n>lbl.item} {Posnr}"/>
 												<HBox>
-													<Label text="{Matnr}" />
+													<Label text="{Matnr}"/>
 													<Label text="{Maktx}" design="Bold" class="sapUiTinyMarginBegin"/>
 												</HBox>
 												<HBox>
-												<Label text="{ path:'Lfimg', formatter:'.formatter.float'}" />
-												<Label text="{Meins}" class="sapUiTinyMarginBegin" />
+												<Label text="{ path:'Lfimg', formatter:'.formatter.float'}"/>
+												<Label text="{Meins}" class="sapUiTinyMarginBegin"/>
 												</HBox>
 											</VBox>
 										</CustomListItem>
 									</items>
 								</List>
 							</WizardStep>
-							<WizardStep
-								id="signStep"
-								nextStep="showPDFStep"
-								title="{i18n>SignPadTitle}"
-								icon="sap-icon://signature"
-								validated="false"
-								>
-								<f:Form id="FormDisplay354" >
+							<WizardStep id="signStep" nextStep="showPDFStep" title="{i18n>SignPadTitle}" icon="sap-icon://signature" validated="false">
+								<f:Form id="FormDisplay354">
 			                        <f:layout>
-			                          <f:ResponsiveGridLayout labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="1" columnsM="1" />
+			                          <f:ResponsiveGridLayout labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="1" columnsM="1"/>
 			                        </f:layout>
 
 									<f:formContainers>
@@ -99,10 +52,7 @@
 			                              </f:FormElement>
 			                              <f:FormElement label="{i18n>lbl.Signature}">
 			                                <f:fields>
-													<C:SignPad id="signature-pad" value="{SignatureString}"
-													change="onInputChange"
-													bgColor="#d6f5ff"
-													width="400px"/>
+													<C:SignPad id="signature-pad" value="{SignatureString}" change="onInputChange" bgColor="#d6f5ff" width="400px"/>
 			                                </f:fields>
 			                              </f:FormElement>
 			                              <f:FormElement label="">
@@ -117,17 +67,8 @@
 								<!-- </f:SimpleForm> -->
 								</f:Form>
 							</WizardStep>
-						<WizardStep
-								id="showPDFStep"
-								activate=".onCheckStepActivation"
-								validated="false"
-								title="{i18n>lastViewTitle}"
-								icon="sap-icon://complete">
-							<ScrollContainer
-									height="100%"
-									width="100%"
-									horizontal="true"
-									vertical="true">
+						<WizardStep id="showPDFStep" activate=".onCheckStepActivation" validated="false" title="{i18n>lastViewTitle}" icon="sap-icon://complete">
+							<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 									<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
 										<FlexBox>
 											<Button text="Correctly Displayed" press="onCorrectPathClick"/>
@@ -135,7 +76,7 @@
 										</FlexBox>
 										<PDFViewer source="{PDFUrl}" title="{/Title}" height="600px">
 											<layoutData>
-												<FlexItemData growFactor="1" />
+												<FlexItemData growFactor="1"/>
 											</layoutData>
 										</PDFViewer>
 									</FlexBox>
@@ -147,12 +88,7 @@
 				<footer>
 					<Bar id="wizardFooterBar" visible="{= ${message>/}.length === 0 ? false : true}">
 						<contentLeft>
-							<Button
-								id="showPopoverButton"
-								icon="sap-icon://message-popup"
-								text="{= ${message>/}.length }"
-								type="Emphasized"
-								press=".onShowMessagePopoverPress"/>
+							<Button id="showPopoverButton" icon="sap-icon://message-popup" text="{= ${message>/}.length }" type="Emphasized" press=".onShowMessagePopoverPress"/>
 						</contentLeft>
 					</Bar>
 				</footer>

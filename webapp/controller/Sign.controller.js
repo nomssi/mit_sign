@@ -45,14 +45,14 @@ sap.ui.define([
 		_routePatternMatched: function(oEvent) {
 				
 			var sVbeln = oEvent.getParameter("arguments").id,
-				oView = this.getView();
-			// var	oModel = oView.getModel();
+				oView = this.getView(),
+				oModel = oView.getModel();
 
 			this.sVbeln = sVbeln;
 			
 			//ToDo in oHelper auslagern
 			
-			var oModel = this.getModel();
+			//var oModel = this.getModel();
 
 		
 			// the binding should be done after insuring that the metadata is loaded successfully
