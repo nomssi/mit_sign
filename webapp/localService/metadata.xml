@@ -17,7 +17,10 @@
 					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Name1" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/></EntityType>
 			<EntityType Name="Position" sap:content-version="1">
-				<Key><PropertyRef Name="Vbeln"/></Key>
+				<Key>
+					<PropertyRef Name="Vbeln"/>
+					<PropertyRef Name="Posnr"/>
+				</Key>				
 				<Property Name="Vbeln" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="Matnr" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"

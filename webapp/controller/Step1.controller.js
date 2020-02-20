@@ -27,8 +27,8 @@ sap.ui.define([
 		_routePatternMatched: function(oEvent) {
 			
 			var sVbeln = oEvent.getParameter("arguments").id,
-				oView = this.getView(),
-				oModel = oView.getModel();
+				oView = this.getView();
+			var	oModel = oView.getModel();
 
 			this.sVbeln = sVbeln;
 			
@@ -55,7 +55,6 @@ sap.ui.define([
 					}
 				});
 				var oData = oModel.getData(sPath);
-				
 				//if there is no data the model has to request new data
 				if (!oData) {
 					oView.setBusyIndicatorDelay(0);
