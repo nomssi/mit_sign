@@ -175,6 +175,19 @@ sap.ui.define(
 
 			}
 
+			function on_mouseup(e) {
+				remove_event_listeners();
+				disableSave = false;
+				context.stroke();
+				pixels.push("e");
+				calculate = false;
+				var url = canvas.toDataURL("image/jpeg", 1.0);
+				that.setValue(url);
+				that.fireEvent("change", {
+					value: url
+				});
+			}
+
 			function on_mousedown(e) {
 				e.preventDefault();
 				e.stopPropagation();
@@ -204,20 +217,7 @@ sap.ui.define(
 				document.body.removeEventListener("mouseup", on_mouseup, false);
 				document.body.removeEventListener("touchend", on_mouseup, false);
 			}
-		
-			function on_mouseup(e) {
-				remove_event_listeners();
-				disableSave = false;
-				context.stroke();
-				pixels.push("e");
-				calculate = false;
-				var url = canvas.toDataURL("image/jpeg", 1.0);
-				that.setValue(url);
-				that.fireEvent("change", {
-					value: url
-				});
-			}
-					
+			
 		canvas.addEventListener("touchstart", on_mousedown, false);
 		canvas.addEventListener("mousedown", on_mousedown, false);
 

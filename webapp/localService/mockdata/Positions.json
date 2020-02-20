@@ -70,4 +70,60 @@
 	"Posnr": 10,
 	"Meins": "ST",
 	"Maktx": "Kabelbinder 3,5x150mmm"
+}, {
+	"Vbeln": "0080VBELN6",
+	"Matnr": "TEST6",
+	"Posnr": 60,
+	"Lfimg": "60.0",
+	"Meins": "KG",
+	"Maktx": "Test Gewicht"
+}, {
+	"Vbeln": "0080VBELN7",
+	"Matnr": "TEST7",
+	"Posnr": 70,
+	"Lfimg": "73.2",
+	"Meins": "M",
+	"Maktx": "Test Länge"
+}, {
+	"Vbeln": "0080VBELN8",
+	"Matnr": "TEST8",
+	"Posnr": 80,
+	"Lfimg": "82",
+	"Meins": "ST",
+	"Maktx": "Test Stück"
+}, {
+	"Vbeln": "0080VBELN9",
+	"Matnr": "TEST9",
+	"Posnr": 90,
+	"Lfimg": "9",
+	"Meins": "ST",
+	"Maktx": "TEst"
+}, {
+	"Vbeln": "008VBELN10",
+	"Matnr": "TEST10",
+	"Posnr": 100,
+	"Lfimg": "10",
+	"Meins": "ST",
+	"Maktx": "Test"
+}, {
+	"Vbeln": "0080VBELN7",
+	"Posnr": 20,
+	"Lfimg": "72",
+	"Meins": "ST",
+	"Matnr": "TEST72",
+	"Maktx": "Test Länge2"
+}, {
+	"Vbeln": "0080VBELN7",
+	"Posnr": 30,
+	"Lfimg": "73",
+	"Meins": "ST",
+	"Matnr": "TEST73",
+	"Maktx": "Test Länge3"
+}, {
+	"Vbeln": "0080VBELN7",
+	"Posnr": 40,
+	"Lfimg": "74",
+	"Meins": "ST",
+	"Matnr": "TEST74",
+	"Maktx": "Test Länge4"
 }]

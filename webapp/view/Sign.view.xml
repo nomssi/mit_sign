@@ -1,10 +1,14 @@
-<core:View xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:C="mit_sign.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" controllerName="mit_sign.controller.Sign">
+<core:View xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" 
+           xmlns:C="mit_sign.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" controllerName="mit_sign.controller.Sign">
 	<NavContainer id="wizardNavContainer">
 		<pages>
-			<Page id="wizardContentPage" title="{i18n>signTitle} {VBELN}">
+			<Page id="wizardContentPage" title="{i18n>signTitle} {Vbeln}">
 				<landmarkInfo>
-					<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n>Checkout_rootLabel}" contentRole="Main" contentLabel="{i18n>Checkout_contentLabel}" footerRole="Region" footerLabel="{i18n>Checkout_footerLabel}"/>
-				</landmarkInfo>
+					<PageAccessibleLandmarkInfo
+							rootRole="Region" rootLabel="{i18n>Checkout_rootLabel}"
+							contentRole="Main" contentLabel="{i18n>Checkout_summaryContentLabel}"
+							footerRole="Banner" footerLabel="{i18n>Checkout_footerLabel}"/>
+				</landmarkInfo>				
 				<headerContent>
 					<Button id="homeButton" type="Emphasized" text="{i18n>homeButtonText}" press=".onBack"/>
 					<Button id="settingsButton" type="Emphasized" text="{i18n>settingsButtonText}" press=".onSettingsButtonPress"/>
@@ -14,8 +18,7 @@
 						<steps>
 							<WizardStep id="contentStep" nextStep="signStep" icon="sap-icon://detail-view" complete="onCompleteSigning" validated="true" title="{i18n>contentTitle} {Name1}">
 								<List visible="true" id="lDelPos" noDataText="{i18n>homeNoData}" busyIndicatorDelay="0" 
-								      items="{EventPositions'}" 
-								      class="sapUiForceWidthAuto sapUiResponsiveMargin">
+								      items="{EventPositions}" class="sapUiForceWidthAuto sapUiResponsiveMargin">
 									<headerToolbar>
 										
 									</headerToolbar>

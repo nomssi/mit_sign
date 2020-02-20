@@ -2,12 +2,16 @@ sap.ui.define([
 	"./BaseController",
 	"../model/formatter",
 	"sap/ui/Device",
-	"../model/Signature"
+	"../model/Signature",
+	"sap/m/MessageBox",
+	"sap/ui/core/Fragment"
 ], function (
 	BaseController,
 	formatter,
 	Device,
-	Signature) {
+	Signature,
+    MessageBox,	
+	Fragment) {
 	"use strict";
 
 	return BaseController.extend("mit_sign.controller.Sign", {
@@ -15,6 +19,21 @@ sap.ui.define([
 
 		onInit: function () {
 
+			this._wizard = this.byId("signWizard");
+			this._oNavContainer = this.byId("wizardNavContainer");
+			this._oWizardContentPage = this.byId("wizardContentPage");
+
+/*
+			Fragment.load({
+				name: "sap.m.sample.Wizard.view.ReviewPage",
+				controller: this
+			}).then(function (oWizardReviewPage) {
+				this._oWizardReviewPage = oWizardReviewPage;
+				this._oNavContainer.addPage(this._oWizardReviewPage);
+			}.bind(this));
+*/
+
+	
 			this._oView = this.getView();
 			//this._initViewPropertiesModel();
 			var oComponent = this.getOwnerComponent();
@@ -177,6 +196,18 @@ sap.ui.define([
 				}
 			};
 			this._oHelper.updateSignature(fnSubmitDraftSuccess);
+		},
+		
+		optionalStepActivation: function () {
+			sap.m.MessageToast.show(
+				'Unterschrift Step3 active.'
+			);
+		},
+
+		optionalStepCompletion: function () {
+			sap.m.MessageToast.show(
+				'Unterscrift Step3 completed.'
+			);
 		}
 	});
 });

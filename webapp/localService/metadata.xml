@@ -17,20 +17,30 @@
 					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Name1" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/></EntityType>
 			<EntityType Name="Position" sap:content-version="1">
-				<Key><PropertyRef Name="Vbeln"/></Key><Property Name="Vbeln" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/><Property Name="Matnr" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/><Property Name="Posnr" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Untzeich.INT2/int16" sap:creatable="false"
+				<Key><PropertyRef Name="Vbeln"/></Key>
+				<Property Name="Vbeln" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Matnr" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Posnr" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Untzeich.INT2/int16" sap:creatable="false"
 					sap:updatable="false" sap:sortable="false" sap:filterable="false"/><Property Name="Lfimg" Type="Edm.Float" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/><Property Name="Meins" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/><Property Name="Maktx" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/></EntityType>
-			<Association Name="EventPosition" sap:content-version="1"><End Type="MAK.SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_EventPosition"/><End Type="MAK.SIGNATURE_SRV.Position" Multiplicity="*" Role="ToRole_EventPosition"/>
+			<Association Name="EventPosition" sap:content-version="1">
+			  <End Type="MAK.SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_EventPosition"/>
+			  <End Type="MAK.SIGNATURE_SRV.Position" Multiplicity="*" Role="ToRole_EventPosition"/>
 				<ReferentialConstraint>
 					<Principal Role="FromRole_EventPosition"><PropertyRef Name="VBELN"/></Principal>
-					<Dependent Role="ToRole_EventPosition"><PropertyRef Name="Vbeln"/></Dependent>
+					<Dependent Role="ToRole_EventPosition">
+					   <PropertyRef Name="Vbeln"/>
+					   <PropertyRef Name="Posnr"/>
+					</Dependent>
 				</ReferentialConstraint>
 			</Association>
-			<Association Name="EventHead" sap:content-version="1"><End Type="MAK.SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_EventHead"/><End Type="MAK.SIGNATURE_SRV.Head" Multiplicity="1" Role="ToRole_EventHead"/>
+			<Association Name="EventHead" sap:content-version="1">
+			    <End Type="MAK.SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_EventHead"/>
+			    <End Type="MAK.SIGNATURE_SRV.Head" Multiplicity="1" Role="ToRole_EventHead"/>
 				<ReferentialConstraint>
 					<Principal Role="FromRole_EventHead"><PropertyRef Name="VBELN"/></Principal>
 					<Dependent Role="ToRole_EventHead"><PropertyRef Name="Vbeln"/></Dependent>

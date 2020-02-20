@@ -85,7 +85,7 @@ sap.ui.define([
 			var oBinding = oProductList.getBinding("items");
 			if (oBinding) {
 				if (bShowSearchResults) {
-					var oFilter = new Filter("Name", FilterOperator.Contains, oSearchField.getValue());
+			 		var oFilter = new Filter("Name", FilterOperator.Contains, oSearchField.getValue());
 					oBinding.filter([oFilter]);
 				} else {
 					oBinding.filter([]);
@@ -98,10 +98,16 @@ sap.ui.define([
 		},
 		
 		onEventListItemPress: function (oEvent) {
-			var oBindContext = oEvent.getSource().getBindingContext();
+			var oSelectedItem = oEvent.getSource();
+			var oBindContext = oSelectedItem.getBindingContext();
+			var sPath = oBindContext.getPath();
+			
 			var oModel = oBindContext.getModel();
-			var sId = oModel.getData(oBindContext.getPath()).VBELN.trim();
+			var sId = oModel.getData(sPath).VBELN.trim();
 			this._router.navTo("sign", {id: sId});
+//			sPath = sPath.substr(1);
+//			this._router.navTo("sign", {path: sPath});
+
 		},
 
 		/**
