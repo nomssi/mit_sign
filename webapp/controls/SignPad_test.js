@@ -23,9 +23,13 @@ sap.ui.define(
       var id = oControl.getId();
       var w = oControl.getWidth();
       var h = oControl.getHeight();
-      oRm.write("<div");
+
+      oRm.openStart("div", oControl); 
+      oRm.class("sapThemeText");
       oRm.writeControlData(oControl);
-      oRm.write(" style='border:1px solid #000'>");
+      oRm.write(" style='border:1em solid #000'");
+      oRm.openEnd();
+      
       oRm.write('<svg xmlns="http://www.w3.org/2000/svg" width="' + w +
                 '" height="' + h + '" viewBox="0 0 ' + w + " " + h + '">');
 
@@ -40,16 +44,17 @@ sap.ui.define(
 
       oRm.write('<path id="' + id + '_p" stroke="' + pen + '" stroke-width="2" ' +
                 'fill="' + pen + '" pointer-events="none"/>');
-      oRm.write("</svg>");
-      oRm.write("</div>");
+      oRm.close("svg");
+      oRm.close("div");
     },
 
     clear: function() {
     	var that = this;
 	      that.signaturePath = "";
-	      var p = document.getElementById(that.getId() + "_p");
+	      var p = $("#" + that.getId() + "_p");
 	      p.setAttribute("d", "");
     },
+
 
    /* save : function(oEvent){
 		var canvas = document.getElementById(this.getId() + '_p');
@@ -64,8 +69,8 @@ sap.ui.define(
       that.signaturePath = "";
       var isDown = false;
       // var elm = that.$()[0];
-      var r = document.getElementById(that.getId() + "_r" );
-      var p = document.getElementById(that.getId() + "_p" );
+      var r = $("#" + that.getId() + "_r");
+      var p = $("#" + that.getId() + "_p");
 
       function isTouchEvent(e) {
         return e.type.match(/^touch/);
@@ -109,7 +114,7 @@ sap.ui.define(
      //To get signature path&nbsp;
        if (this.getSignature()) {
         this.signaturePath = this.getSignature();
-        p = document.getElementById(this.getId() + "_p");
+        p = $("#" + this.getId() + "_p");
         if (p) {
           p.setAttribute("d", this.signaturePath);
         }

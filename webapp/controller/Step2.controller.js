@@ -35,8 +35,6 @@ sap.ui.define([
 			this.sVbeln = sVbeln;
 			
 			//ToDo in oHelper auslagern
-			
-			var oModel = this.getModel();
 
 		
 			// the binding should be done after insuring that the metadata is loaded successfully

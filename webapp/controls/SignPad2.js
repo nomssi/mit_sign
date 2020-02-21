@@ -224,7 +224,7 @@ sap.ui.define(
     },
 
 	clear : function(oEvent){
-		var canvas = document.getElementById("signature-pad");
+    	var canvas = $("#signature-pad")[0];  //	var canvas = document.getElementById("signature-pad");
 		var context = canvas.getContext("2d");
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		context.fillStyle = "#fff";
@@ -232,8 +232,8 @@ sap.ui.define(
 		context.lineWidth = 1.5;
 		context.lineCap = "round";
 		context.fillRect(0, 0, canvas.width, canvas.height);
-
 	}
+	
 	});
 }
 );

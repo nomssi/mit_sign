@@ -103,8 +103,6 @@ sap.ui.define([
 					});
 				}
 				
-				
-				
 			}.bind(this));
 			
 			
@@ -199,15 +197,11 @@ sap.ui.define([
 		},
 		
 		optionalStepActivation: function () {
-			sap.m.MessageToast.show(
-				'Unterschrift Step3 active.'
-			);
+			sap.m.MessageToast.show( "Unterschrift Step3 active." );
 		},
 
 		optionalStepCompletion: function () {
-			sap.m.MessageToast.show(
-				'Unterscrift Step3 completed.'
-			);
+			sap.m.MessageToast.show( "Unterscrift Step3 completed."	);
 		}
 	});
 });

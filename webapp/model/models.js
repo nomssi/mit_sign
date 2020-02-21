@@ -42,21 +42,21 @@ sap.ui.define([
 				oConfig,
 				sUrl;
 
-			oOptions = oOptions || {};
+			var oModelOptions = oOptions || {};
 
-			if (!oOptions.url) {
+			if (!oModelOptions.url) {
 				jQuery.sap.log.error("Please provide a url when you want to create an ODataModel",
 					"nw/epm/refapps/ext/prod/manage.model.models.createODataModel");
 				return null;
 			}
 
 			// create a copied instance since we modify the config
-			oConfig = jQuery.extend(true, {}, oOptions.config);
+			oConfig = jQuery.extend(true, {}, oModelOptions.config);
 
-			aUrlParametersForEveryRequest = oOptions.urlParametersForEveryRequest || [];
+			aUrlParametersForEveryRequest = oModelOptions.urlParametersForEveryRequest || [];
 			oConfig.metadataUrlParams = oConfig.metadataUrlParams || {};
 
-			sUrl = extendMetadataUrlParameters(aUrlParametersForEveryRequest, oConfig.metadataUrlParams, oOptions.url);
+			sUrl = extendMetadataUrlParameters(aUrlParametersForEveryRequest, oConfig.metadataUrlParams, oModelOptions.url);
 
 			return this._createODataModel(sUrl, oConfig);
 		},

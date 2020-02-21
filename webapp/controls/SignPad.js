@@ -92,7 +92,9 @@ sap.ui.define([
 		var context = canvas.getContext("2d");	
     	var uri = oControl.getValue();
 		if(uri){
-			var img = document.createElement("img");
+			// var img = document.createElement("img");
+			var img = $("img");
+			
 			img.onload = function(){
 				context.drawImage(img,0,0);
 			};
@@ -146,7 +148,7 @@ sap.ui.define([
 		
 		var disableSave = true;
 		var pixels = [];
-		var cpixels = [];
+		// var cpixels = [];
 		var xyLast = {};
 		var xyAddLast = {};
 		var calculate = false;
@@ -223,8 +225,10 @@ sap.ui.define([
 				canvas.addEventListener("mousemove", on_mousemove, false);
 				canvas.addEventListener("touchend", on_mouseup, false);
 				canvas.addEventListener("touchmove", on_mousemove, false);
-				document.body.addEventListener("mouseup", on_mouseup, false);
-				document.body.addEventListener("touchend", on_mouseup, false);
+				// document.body.addEventListener("mouseup", on_mouseup, false);
+				// document.body.addEventListener("touchend", on_mouseup, false);
+				$("#body").addEventListener("mouseup", on_mouseup, false); // Nomssi
+				$("#body").addEventListener("touchend", on_mouseup, false); // Nomssi
 
 				//empty = false;
 				var xy = getCoords(e);

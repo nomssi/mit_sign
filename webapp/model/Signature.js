@@ -129,7 +129,8 @@ sap.ui.define([
 							for (i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i++) {
 								var oEntry = oResponseData.__batchResponses[i];
 								if (oEntry.response) {
-									this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
+									//this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
+									this._sMessage = oEntry.response.body;
 								}
 							}
 						}

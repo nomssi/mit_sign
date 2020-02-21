@@ -76,7 +76,7 @@
 			"": {
 				"dataSource": "mainService",
 				"settings": {
-					"useBatch" : true
+					"useBatch" : false
 				}
 			}
 		},
