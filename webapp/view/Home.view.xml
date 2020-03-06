@@ -4,7 +4,9 @@
 		<content>
 			<PullToRefresh id="pullToRefresh" visible="{device>/support/touch}" refresh=".onRefresh"/>
 			<!-- This list shows the search results -->
-			<List visible="true" id="eventsList" 
+			<List visible="true" 
+			    id="eventsList"
+			    class="sapUIResponsiveMargin"
 			    selectionChange=".onEventListSelect" 
 			    noDataText="{i18n>homeNoData}" 
 			    busyIndicatorDelay="0"
@@ -17,6 +19,15 @@
 				growing="true"
 				growingThreshold="8" 
 				growingScrollToLoad="false">
+				<headerToolbar>
+					<Toolbar>
+						<Title text="{i18n>ReceiverName}" />
+						<ToolbarSpacer />
+						<Button icon="sap-icon://sort" tooltip="Sort by VBLEN"
+						        press="onSortVBELN" />
+						<SearchField width="50%" search="onFilterEvents" />
+					</Toolbar>
+				</headerToolbar>
 				<items>
 					<ObjectListItem type="Navigation" title="{ReceiverName}" 
 					                press="onEventListItemPress" intro="{SignerName}"

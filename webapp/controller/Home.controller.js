@@ -110,6 +110,31 @@ sap.ui.define([
 
 		},
 
+        onFilterEvents: function(oEvent) {
+        	// build the filter array
+        	var aFilter = [];
+        	var sQuery = oEvent.getParameter("query");
+        	if (sQuery) {
+        		aFilter.push(new Filter(
+        		"ReceiverName", FilterOperator.Contains, sQuery));
+        	}
+        	// filter the list via binding
+        	var oList = this.getView().byId("eventsList");
+        	var oBinding = oList.getBinding("items");
+        	oBinding.filter(aFilter);
+        },
+        
+        onSortVBELN: function() {
+        	// reuse the current sorter
+        	var oListBinding = this.getView().byId("eventsList").getBinding("items");
+        	var aListSorters = oListBinding.aSorters;
+        	var oSorter;
+        	if (aListSorters.length > 0) {
+        		oSorter = aListSorters[0];
+        		oSorter.bDescending = !oSorter.bDescending;
+        		oListBinding.sort(oSorter);
+        	}
+        },
 		/**
 		 * Always navigates back to home
 		 * @override

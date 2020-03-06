@@ -110,11 +110,6 @@ sap.ui.define(
 					}
 				}).placeAt("img");
 				
-				// var img = document.createElement("img");
-				// img.onload = function(){
-				// 	context.drawImage(img,0,0);
-				// };
-				// img.src = uri;
 			}
 		}.bind(this), 1000);
 		
@@ -124,6 +119,7 @@ sap.ui.define(
 		var xyLast = {};
 		var xyAddLast = {};
 		var calculate = false;
+		
 		 	//functions
 			function getCoords(e) {
 				var x, y;
@@ -146,8 +142,11 @@ sap.ui.define(
 					x : x, y : y
 				};
 			}
+ 
+			// Callback registered to mouse/touch events of the canvas
+			// Draws a line at the mouse cursor location, starting a new line if necessary
+ 			function on_mousemove(e, finish) {
 
-			function on_mousemove(e, finish) {
 				e.preventDefault();
 				e.stopPropagation();
 
@@ -174,9 +173,9 @@ sap.ui.define(
 				xyLast = xy;
 
 			}
-
+			
 			function on_mouseup(e) {
-				remove_event_listeners();
+				remove_EventListeners();
 				disableSave = false;
 				context.stroke();
 				pixels.push("e");
@@ -196,8 +195,9 @@ sap.ui.define(
 				canvas.addEventListener("mousemove", on_mousemove, false);
 				canvas.addEventListener("touchend", on_mouseup, false);
 				canvas.addEventListener("touchmove", on_mousemove, false);
-				document.body.addEventListener("mouseup", on_mouseup, false);
-				document.body.addEventListener("touchend", on_mouseup, false);
+                
+                $( "body" ).on("mouseup", on_mouseup, false);    // document.body.addEventListener("mouseup", on_mouseup, false);
+                $( "body" ).on("touchend", on_mouseup, false);	 //document.body.addEventListener("touchend", on_mouseup, false);
 
 				//empty = false;
 				var xy = getCoords(e);
@@ -208,14 +208,14 @@ sap.ui.define(
 				xyLast = xy;
 			}
 			
-			function remove_event_listeners() {
+			function remove_EventListeners() {
 				canvas.removeEventListener("mousemove", on_mousemove, false);
 				canvas.removeEventListener("mouseup", on_mouseup, false);
 				canvas.removeEventListener("touchmove", on_mousemove, false);
 				canvas.removeEventListener("touchend", on_mouseup, false);
 
-				document.body.removeEventListener("mouseup", on_mouseup, false);
-				document.body.removeEventListener("touchend", on_mouseup, false);
+                $( "body" ).off("mouseup", on_mouseup, false);   // document.body.removeEventListener("mouseup", on_mouseup, false);
+                $( "body" ).off("touchend", on_mouseup, false);  // document.body.removeEventListener("touchend", on_mouseup, false);
 			}
 			
 		canvas.addEventListener("touchstart", on_mousedown, false);
@@ -227,9 +227,9 @@ sap.ui.define(
     	var canvas = $("#signature-pad")[0];  //	var canvas = document.getElementById("signature-pad");
 		var context = canvas.getContext("2d");
 		context.clearRect(0, 0, canvas.width, canvas.height);
-		context.fillStyle = "#fff";
-		context.strokeStyle = "#444";
-		context.lineWidth = 1.5;
+		context.fillStyle = "#fff";    // settings.bgColour
+		context.strokeStyle = "#444";  // settings.penColour
+		context.lineWidth = 1.5;       // settings.penWidth
 		context.lineCap = "round";
 		context.fillRect(0, 0, canvas.width, canvas.height);
 	}

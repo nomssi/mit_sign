@@ -12,7 +12,7 @@ sap.ui.define([
 	MessageToast) {
 	"use strict";
 
-	return BaseController.extend("mit_sign.controller.Step2", {
+	return BaseController.extend("mit_sign.controller.Step2a", {
 		formatter : formatter,
 
 		onInit: function () {
@@ -20,7 +20,7 @@ sap.ui.define([
 
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
-			this._router.getRoute("step2").attachPatternMatched(this._routePatternMatched, this);
+			this._router.getRoute("step2a").attachPatternMatched(this._routePatternMatched, this);
 
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this._oHelper = new Signature(this.getOwnerComponent(), this.getView());			
@@ -34,7 +34,7 @@ sap.ui.define([
 		},
 		
 		onNext: function(){
-			this._router.navTo("step2a",{id:this.sVbeln});
+			this._router.navTo("step3",{id:this.sVbeln});
 		},
 		
 		onClearButton: function(){

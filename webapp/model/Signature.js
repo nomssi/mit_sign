@@ -1,10 +1,11 @@
-// Helper class for centrally handling oData CRUD and function import services. The interface provides the business
-// meanings for the application and can be reused in different places where the UI-specific actions after the call
-// could still be different and will be handled in the corresponding controller of the view.
-// Every (main) view of this app has an instance of this class as an attribute so that it can forward all explicit
-// backend calls to it.
-// Note that this class forwards all delete operations to helper class nw.epm.refapps.products.manage.model.RemoveService,
-// which is instantiated on demand.
+// Helper class for centrally handling oData CRUD and function import services. 
+// The interface provides the business meanings for the application and can be reused in different places 
+// where the UI-specific actions after the call could still be different and will be handled in the 
+// corresponding controller of the view.
+// Every (main) view of this app has an instance of this class as an attribute so that it can forward 
+// all explicit backend calls to it.
+// Note that this class forwards all delete operations to helper class 
+// nw.epm.refapps.products.manage.model.RemoveService, which is instantiated on demand.
 sap.ui.define([
 	"sap/ui/base/Object",
 	"sap/ui/model/json/JSONModel",
@@ -129,8 +130,10 @@ sap.ui.define([
 							for (i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i++) {
 								var oEntry = oResponseData.__batchResponses[i];
 								if (oEntry.response) {
-									//this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
-									this._sMessage = oEntry.response.body;
+									var obj = JSON.parse(oEntry.response.body);
+									this._sMessage = obj.error.message.value;
+									
+									// this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
 								}
 							}
 						}
@@ -159,7 +162,7 @@ sap.ui.define([
 				this.oDraftToActivate = null;
 			}*/
 		},
-		
+
 		// Saves Draft each time a user edits a field
 		/*deleteDraft: function(fnAfter){
 			var _fnAfter = function(){
@@ -185,7 +188,8 @@ sap.ui.define([
 		_getErrorForProcessing: function(sProcessingProperty) {
 			return function(oError) {
 				//this._oApplicationProperties.setProperty("/" + sProcessingProperty, false);
-				MessageToast.show(oError);
+				// MessageToast.show(oError);
+				MessageToast.show(sProcessingProperty + oError);
 			};
 		},
 		
@@ -194,6 +198,40 @@ sap.ui.define([
 				Vbeln: sVbeln
 			};
 			this._callFunctionImport("/ClearSignature", data, null, "isBusySaving");
+		},
+
+		bindVbelnTo: function(oModel, sVbeln, target){
+			// the binding should be done after insuring that the metadata is loaded successfully
+		    var oView = target.getView();
+		    target.sVbeln = sVbeln;
+		    
+			oModel.metadataLoaded().then(function () {
+				
+				var sPath = "/" + target.getModel().createKey("Events", { VBELN: sVbeln});
+				oView.bindElement({
+					path : sPath,
+					events: {
+						dataRequested: function () {
+							oView.setBusy(true);
+						},
+						dataReceived: function () {
+							oView.setBusy(false);
+						}
+					}
+				});
+
+				var oData = oModel.getData(sPath);
+				//if there is no data the model has to request new data
+				if (!oData) {
+					oView.setBusyIndicatorDelay(0);
+					oView.getElementBinding().attachEventOnce("dataReceived", function() {
+						// reset to default
+						oView.setBusyIndicatorDelay(null);
+						//this._checkIfProductAvailable(sPath);
+					});
+				}
+			});
 		}
+
 	});
 });

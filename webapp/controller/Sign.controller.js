@@ -63,49 +63,9 @@ sap.ui.define([
 
 		_routePatternMatched: function(oEvent) {
 				
-			var sVbeln = oEvent.getParameter("arguments").id,
-				oView = this.getView(),
-				oModel = oView.getModel();
+			var sVbeln = oEvent.getParameter("arguments").id;
+			this._oHelper.bindVbelnTo(this.getView().getModel(),sVbeln,this);
 
-			this.sVbeln = sVbeln;
-			
-			//ToDo in oHelper auslagern
-			
-			//var oModel = this.getModel();
-
-		
-			// the binding should be done after insuring that the metadata is loaded successfully
-			oModel.metadataLoaded().then(function () {
-				
-				var sPath = "/" + this.getModel().createKey("Events", {
-						VBELN: sVbeln
-					});
-				oView.bindElement({
-					path : sPath,
-					events: {
-						dataRequested: function () {
-							oView.setBusy(true);
-						},
-						dataReceived: function () {
-							oView.setBusy(false);
-						}
-					}
-				});
-				var oData = oModel.getData(sPath);
-				
-				//if there is no data the model has to request new data
-				if (!oData) {
-					oView.setBusyIndicatorDelay(0);
-					oView.getElementBinding().attachEventOnce("dataReceived", function() {
-						// reset to default
-						oView.setBusyIndicatorDelay(null);
-						//this._checkIfProductAvailable(sPath);
-					});
-				}
-				
-			}.bind(this));
-			
-			
 		},
 
 		/**
@@ -197,11 +157,12 @@ sap.ui.define([
 		},
 		
 		optionalStepActivation: function () {
-			sap.m.MessageToast.show( "Unterschrift Step3 active." );
+			sap.m.MessageToast.show("Unterschrift Step3 active.");
+			sap.base.Log.info("Unterschrift Step3 active.");
 		},
 
 		optionalStepCompletion: function () {
-			sap.m.MessageToast.show( "Unterscrift Step3 completed."	);
+			sap.m.MessageToast.show("Unterscrift Step3 completed.");
 		}
 	});
 });

@@ -3,7 +3,7 @@
 	xmlns:f="sap.ui.layout.form"
 	xmlns:l="sap.ui.layout"
 		controllerName="mit_sign.controller.Step2" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Unterschrift"  showNavButton="true" navButtonPress="onNav">
+	<Page title="{i18n>SignatureReceiver}"  showNavButton="true" navButtonPress="onNav">
 		<content>
 		<f:Form id="FormDisplay354" >
                 <f:layout>
@@ -22,15 +22,10 @@
                         <f:fields>
 								<C:SignPad id="signature-pad" value="{SignatureString}"
 								change="onInputChange"
-								bgColor="#d6f5ff"
-								width="500px"/>
+								width="50%"/>
                         </f:fields>
                       </f:FormElement>
                       <f:FormElement label="">
-                        <f:fields>
-                        	<Button text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear"/>
-							<Button text="{i18n>Save}" press="onSaveButton" type="Accept" id="btnSave"/>
-                        </f:fields>
                         </f:FormElement>
                     </f:formElements>
                   </f:FormContainer>
@@ -41,11 +36,11 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button
-					text="Weiter"
-					type="Emphasized"
-					press=".onNext" />
+               	<Button text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear"/>
+				<Button text="{i18n>Save}" press="onSaveButton" type="Accept" id="btnSave"/>
+				<Button text="{i18n>Continue}" type="Emphasized" press=".onNext" />
 			</Toolbar>
 		</footer>
 	</Page>
 </core:View>
+

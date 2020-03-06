@@ -7,18 +7,16 @@ sap.ui.define([
 	return BaseController.extend("mit_sign.controller.App", {
 
 		onInit : function () {
-			var oViewModel,
-				fnSetAppNotBusy,
-				iOriginalBusyDelay = this.getView().getBusyIndicatorDelay();
+			var iOriginalBusyDelay = this.getView().getBusyIndicatorDelay();
 
-			oViewModel = new JSONModel({
+			var oViewModel = new JSONModel({
 				busy : true,
 				delay : 0,
 				smallScreenMode : true
 			});
 			this.setModel(oViewModel, "appView");
 
-			fnSetAppNotBusy = function() {
+			var fnSetAppNotBusy = function() {
 				oViewModel.setProperty("/busy", false);
 				oViewModel.setProperty("/delay", iOriginalBusyDelay);
 			};

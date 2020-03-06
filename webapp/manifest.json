@@ -76,7 +76,7 @@
 			"": {
 				"dataSource": "mainService",
 				"settings": {
-					"useBatch" : false
+					"useBatch" : true
 				}
 			}
 		},
@@ -95,7 +95,7 @@
 				"controlAggregation": "pages",
 				"controlId": "app",
 				"bypassed": {
-					"target": "home"
+					"target": ["notFound", "home"]
 				}
 			},
 			"routes": [{
@@ -112,6 +112,10 @@
 				"name": "step2",
 				"target": "step2"
 			}, {
+				"pattern": "sign/{id}/step2a",
+				"name": "step2a",
+				"target": "step2a"
+			}, {
 				"pattern": "sign/{id}/step3",
 				"name": "step3",
 				"target": "step3"
@@ -119,6 +123,10 @@
 				"pattern": "signcompleted",
 				"name": "signcompleted",
 				"target": "signcompleted"
+			}, {
+				"name": "notFound",
+				"pattern": "",
+				"target": "home"
 			}],
 			"targets": {
 				"home": {
@@ -141,6 +149,11 @@
 					"viewName": "Step2",
 					"viewLevel": 2,
 					"viewId": "signView2"
+				},
+				"step2a": {
+					"viewName": "Step2a",
+					"viewLevel": 2,
+					"viewId": "signView2a"
 				},
 				"step3": {
 					"viewName": "Step3",

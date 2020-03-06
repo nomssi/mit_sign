@@ -1,0 +1,41 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:C="mit_sign.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="mit_sign.controller.Step2a">
+	<Page title="{i18n>SignatureStorage}" showNavButton="true" navButtonPress="onNav" id="sReceiver">
+		<content>
+		<f:Form id="FormDisplay355">
+                <f:layout>
+                  <f:ResponsiveGridLayout labelSpanL="3" labelSpanM="3" emptySpanL="1" emptySpanM="1" columnsL="1" columnsM="1"/>
+                </f:layout>
+
+				<f:formContainers>
+                  <f:FormContainer>
+                    <f:formElements>
+                      <f:FormElement label="{i18n>lbl.Receiver}">
+                        <f:fields>
+								<Input id="sName" value="{ReceiverName}" change="onInputChange"/>
+                        </f:fields>
+                      </f:FormElement>
+                      <f:FormElement label="{i18n>lbl.Signature}">
+                        <f:fields>
+								<C:SignPad id="signature-pad2" value="{SignatureString2}" change="onInputChange" width="50%"/>
+                        </f:fields>
+                      </f:FormElement>
+                      <f:FormElement label="">
+                        <f:fields>
+                        	<Button text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear"/>
+							<Button text="{i18n>Save}" press="onSaveButton" type="Accept" id="btnSave"/>
+                        </f:fields>
+                        </f:FormElement>
+                    </f:formElements>
+                  </f:FormContainer>
+                </f:formContainers>
+			<!-- </f:SimpleForm> -->
+			</f:Form>
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="Weiter" type="Emphasized" press=".onNext"/>
+			</Toolbar>
+		</footer>
+	</Page>
+</core:View>
