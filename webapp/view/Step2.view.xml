@@ -15,7 +15,7 @@
                     <f:formElements>
                       <f:FormElement label="{i18n>lbl.Signer}">
                         <f:fields>
-								<Input id="sName" value="{SignerName}" change="onInputChange"/>
+								<Input id="sName" value="{SignerName}" required="true" design="Bold" change="onInputChange"/>
                         </f:fields>
                       </f:FormElement>
                       <f:FormElement label="{i18n>lbl.Signature}">

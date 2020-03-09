@@ -73,6 +73,7 @@ sap.ui.define([
 					   .style("width", oSignPad.getWidth())
 					   .style("height", oSignPad.getHeight())
 					   .style("border", oSignPad.getBorderSize() + " " + oSignPad.getBorderStyle() + " " + oSignPad.getBorderColor())
+					   // .writeClasses()
                 	   .openEnd();
 	
 					oRm.close("canvas");
