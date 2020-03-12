@@ -108,18 +108,6 @@
 				"target": "sign",
 				"subroutes": []
 			}, {
-				"pattern": "sign/{id}/step2",
-				"name": "step2",
-				"target": "step2"
-			}, {
-				"pattern": "sign/{id}/step2a",
-				"name": "step2a",
-				"target": "step2a"
-			}, {
-				"pattern": "sign/{id}/step3",
-				"name": "step3",
-				"target": "step3"
-			}, {
 				"pattern": "signcompleted",
 				"name": "signcompleted",
 				"target": "signcompleted"
@@ -139,26 +127,6 @@
 					"viewName": "Sign",
 					"viewLevel": 2,
 					"viewId": "signView"
-				},
-				"step1": {
-					"viewName": "Step1",
-					"viewLevel": 2,
-					"viewId": "signView1"
-				},
-				"step2": {
-					"viewName": "Step2",
-					"viewLevel": 2,
-					"viewId": "signView2"
-				},
-				"step2a": {
-					"viewName": "Step2a",
-					"viewLevel": 2,
-					"viewId": "signView2a"
-				},
-				"step3": {
-					"viewName": "Step3",
-					"viewLevel": 2,
-					"viewId": "signView3"
 				}
 			}
 		}

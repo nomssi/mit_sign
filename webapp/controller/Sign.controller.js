@@ -17,48 +17,22 @@ sap.ui.define([
 	return BaseController.extend("mit_sign.controller.Sign", {
 		formatter : formatter,
 
+		
 		onInit: function () {
 
 			this._wizard = this.byId("signWizard");
 			this._oNavContainer = this.byId("wizardNavContainer");
 			this._oWizardContentPage = this.byId("wizardContentPage");
 
-/*
-			Fragment.load({
-				name: "sap.m.sample.Wizard.view.ReviewPage",
-				controller: this
-			}).then(function (oWizardReviewPage) {
-				this._oWizardReviewPage = oWizardReviewPage;
-				this._oNavContainer.addPage(this._oWizardReviewPage);
-			}.bind(this));
-*/
-
 	
 			this._oView = this.getView();
-			//this._initViewPropertiesModel();
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
 			this._router.getRoute("sign").attachPatternMatched(this._routePatternMatched, this);
 			this._router.getRoute("signcompleted").attachMatched(this._routePatternMatched, this);
 
-			/*this._oApplicationProperties = oComponent.getModel("appProperties");
-			this._oApplicationController = this._oApplicationProperties.getProperty("/applicationController");*/
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
-			this._oHelper = new Signature(this.getOwnerComponent(), this.getView());			
-			/*this._sValidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample.pdf";
-			this._sInvalidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample_nonexisting.pdf";
-			this._oModel = new JSONModel({
-				Source: this._sValidPath,
-				Title: "My Custom Title",
-				Height: "600px"
-			});
-			this.getView().setModel("PDF",this._oModel);*/
-			
-			/*this._router.getTarget("product").attachDisplay(function (oEvent) {
-				this.fnUpdateProduct(oEvent.getParameter("data").productId);// update the binding based on products cart selection
-			}, this);*/
-			//Binding für die Signatur erstellen, am besten die Kopfdaten der Lieferung mit den zwei Feldern für die Signatur verknüpfen
-			//so kann die Signatur als base64 an SAP gesendet werden und im nächsten schritt angezeigr werden
+			this._oHelper = new Signature(oComponent, this._oView);	
 		},
 
 		_routePatternMatched: function(oEvent) {
@@ -66,8 +40,14 @@ sap.ui.define([
 			var sVbeln = oEvent.getParameter("arguments").id;
 			this._oHelper.bindVbelnTo(this.getView().getModel(),sVbeln,this);
 
-		},
+            // which step? 
+			// this._oHelper.clearSignature(this.sVbeln);    
 
+            // last step   
+			// var oPDF = this.byId("PDF");
+			// oPDF.downloadPDF();
+		},
+		
 		/**
 		 * Always navigates back to home
 		 * @override
@@ -76,40 +56,21 @@ sap.ui.define([
 			this.getRouter().navTo("home");
 		},
 		
+        onResetStep1: function() {
+			this._oHelper.clearSignature(this.sVbeln);
+	        this._wizard.invalidateStep(this.byId("signStep"));	
+		},	
+		
 		onClearButton: function(){
 			
 			this._oHelper.clearSignature(this.sVbeln);
+			this._wizard.invalidateStep(this.byId("signStep2"));	
 			//this.byId("signature-pad").clear();
 			//this.byId("sName").setValue("");
-			
 		},
-		
+
 		onSaveButton: function(){
-			//var oHelper = this._oHelper;
-
-			/*var fnSave = function(oBlob){
-				console.log(oBlob);
-		    	var r = new Response(oBlob);
-		    	console.log(r.text());&nbsp;
-		    	var u = URL.createObjectURL(oBlob);
-		    	console.log(u);
-		    	
-		    	var fnSubmitDraftSuccess = function(sMessage) {
-					if (sMessage && oControl) {
-						oControl.setValueState("Error");
-						oControl.setValueStateText(sMessage);
-					}
-				};
-				var data = {
-						
-				}
-				oHelper.saveSignature(fnSubmitDraftSuccess);
-		    	
-			}.bind(this);
 			
-			var oCtrl = this.byId("signature-pad");
-			oCtrl.getSignature(fnSave);*/
-
 			var fnAfterSave = function(oData){
 				if(oData.PDFUrl !== ""){
 					var step = this.byId("signStep2");
@@ -131,13 +92,6 @@ sap.ui.define([
 				sap.m.MessageToast.show("Ausgeber hat unterschrieben");
 			};	        
 			oHelper.saveSignature(this.sVbeln, fnAfterSave);
-		},	
-		
-        onResetStep1: function() {
-			var oHelper = this._oHelper;
-			
-			oHelper.clearSignature(this.sVbeln); 
-	        this._wizard.invalidateStep(this.byId("signStep"));	
 		},	
 		
 		onInputChange: function(oEvent) {
