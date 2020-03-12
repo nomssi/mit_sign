@@ -69,9 +69,19 @@ sap.ui.define([
 			//this.byId("sName").setValue("");
 		},
 
+		onCompleteStep1: function() {
+			var oHelper = this._oHelper;
+	        this._wizard.validateStep(this.byId("signStep"));	
+			var fnAfterSave = function(oData){
+				sap.m.MessageToast.show("Ausgeber hat unterschrieben");
+			};	        
+			oHelper.saveSignature(this.sVbeln, fnAfterSave);
+		},	
+		
 		onSaveButton: function(){
 			
-			var fnAfterSave = function(oData){
+	        this._wizard.validateStep(this.byId("signStep2"));	
+	        var fnAfterSave = function(oData){
 				if(oData.PDFUrl !== ""){
 					var step = this.byId("signStep2");
 					step.setValidated(true);
@@ -85,14 +95,6 @@ sap.ui.define([
 			return false;
 		},
 
-		onCompleteStep1: function() {
-			var oHelper = this._oHelper;
-	        this._wizard.validateStep(this.byId("signStep"));	
-			var fnAfterSave = function(oData){
-				sap.m.MessageToast.show("Ausgeber hat unterschrieben");
-			};	        
-			oHelper.saveSignature(this.sVbeln, fnAfterSave);
-		},	
 		
 		onInputChange: function(oEvent) {
 			// Whenever the value of an input field is changed, the system must
