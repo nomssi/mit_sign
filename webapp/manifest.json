@@ -105,7 +105,7 @@
 			}, {
 				"pattern": "sign/{id}",
 				"name": "sign",
-				"target": "step1",
+				"target": "sign",
 				"subroutes": []
 			}, {
 				"pattern": "sign/{id}/step2",

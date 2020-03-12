@@ -112,9 +112,8 @@ sap.ui.define([
 
 			var fnAfterSave = function(oData){
 				if(oData.PDFUrl !== ""){
-					var step = this.byId("signStep");
+					var step = this.byId("signStep2");
 					step.setValidated(true);
-					
 				}
 			}.bind(this);
 			this._oHelper.saveSignature(this.sVbeln, fnAfterSave);
@@ -124,6 +123,23 @@ sap.ui.define([
 			
 			return false;
 		},
+
+		onCompleteStep1: function() {
+			var oHelper = this._oHelper;
+	        this._wizard.validateStep(this.byId("signStep"));	
+			var fnAfterSave = function(oData){
+				sap.m.MessageToast.show("Ausgeber hat unterschrieben");
+			};	        
+			oHelper.saveSignature(this.sVbeln, fnAfterSave);
+		},	
+		
+        onResetStep1: function() {
+			var oHelper = this._oHelper;
+			
+			oHelper.clearSignature(this.sVbeln); 
+	        this._wizard.invalidateStep(this.byId("signStep"));	
+		},	
+		
 		onInputChange: function(oEvent) {
 			// Whenever the value of an input field is changed, the system must
 			// update the product draft. For most of the fields, no specific

@@ -14,7 +14,7 @@
 								<Input id="sName" value="{ReceiverName}" change="onInputChange"/>
                         </f:fields>
                       </f:FormElement>
-                      <f:FormElement label="{i18n>lbl.Signature}">
+                      <f:FormElement label="{i18n>lbl.Signature2}">
                         <f:fields>
 								<C:SignPad id="signature-pad2" value="{SignatureString2}" change="onInputChange" width="50%"/>
                         </f:fields>
