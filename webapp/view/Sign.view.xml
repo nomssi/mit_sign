@@ -22,11 +22,10 @@
 								<List visible="true" id="lDelPos" noDataText="{i18n>homeNoData}" busyIndicatorDelay="0" 
 								      items="{EventPositions}" class="sapUiForceWidthAuto sapUiResponsiveMargin">
 									<headerToolbar>
-										
 									</headerToolbar>
 								     <MessageStrip class="sapUiSmallMarginBottom"
 										text="Überprüfung und Freigabe der Lieferung durch Ausgebender und Empfänger."
-										showIcon="true"/>									
+										showIcon="true"/>
 									<items>
 										<CustomListItem>
 											<VBox class="sapUiResponsiveMargin">
@@ -60,10 +59,10 @@
 			                              </f:FormElement>
 			                              <f:FormElement label="{i18n>lbl.Signature}">
 			                                <f:fields>
-													<C:SignPad id="signature-pad" value="{SignatureString}" change="onInputChange" bgColor="#d6f5ff" width="50%"/>
+													<C:SignPad id="signature-pad" value="{SignatureString}" change="onInputChange" bgColor="#d6f5ff" width="100%"/>
 			                                </f:fields>
 			                              </f:FormElement>
-			                              <f:FormElement label="">
+        									<f:FormElement label="">
 			                                <f:fields>
 			                                	<Button text="{i18n>Clear}" press="onResetStep1" type="Reject" id="btnClear"/>
 												<Button text="{i18n>Save}" press="onCompleteStep1" type="Accept" id="btnSave"/>
@@ -78,7 +77,7 @@
 							<WizardStep id="signStep2" nextStep="showPDFStep" title="{i18n>SignPad2Title}" icon="sap-icon://signature" validated="false">
 								<f:Form id="FormDisplay355">
 			                        <f:layout>
-                                      <f:ResponsiveGridLayout labelSpanL="3" labelSpanM="3" emptySpanL="1" emptySpanM="1" columnsL="1" columnsM="1"/>
+                                      <f:ResponsiveGridLayout labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="1" columnsM="1"/>
 			                        </f:layout>
 
 									<f:formContainers>
@@ -89,9 +88,9 @@
 			                                	    <Input id="sRecvName" value="{ReceiverName}" change="onInputChange"/>
 			                                </f:fields>
 			                              </f:FormElement>
-			                              <f:FormElement label="{i18n>lbl.Signature2}">
+			                              <f:FormElement label="{i18n>lbl.SignatureReceiver}">
 			                                <f:fields>
-													<C:SignPad id="signature-pad2" value="{SignatureString2}" change="onInputChange" bgColor="#d6f5ff" width="50%"/>
+													<C:SignPad id="signature-pad2" value="{SignatureString2}" change="onInputChange" bgColor="#d6f5ff" width="100%"/>
 			                                </f:fields>
 			                              </f:FormElement>
 			                              <f:FormElement label="">
@@ -110,10 +109,10 @@
 							<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 									<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
 										<FlexBox>
-											<Button text="Correctly Displayed" press="onCorrectPathClick"/>
-											<Button text="Loading Error" press="onIncorrectPathClick"/>
+											<Button text="{i18n>PDFCorrect}" press="onCorrectPathClick"/>
+											<Button text="{i18n>PDFIncorrect}" press="onIncorrectPathClick"/>
 										</FlexBox>
-	                                    <PDFViewer source="{PDFUrl}" title="{/Title}" height="600px" id="PDF" displayType="Embedded" >											
+	                                    <PDFViewer source="{PDFUrl}" title="{/Title}" height="800px" id="PDF" displayType="Embedded" >											
 											<layoutData>
 												<FlexItemData growFactor="1"/>
 											</layoutData>
