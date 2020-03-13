@@ -105,7 +105,7 @@
 								<!-- </f:SimpleForm> -->
 								</f:Form>
 							</WizardStep>
-						<WizardStep id="showPDFStep" activate=".onCheckStepActivation" validated="false" title="{i18n>lastViewTitle}" icon="sap-icon://complete">
+						<WizardStep id="showPDFStep" activate=".onCheckStepActivation" validated="true" title="{i18n>lastViewTitle}" icon="sap-icon://complete">
 							<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 									<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
 										<FlexBox>
