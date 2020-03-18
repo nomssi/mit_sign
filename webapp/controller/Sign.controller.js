@@ -4,14 +4,16 @@ sap.ui.define([
 	"sap/ui/Device",
 	"../model/Signature",
 	"sap/m/MessageBox",
-	"sap/ui/core/Fragment"
+	"sap/ui/core/Fragment",
+	"sap/base/Log"
 ], function (
 	BaseController,
 	formatter,
 	Device,
 	Signature,
     MessageBox,	
-	Fragment) {
+	Fragment,
+	Log) {
 	"use strict";
 
 	return BaseController.extend("mit_sign.controller.Sign", {
@@ -74,13 +76,18 @@ sap.ui.define([
 		 */
 		onBack: function () {
 			this.getRouter().navTo("home");
+
+			// var oWizard = this.byId("signWizard");
+			//oWizard.setCurrentStep(this.byId("contentStep"));
+			this._wizard.setCurrentStep(this.byId("contentStep"));
 		},
-		
+
 		onClearButton: function(){
 			
 			this._oHelper.clearSignature(this.sVbeln);
-			//this.byId("signature-pad").clear();
+			this.byId("signature-pad2").clear();
 			//this.byId("sName").setValue("");
+			this._wizard.invalidateStep(this.byId("signStep2"));	
 			
 		},
 		
@@ -125,20 +132,48 @@ sap.ui.define([
 		},
 
 		onCompleteStep1: function() {
-			var oHelper = this._oHelper;
 	        this._wizard.validateStep(this.byId("signStep"));	
-			var fnAfterSave = function(oData){
-				sap.m.MessageToast.show("Ausgeber hat unterschrieben");
-			};	        
-			oHelper.saveSignature(this.sVbeln, fnAfterSave);
 		},	
-		
+
         onResetStep1: function() {
 			var oHelper = this._oHelper;
 			
 			oHelper.clearSignature(this.sVbeln); 
+			this.byId("signature-pad").clear();
+			//this.byId("sName").setValue("");
 	        this._wizard.invalidateStep(this.byId("signStep"));	
 		},	
+		
+		onSignChange: function(oEvent) {
+	       if (SignerName) {
+			var step = this.byId("signStep");
+			step.setValidated(true);
+	       }
+		},
+
+		onCompleteStep2: function() {
+			var oHelper = this._oHelper;
+	        this._wizard.validateStep(this.byId("signStep2"));	
+			var fnAfterSave = function(oData){
+				if(oData.PDFUrl !== ""){
+					var step = this.byId("signStep2");
+					step.setValidated(true);
+				}
+			};	        
+			sap.m.MessageToast.show("Unterschriften speichern");
+			oHelper.saveSignature(this.sVbeln, fnAfterSave);
+		},	
+		
+		onSign2Change: function(oEvent) {
+			var oField = oEvent.getSource();
+
+			var step = this.byId("signStep2");
+			step.setValidated(true);			
+			
+			setTimeout(function() {
+				this._fieldChange(oField);
+			}.bind(this), 0);
+		},
 		
 		onInputChange: function(oEvent) {
 			// Whenever the value of an input field is changed, the system must
@@ -146,7 +181,7 @@ sap.ui.define([
 			// processing is required on the update of the product draft. onInputChange is the
 			// change event defined in the XML view for such fields.
 			var oField = oEvent.getSource();
-			jQuery.sap.log.Level.TRACE(oField);
+			Log.trace(oField);
 			
 			// Workaround to ensure that both the supplier Id and Name are updated in the model before the
 			// draft is updated, otherwise only the Supplier Name is saved to the draft and Supplier Id is lost

@@ -5,7 +5,7 @@
 		controllerName="mit_sign.controller.Step2" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="{i18n>SignatureReceiver}"  showNavButton="true" navButtonPress="onNav">
 		<content>
-		<f:Form id="FormDisplay354" >
+		<f:Form id="FormSigner354" >
                 <f:layout>
                   <f:ResponsiveGridLayout labelSpanL="3" labelSpanM="3" emptySpanL="1" emptySpanM="1" columnsL="1" columnsM="1" />
                 </f:layout>

@@ -68,7 +68,7 @@ sap.ui.define([
              */				
 				render: function(oRm, oSignPad) {
                  	oRm.openStart("canvas", oSignPad)
-                 	   .writeControlData(oSignPad) // e.g id='signature-pad'
+                 //	   .writeControlData(oSignPad) // e.g id='signature-pad'
 					   .class("signature-pad")
 					   .style("width", oSignPad.getWidth())
 					   .style("height", oSignPad.getHeight())
@@ -108,12 +108,12 @@ sap.ui.define([
 					};
 					img.src = uri;
 					
-					// var oImage = new sap.m.Image("img", {
-					// 	src: uri,
-					// 	onload: function(){
-					// 		context.drawImage(oImage,0,0);
-					// 	}
-					// }).placeAt("img");					
+					 //var oImage = new Image.Image("img", {
+					 //	src: uri,
+					 //	onload: function(){
+					 //		context.drawImage(oImage,0,0);
+					 //	}
+					 //}).placeAt("img");					
 				}
 	
 				
@@ -142,27 +142,27 @@ sap.ui.define([
 				var disableSave = true;
 				var pixels = [];
 				// var cpixels = [];
-				var lastPos = {};
-				var lastNextPos = {};
+				var startPoint = {};
+				var lastPoint = {};
 				var calculate = false;
 
 				//functions
-				function getCoords(e) {
+				function get_point(event) {
 					var x, y;
 
-					if (e.changedTouches && e.changedTouches[0]) {
+					if (event.changedTouches && event.changedTouches[0]) {
 						var canvasArea = canvas.getBoundingClientRect();
 						var offsety = canvasArea.top || 0;
 						var offsetx = canvasArea.left || 0;
 
-						x = e.changedTouches[0].pageX - offsetx;
-						y = e.changedTouches[0].pageY - offsety;
-					} else if (e.layerX || e.layerX === 0) {
-						x = e.layerX;
-						y = e.layerY;
-					} else if (e.offsetX || e.offsetX === 0) {
-						x = e.offsetX;
-						y = e.offsetY;
+						x = event.changedTouches[0].pageX - offsetx;
+						y = event.changedTouches[0].pageY - offsety;
+					} else if (event.layerX || event.layerX === 0) {
+						x = event.layerX;
+						y = event.layerY;
+					} else if (event.offsetX || event.offsetX === 0) {
+						x = event.offsetX;
+						y = event.offsetY;
 					}
 
 					return {
@@ -175,36 +175,37 @@ sap.ui.define([
 					e.preventDefault();
 					e.stopPropagation();
 
-					var position = getCoords(e);
-					var nextPos = {
-						x: (lastPos.x + position.x) / 2,
-						y: (lastPos.y + position.y) / 2
+					var Point = get_point(e);
+					var nextPoint = {
+						x: (startPoint.x + Point.x) / 2,
+						y: (startPoint.y + Point.y) / 2
 					};
 
 					if (calculate) {
-						var xLast = (lastNextPos.x + lastPos.x + nextPos.x) / 3;
-						var yLast = (lastNextPos.y + lastPos.y + nextPos.y) / 3;
+						var xLast = (lastPoint.x + startPoint.x + nextPoint.x) / 3;
+						var yLast = (lastPoint.y + startPoint.y + nextPoint.y) / 3;
 						pixels.push(xLast, yLast);
 					} else {
 						calculate = true;
 					}
 
-					context.quadraticCurveTo(lastPos.x, lastPos.y, nextPos.x, nextPos.y);
-					pixels.push(nextPos.x, nextPos.y);
+					context.quadraticCurveTo(startPoint.x, startPoint.y, nextPoint.x, nextPoint.y);
+					pixels.push(nextPoint.x, nextPoint.y);
 					context.stroke();
 					context.beginPath();
-					context.moveTo(nextPos.x, nextPos.y);
-					lastNextPos = nextPos;
-					lastPos = position;
-
+					context.moveTo(nextPoint.x, nextPoint.y);
+					
+					lastPoint = nextPoint;
+					startPoint = Point;
 				}
 
 				function on_mouseup(e) {
-					remove_EventListeners();
+					_remove_event_listeners();
 					disableSave = false;
 					context.stroke();
 					pixels.push("e");
 					calculate = false;
+					
 					var url = canvas.toDataURL("image/jpeg", 1.0);
 					that.setValue(url);
 					that.fireEvent("change", {
@@ -212,38 +213,38 @@ sap.ui.define([
 					});
 				}
 
-				function on_mousedown(e) {
-					e.preventDefault();
-					e.stopPropagation();
-                    // mouse events
-					canvas.addEventListener("mouseup", on_mouseup, false);
-					canvas.addEventListener("mousemove", on_mousemove, false);
-					// touch events
-					canvas.addEventListener("touchend", on_mouseup, false);
-					canvas.addEventListener("touchmove", on_mousemove, false);
-					
-					$("#body").on("mouseup", on_mouseup, false);   // document.body.addEventListener("mouseup", on_mouseup, false);
-					$("#body").on("touchend", on_mouseup, false);  // document.body.addEventListener("touchend", on_mouseup, false);
-
-					//empty = false;
-					var position = getCoords(e);
-					context.beginPath();
-					pixels.push("moveStart");
-					context.moveTo(position.x, position.y);
-					pixels.push(position.x, position.y);
-					lastPos = position;
-				}
-
-				function remove_EventListeners() {
-					// mouse events
-					canvas.removeEventListener("mousemove", on_mousemove, false);
+				function _remove_event_listeners() {
+					canvas.removeEventListener("mousemove", on_mousemove, false);  					// mouse events
 					canvas.removeEventListener("mouseup", on_mouseup, false);
-					// touch events
-					canvas.removeEventListener("touchmove", on_mousemove, false);
+					canvas.removeEventListener("touchmove", on_mousemove, false); 					// touch events
 					canvas.removeEventListener("touchend", on_mouseup, false);
 
 					$("#body").off("mouseup", on_mouseup, false);  	// document.body.removeEventListener("mouseup", on_mouseup, false);
 					$("#body").off("touchend", on_mouseup, false);  // document.body.removeEventListener("touchend", on_mouseup, false);
+				}
+				
+				function _add_event_listeners() {
+					canvas.addEventListener("mouseup", on_mouseup, false);							// mouse events
+					canvas.addEventListener("mousemove", on_mousemove, false);
+					canvas.addEventListener("touchend", on_mouseup, false);							// touch events
+					canvas.addEventListener("touchmove", on_mousemove, false);
+					
+					$("#body").on("mouseup", on_mouseup, false);   // document.body.addEventListener("mouseup", on_mouseup, false);
+					$("#body").on("touchend", on_mouseup, false);  // document.body.addEventListener("touchend", on_mouseup, false);
+				}
+				
+				function on_mousedown(e) {
+					e.preventDefault();
+					e.stopPropagation();
+					_add_event_listeners();
+
+					//empty = false;
+					var position = get_point(e);
+					context.beginPath();
+					pixels.push("moveStart");
+					context.moveTo(position.x, position.y);
+					pixels.push(position.x, position.y);
+					startPoint = position;
 				}
 
 				canvas.addEventListener("touchstart", on_mousedown, false);

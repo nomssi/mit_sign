@@ -21,7 +21,7 @@
 }, {
 	"VBELN": "0080054160",
 	"SignatureString": "SignatureString2",
-	"PDFUrl": "PDFUrl2",
+	"PDFUrl": "file://PDFUrl2",
 	"SignerName": "Felix Lemke Signer2",
 	"ReceiverName": "Nomssi Nzali Receiver2",
 	"__metadata": {

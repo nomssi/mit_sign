@@ -16,69 +16,84 @@
 					<Button id="settingsButton" type="Emphasized" text="{i18n>settingsButtonText}" press=".onSettingsButtonPress"/>
 				</headerContent>
 				<content>
-					<Wizard id="signWizard" complete="signingCompleted" enableBranching="true" finishButtonText="{i18n>checkoutWizardReviewbtn}">
+					<Wizard id="signWizard" complete="signingCompleted"
+					        finishButtonText="{i18n>checkoutWizardReviewbtn}">
 						<steps>
-							<WizardStep id="contentStep" nextStep="signStep" icon="sap-icon://detail-view" complete="onCompleteSigning" validated="true" title="{i18n>contentTitle} {VBELN}">
-								<List visible="true" id="lDelPos" noDataText="{i18n>homeNoData}" busyIndicatorDelay="0" 
+							<WizardStep id="contentStep" 
+							            nextStep="signStep" 
+							            icon="sap-icon://detail-view" 
+							            complete="onCompleteSigning" validated="true" 
+							            title="{i18n>contentTitle} {VBELN}">
+			    			<MessageStrip class="sapUiSmallMarginBottom"
+										text="{i18n>strip.Review}"
+										showIcon="true"/>									
+								<Table id="lDelPos" inset="false" alternateRowColors="true"
+								       noDataText="{i18n>homeNoData}" busyIndicatorDelay="0" 
 								      items="{EventPositions}" class="sapUiForceWidthAuto sapUiResponsiveMargin">
 									<headerToolbar>
-										
+										<OverflowToolbar>
+											<Title text="{VBELN}" level="H2"/>
+										</OverflowToolbar>
 									</headerToolbar>
-								     <MessageStrip class="sapUiSmallMarginBottom"
-										text="Überprüfung und Freigabe der Lieferung durch Ausgebender und Empfänger."
-										showIcon="true"/>									
+									<columns>
+										<Column
+											width="12em">
+											<Text text="{i18n>lbl.item}" />
+										</Column>
+										<Column>
+											<Text text="{i18n>Material}" />
+										</Column>
+										<Column>
+											<Text text="{i18n>Shorttext}" />
+										</Column>
+										<Column>
+											<Text text="{i18n>Quantity}" />
+										</Column>
+									</columns>
+
 									<items>
-										<CustomListItem>
-											<VBox class="sapUiResponsiveMargin">
-												<Label text="{i18n>lbl.item} {Posnr}"/>
-												<HBox>
-													<Label text="{Matnr}"/>
-													<Label text="{Maktx}" design="Bold" class="sapUiTinyMarginBegin"/>
-												</HBox>
-												<HBox>
-												<Label text="{ path:'Lfimg', formatter:'.formatter.float'}"/>
-												<Label text="{Meins}" class="sapUiTinyMarginBegin"/>
-												</HBox>
-											</VBox>
-										</CustomListItem>
+										<ColumnListItem>
+											<cells>
+												<Text
+												    text="{Posnr}" />
+												<Text
+													text="{Matnr}"/>
+												<ObjectIdentifier
+                                                    title="{Maktx}"/>
+												<ObjectNumber
+													number="{ path:'Lfimg', formatter:'.formatter.float'}"
+													unit="{Meins}" />													
+											</cells>
+										</ColumnListItem>
 									</items>
-								</List>
+								</Table>
 							</WizardStep>
 							<WizardStep id="signStep" nextStep="signStep2" title="{i18n>SignPad1Title}" icon="sap-icon://signature" validated="false" >
-								<f:Form id="FormDisplay354">
-			                        <f:layout>
-			                          <f:ResponsiveGridLayout labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="1" columnsM="1"/>
-			                        </f:layout>
-
-									<f:formContainers>
-			                          <f:FormContainer>
-			                            <f:formElements>
-			                              <f:FormElement label="{i18n>lbl.Signer}">
-			                                <f:fields>
-													<Input id="sName" value="{SignerName}" change="onInputChange"/>
-			                                </f:fields>
-			                              </f:FormElement>
-			                              <f:FormElement label="{i18n>lbl.Signature}">
-			                                <f:fields>
-													<C:SignPad id="signature-pad" value="{SignatureString}" change="onInputChange" bgColor="#d6f5ff" width="50%"/>
-			                                </f:fields>
-			                              </f:FormElement>
-			                              <f:FormElement label="">
-			                                <f:fields>
-			                                	<Button text="{i18n>Clear}" press="onResetStep1" type="Reject" id="btnClear"/>
-												<Button text="{i18n>Save}" press="onCompleteStep1" type="Accept" id="btnSave"/>
-			                                </f:fields>
-			                                </f:FormElement>
-			                            </f:formElements>
-			                          </f:FormContainer>
-			                        </f:formContainers>
-								<!-- </f:SimpleForm> -->
-								</f:Form>
+			    			<MessageStrip class="sapUiSmallMarginBottom"
+										text="{i18n>strip.ReleaseStorage}"
+										showIcon="true"/>									
+								<f:SimpleForm id="FormSigner354" editable="true" layout="ResponsiveGridLayout" 
+								              labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="1" columnsM="1">
+								<f:content>									
+	                              <Label text="{i18n>lbl.Signer}" required="true"/>
+                                  <Input id="sName" value="{SignerName}" change="onInputChange"
+									placeholder="{{i18n>placeholder.Signer}"/>                                  
+	                              <Label text="{i18n>lbl.Signature}"/>
+     								<C:SignPad id="signature-pad" value="{SignatureString}" change="onSignChange" bgColor="#d6f5ff" width="100%"/>
+	                                <SegmentedButton  selectedButton="btnClear">			                                	
+	                                	<Button text="{i18n>Clear}" press="onResetStep1" type="Reject" id="btnClear"/>
+										<Button text="{i18n>Save}" press="onCompleteStep1" type="Accept" id="btnSave"/>
+	                                </SegmentedButton>								
+								</f:content>
+	 							</f:SimpleForm> 
 							</WizardStep>							
 							<WizardStep id="signStep2" nextStep="showPDFStep" title="{i18n>SignPad2Title}" icon="sap-icon://signature" validated="false">
+			    			<MessageStrip class="sapUiSmallMarginBottom"
+										text="{i18n>strip.ReleaseReceiver}"
+										showIcon="true"/>									
 								<f:Form id="FormDisplay355">
 			                        <f:layout>
-                                      <f:ResponsiveGridLayout labelSpanL="3" labelSpanM="3" emptySpanL="1" emptySpanM="1" columnsL="1" columnsM="1"/>
+                                      <f:ResponsiveGridLayout labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="1" columnsM="1"/>
 			                        </f:layout>
 
 									<f:formContainers>
@@ -91,14 +106,14 @@
 			                              </f:FormElement>
 			                              <f:FormElement label="{i18n>lbl.Signature2}">
 			                                <f:fields>
-													<C:SignPad id="signature-pad2" value="{SignatureString2}" change="onInputChange" bgColor="#d6f5ff" width="50%"/>
+													<C:SignPad id="signature-pad2" value="{SignatureString2}" change="onSign2Change" bgColor="#d6f5ff" width="100%"/>
 			                                </f:fields>
 			                              </f:FormElement>
 			                              <f:FormElement label="">
-			                                <f:fields>
+			                                <SegmentedButton>
 			                                	<Button text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear2"/>
-												<Button text="{i18n>Save}" press="onSaveButton" type="Accept" id="btnSave2"/>
-			                                </f:fields>
+												<Button text="{i18n>Save}" press="onCompleteStep2" type="Accept" id="btnSave2"/>
+			                                </SegmentedButton>
 			                                </f:FormElement>
 			                            </f:formElements>
 			                          </f:FormContainer>
@@ -110,8 +125,8 @@
 							<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 									<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
 										<FlexBox>
-											<Button text="Correctly Displayed" press="onCorrectPathClick"/>
-											<Button text="Loading Error" press="onIncorrectPathClick"/>
+											<Button text="{i18n>pdf.Correct}" press="onCorrectPathClick"/>
+											<Button text="{i18n>pdf.Incorrect}" press="onIncorrectPathClick"/>
 										</FlexBox>
 	                                    <PDFViewer source="{PDFUrl}" title="{/Title}" height="600px" id="PDF" displayType="Embedded" >											
 											<layoutData>
