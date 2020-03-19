@@ -70,7 +70,7 @@
 										text="{i18n>strip.ReleaseStorage}"
 										showIcon="true"/>									
 								<f:SimpleForm id="FormSigner354" editable="true" layout="ResponsiveGridLayout" title="{i18n>SignPad1Title}"
-								              labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="1" columnsM="1">
+								              labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="2" columnsM="2">
 								<f:content>									
 	                              <Label text="{i18n>lbl.Signer}" required="true"/>
                                   <Input id="sName" value="{SignerName}" change="onInputChange"
@@ -82,7 +82,7 @@
 								<HBox
 										alignItems="Center"
 										justifyContent="Center"
-										width="100%">
+										width="500px">
 									<SegmentedButton
 									        selectedButton="btnClear">
 	                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear"/>
@@ -109,13 +109,13 @@
 			                              </f:FormElement>
 			                              <f:FormElement label="{i18n>lbl.Signature2}">
 			                                <f:fields>
-													<C:SignPad id="signature-pad2" value="{SignatureReceiver}" change="onSignChange" bgColor="#d6f5ff" width="100%"/>
+													<C:SignPad id="signature-pad2" value="{SignatureReceiver}" change="onSignChange" bgColor="#d6f5ff" width="500px"/>
+					                                <SegmentedButton>
+					                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear2"/>
+					                                </SegmentedButton>
 			                                </f:fields>
 			                              </f:FormElement>
 			                              <f:FormElement label="">
-			                                <SegmentedButton>
-			                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear2"/>
-			                                </SegmentedButton>
 			                                </f:FormElement>
 			                            </f:formElements>
 			                          </f:FormContainer>
