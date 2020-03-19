@@ -61,7 +61,7 @@ sap.ui.define([
 
 			renderer: {
 				apiVersion: 2, // enable in-place DOM patching
-			/**
+			/*
              * renders as Signature Tab
              * @param {sap.ui.core.RenderManager} oRM - UI5's render manager
              * @param {mit_sign.controls.SignPad} oControl - this UI5 custom control
@@ -142,27 +142,27 @@ sap.ui.define([
 				var disableSave = true;
 				var pixels = [];
 				// var cpixels = [];
-				var startPoint = {};
-				var lastPoint = {};
+				var oStartPoint = {};
+				var oLastPoint = {};
 				var calculate = false;
 
 				//functions
-				function get_point(event) {
+				function _getPoint(oEvent) {
 					var x, y;
 
-					if (event.changedTouches && event.changedTouches[0]) {
+					if (oEvent.changedTouches && oEvent.changedTouches[0]) {
 						var canvasArea = canvas.getBoundingClientRect();
 						var offsety = canvasArea.top || 0;
 						var offsetx = canvasArea.left || 0;
 
-						x = event.changedTouches[0].pageX - offsetx;
-						y = event.changedTouches[0].pageY - offsety;
+						x = oEvent.changedTouches[0].pageX - offsetx;
+						y = oEvent.changedTouches[0].pageY - offsety;
 					} else if (event.layerX || event.layerX === 0) {
-						x = event.layerX;
-						y = event.layerY;
+						x = oEvent.layerX;
+						y = oEvent.layerY;
 					} else if (event.offsetX || event.offsetX === 0) {
-						x = event.offsetX;
-						y = event.offsetY;
+						x = oEvent.offsetX;
+						y = oEvent.offsetY;
 					}
 
 					return {
@@ -171,36 +171,36 @@ sap.ui.define([
 					};
 				}
 
-				function on_mousemove(e, finish) {
-					e.preventDefault();
-					e.stopPropagation();
+				function onMouseMove(oEvent, finish) {
+					oEvent.preventDefault();
+					oEvent.stopPropagation();
 
-					var Point = get_point(e);
-					var nextPoint = {
-						x: (startPoint.x + Point.x) / 2,
-						y: (startPoint.y + Point.y) / 2
+					var oPoint = _getPoint(event);
+					var oNextPoint = {
+						x: (oStartPoint.x + oPoint.x) / 2,
+						y: (oStartPoint.y + oPoint.y) / 2
 					};
 
 					if (calculate) {
-						var xLast = (lastPoint.x + startPoint.x + nextPoint.x) / 3;
-						var yLast = (lastPoint.y + startPoint.y + nextPoint.y) / 3;
+						var xLast = (oLastPoint.x + oStartPoint.x + oNextPoint.x) / 3;
+						var yLast = (oLastPoint.y + oStartPoint.y + oNextPoint.y) / 3;
 						pixels.push(xLast, yLast);
 					} else {
 						calculate = true;
 					}
 
-					context.quadraticCurveTo(startPoint.x, startPoint.y, nextPoint.x, nextPoint.y);
-					pixels.push(nextPoint.x, nextPoint.y);
+					context.quadraticCurveTo(oStartPoint.x, oStartPoint.y, oNextPoint.x, oNextPoint.y);
+					pixels.push(oNextPoint.x, oNextPoint.y);
 					context.stroke();
 					context.beginPath();
-					context.moveTo(nextPoint.x, nextPoint.y);
+					context.moveTo(oNextPoint.x, oNextPoint.y);
 					
-					lastPoint = nextPoint;
-					startPoint = Point;
+					oLastPoint = oNextPoint;
+					oStartPoint = oPoint;
 				}
 
-				function on_mouseup(e) {
-					_remove_event_listeners();
+				function onMouseUp(oEvent) {
+					_removeEventListeners();
 					disableSave = false;
 					context.stroke();
 					pixels.push("e");
@@ -213,42 +213,42 @@ sap.ui.define([
 					});
 				}
 
-				function _remove_event_listeners() {
-					canvas.removeEventListener("mousemove", on_mousemove, false);  					// mouse events
-					canvas.removeEventListener("mouseup", on_mouseup, false);
-					canvas.removeEventListener("touchmove", on_mousemove, false); 					// touch events
-					canvas.removeEventListener("touchend", on_mouseup, false);
+				function _removeEventListeners() {
+					canvas.removeEventListener("mousemove", onMouseMove, false);  					// mouse events
+					canvas.removeEventListener("mouseup", onMouseUp, false);
+					canvas.removeEventListener("touchmove", onMouseMove, false); 					// touch events
+					canvas.removeEventListener("touchend", onMouseUp, false);
 
-					$("#body").off("mouseup", on_mouseup, false);  	// document.body.removeEventListener("mouseup", on_mouseup, false);
-					$("#body").off("touchend", on_mouseup, false);  // document.body.removeEventListener("touchend", on_mouseup, false);
+					$("#body").off("mouseup", onMouseUp, false);  	// document.body.removeEventListener("mouseup", onMouseUp, false);
+					$("#body").off("touchend", onMouseUp, false);  // document.body.removeEventListener("touchend", onMouseUp, false);
 				}
 				
-				function _add_event_listeners() {
-					canvas.addEventListener("mouseup", on_mouseup, false);							// mouse events
-					canvas.addEventListener("mousemove", on_mousemove, false);
-					canvas.addEventListener("touchend", on_mouseup, false);							// touch events
-					canvas.addEventListener("touchmove", on_mousemove, false);
+				function _addEventListeners() {
+					canvas.addEventListener("mouseup", onMouseUp, false);							// mouse events
+					canvas.addEventListener("mousemove", onMouseMove, false);
+					canvas.addEventListener("touchend", onMouseUp, false);							// touch events
+					canvas.addEventListener("touchmove", onMouseMove, false);
 					
-					$("#body").on("mouseup", on_mouseup, false);   // document.body.addEventListener("mouseup", on_mouseup, false);
-					$("#body").on("touchend", on_mouseup, false);  // document.body.addEventListener("touchend", on_mouseup, false);
+					$("#body").on("mouseup", onMouseUp, false);   // document.body.addEventListener("mouseup", onMouseUp, false);
+					$("#body").on("touchend", onMouseUp, false);  // document.body.addEventListener("touchend", onMouseUp, false);
 				}
 				
-				function on_mousedown(e) {
-					e.preventDefault();
-					e.stopPropagation();
-					_add_event_listeners();
+				function onMouseDown(oEvent) {
+					oEvent.preventDefault();
+					oEvent.stopPropagation();
+					_addEventListeners();
 
 					//empty = false;
-					var position = get_point(e);
+					var oPosition = _getPoint(event);
 					context.beginPath();
 					pixels.push("moveStart");
-					context.moveTo(position.x, position.y);
-					pixels.push(position.x, position.y);
-					startPoint = position;
+					context.moveTo(oPosition.x, oPosition.y);
+					pixels.push(oPosition.x, oPosition.y);
+					oStartPoint = oPosition;
 				}
 
-				canvas.addEventListener("touchstart", on_mousedown, false);
-				canvas.addEventListener("mousedown", on_mousedown, false);
+				canvas.addEventListener("touchstart", onMouseDown, false);
+				canvas.addEventListener("mousedown", onMouseDown, false);
 			},
 
 			clear: function (oEvent) {

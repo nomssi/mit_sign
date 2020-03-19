@@ -17,7 +17,7 @@
 				         parameters : { 'expand' : 'EventPositions' }
 				        }" 
 				growing="true"
-				growingThreshold="8" 
+				growingThreshold="5" 
 				growingScrollToLoad="false">
 				<headerToolbar>
 					<Toolbar>

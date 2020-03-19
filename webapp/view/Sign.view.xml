@@ -20,34 +20,30 @@
 					        finishButtonText="{i18n>checkoutWizardReviewbtn}">
 						<steps>
 							<WizardStep id="contentStep" 
-							            nextStep="signStep" 
+							            nextStep="signReleaserStep" 
 							            icon="sap-icon://detail-view" 
 							            complete="onCompleteSigning" validated="true" 
 							            title="{i18n>contentTitle} {VBELN}">
 			    			<MessageStrip class="sapUiSmallMarginBottom"
 										text="{i18n>strip.Review}"
 										showIcon="true"/>									
-								<Table id="lDelPos" inset="false" alternateRowColors="true"
+								<Table id="lDelPos" inset="false" alternateRowColors="true" 
 								       noDataText="{i18n>homeNoData}" busyIndicatorDelay="0" 
 								      items="{EventPositions}" class="sapUiForceWidthAuto sapUiResponsiveMargin">
 									<headerToolbar>
-										<OverflowToolbar>
-											<Title text="{VBELN}" level="H2"/>
-										</OverflowToolbar>
 									</headerToolbar>
 									<columns>
-										<Column
-											width="12em">
+										<Column width="10em">
 											<Text text="{i18n>lbl.item}" />
 										</Column>
-										<Column>
-											<Text text="{i18n>Material}" />
+										<Column width="12em">
+											<Text text="{i18n>lbl.Material}" />
 										</Column>
 										<Column>
-											<Text text="{i18n>Shorttext}" />
+											<Text text="{i18n>lbl.Shorttext}" />
 										</Column>
 										<Column>
-											<Text text="{i18n>Quantity}" />
+											<Text text="{i18n>lbl.Quantity}" />
 										</Column>
 									</columns>
 
@@ -68,26 +64,33 @@
 									</items>
 								</Table>
 							</WizardStep>
-							<WizardStep id="signStep" nextStep="signStep2" title="{i18n>SignPad1Title}" icon="sap-icon://signature" validated="false" >
+							<WizardStep id="signReleaserStep" nextStep="signReceiverStep" title="{i18n>SignPad1Title}" icon="sap-icon://signature" 
+							            validated="false" complete="onCompleteSignReleaserStep" >
 			    			<MessageStrip class="sapUiSmallMarginBottom"
 										text="{i18n>strip.ReleaseStorage}"
 										showIcon="true"/>									
-								<f:SimpleForm id="FormSigner354" editable="true" layout="ResponsiveGridLayout" 
+								<f:SimpleForm id="FormSigner354" editable="true" layout="ResponsiveGridLayout" title="{i18n>SignPad1Title}"
 								              labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="1" columnsM="1">
 								<f:content>									
 	                              <Label text="{i18n>lbl.Signer}" required="true"/>
                                   <Input id="sName" value="{SignerName}" change="onInputChange"
 									placeholder="{{i18n>placeholder.Signer}"/>                                  
 	                              <Label text="{i18n>lbl.Signature}"/>
-     								<C:SignPad id="signature-pad" value="{SignatureString}" change="onSignChange" bgColor="#d6f5ff" width="100%"/>
-	                                <SegmentedButton  selectedButton="btnClear">			                                	
-	                                	<Button text="{i18n>Clear}" press="onResetStep1" type="Reject" id="btnClear"/>
-										<Button text="{i18n>Save}" press="onCompleteStep1" type="Accept" id="btnSave"/>
-	                                </SegmentedButton>								
+     								<C:SignPad id="signature-pad" value="{SignatureReleaser}" change="onSignChange" bgColor="#d6f5ff" width="100%"/>
 								</f:content>
 	 							</f:SimpleForm> 
+								<HBox
+										alignItems="Center"
+										justifyContent="Center"
+										width="100%">
+									<SegmentedButton
+									        selectedButton="btnClear">
+	                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear"/>
+									</SegmentedButton>
+								</HBox>		 							
 							</WizardStep>							
-							<WizardStep id="signStep2" nextStep="showPDFStep" title="{i18n>SignPad2Title}" icon="sap-icon://signature" validated="false">
+							<WizardStep id="signReceiverStep" nextStep="showPDFStep" title="{i18n>SignPad2Title}" icon="sap-icon://signature" 
+							            validated="false" complete="onCompleteSignReceiverStep">
 			    			<MessageStrip class="sapUiSmallMarginBottom"
 										text="{i18n>strip.ReleaseReceiver}"
 										showIcon="true"/>									
@@ -106,13 +109,12 @@
 			                              </f:FormElement>
 			                              <f:FormElement label="{i18n>lbl.Signature2}">
 			                                <f:fields>
-													<C:SignPad id="signature-pad2" value="{SignatureString2}" change="onSign2Change" bgColor="#d6f5ff" width="100%"/>
+													<C:SignPad id="signature-pad2" value="{SignatureReceiver}" change="onSignChange" bgColor="#d6f5ff" width="100%"/>
 			                                </f:fields>
 			                              </f:FormElement>
 			                              <f:FormElement label="">
 			                                <SegmentedButton>
-			                                	<Button text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear2"/>
-												<Button text="{i18n>Save}" press="onCompleteStep2" type="Accept" id="btnSave2"/>
+			                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear2"/>
 			                                </SegmentedButton>
 			                                </f:FormElement>
 			                            </f:formElements>

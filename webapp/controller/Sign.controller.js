@@ -46,21 +46,22 @@ sap.ui.define([
 			/*this._oApplicationProperties = oComponent.getModel("appProperties");
 			this._oApplicationController = this._oApplicationProperties.getProperty("/applicationController");*/
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
-			this._oHelper = new Signature(this.getOwnerComponent(), this.getView());			
-			/*this._sValidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample.pdf";
+			this._oHelper = new Signature(oComponent, this._oView);		
+			
+			this._sValidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample.pdf";
 			this._sInvalidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample_nonexisting.pdf";
-			this._oModel = new JSONModel({
-				Source: this._sValidPath,
-				Title: "My Custom Title",
-				Height: "600px"
+			this._oModel = new sap.ui.model.json.JSONModel({
+				Vbeln: "",
+				sReleaserUrl : this._sInvalidPath,
+				sReceiverUrl: this._sInvalidPath
 			});
-			this.getView().setModel("PDF",this._oModel);*/
+			this._oView.setModel(this._oModel, "PDFModel");
 			
 			/*this._router.getTarget("product").attachDisplay(function (oEvent) {
 				this.fnUpdateProduct(oEvent.getParameter("data").productId);// update the binding based on products cart selection
 			}, this);*/
 			//Binding für die Signatur erstellen, am besten die Kopfdaten der Lieferung mit den zwei Feldern für die Signatur verknüpfen
-			//so kann die Signatur als base64 an SAP gesendet werden und im nächsten schritt angezeigr werden
+			//so kann die Signatur als base64 an SAP gesendet werden und im nächsten schritt angezeigt werden
 		},
 
 		_routePatternMatched: function(oEvent) {
@@ -82,15 +83,6 @@ sap.ui.define([
 			this._wizard.setCurrentStep(this.byId("contentStep"));
 		},
 
-		onClearButton: function(){
-			
-			this._oHelper.clearSignature(this.sVbeln);
-			this.byId("signature-pad2").clear();
-			//this.byId("sName").setValue("");
-			this._wizard.invalidateStep(this.byId("signStep2"));	
-			
-		},
-		
 		onSaveButton: function(){
 			//var oHelper = this._oHelper;
 
@@ -119,7 +111,7 @@ sap.ui.define([
 
 			var fnAfterSave = function(oData){
 				if(oData.PDFUrl !== ""){
-					var step = this.byId("signStep2");
+					var step = this.byId("signReceiverStep");
 					step.setValidated(true);
 				}
 			}.bind(this);
@@ -131,49 +123,78 @@ sap.ui.define([
 			return false;
 		},
 
-		onCompleteStep1: function() {
-	        this._wizard.validateStep(this.byId("signStep"));	
-		},	
-
-        onResetStep1: function() {
-			var oHelper = this._oHelper;
+		onClearButton: function(oEvent){
+			var sSignPadId;
+			var oStep;
 			
-			oHelper.clearSignature(this.sVbeln); 
-			this.byId("signature-pad").clear();
-			//this.byId("sName").setValue("");
-	        this._wizard.invalidateStep(this.byId("signStep"));	
-		},	
-		
-		onSignChange: function(oEvent) {
-	       if (SignerName) {
-			var step = this.byId("signStep");
-			step.setValidated(true);
-	       }
+			var oSource = oEvent.getSource();
+			var oReleaserBtn = this.byId("btnClear");
+			var oReceiverBtn = this.byId("btnClear2");
+			if (oSource === oReleaserBtn) {
+				sSignPadId = "signature-pad";   // Ausgebender
+				oStep = this.byId("signReleaserStep");
+				this._oModel.sReleaserUrl = "";
+			} else
+			if (oSource === oReceiverBtn) { 
+				sSignPadId = "signature-pad2";  // Empfänger
+				oStep = this.byId("signReceiverStep");
+				this._oModel.sReceiverUrl = "";
+			} else 
+			{ return; }
+			this._oHelper.clearSignature(this.sVbeln);
+			this.byId(sSignPadId).clear();
+			this._wizard.invalidateStep(oStep);	
+			this._wizard.setCurrentStep(oStep);	  			
 		},
 
-		onCompleteStep2: function() {
-			var oHelper = this._oHelper;
-	        this._wizard.validateStep(this.byId("signStep2"));	
-			var fnAfterSave = function(oData){
-				if(oData.PDFUrl !== ""){
-					var step = this.byId("signStep2");
-					step.setValidated(true);
-				}
-			};	        
-			sap.m.MessageToast.show("Unterschriften speichern");
-			oHelper.saveSignature(this.sVbeln, fnAfterSave);
-		},	
-		
-		onSign2Change: function(oEvent) {
-			var oField = oEvent.getSource();
+		onSignChange: function(oEvent, vUrl) {
+			var oStep;
+			var oField;
 
-			var step = this.byId("signStep2");
-			step.setValidated(true);			
-			
+			var oSignPad = oEvent.getSource();
+			var oReleaserSignPad = this.byId("signature-pad");   // Ausgebender
+			var oReceiverSignPad = this.byId("signature-pad2");  // Empfänger
+
+			if (oSignPad === oReleaserSignPad) {
+				oStep = this.byId("signReleaserStep");
+				oField = this.byId("sName");
+				this._oModel.setProperty("ReleaseUrl", vUrl);
+			} else
+			if (oSignPad === oReceiverSignPad) { 
+				oField = this.byId("sRecvName");
+				oStep = this.byId("signReceiverStep");
+				this._oModel.setProperty("ReceiverUrl", vUrl);		
+			} else 
+			{ return; }
+
+           if (oField.getValue() !== ""){
+			 oStep.setValidated(true);
+	       }
+
 			setTimeout(function() {
 				this._fieldChange(oField);
 			}.bind(this), 0);
 		},
+
+		onCompleteSignReleaserStep: function() {
+			var vReleaseUrl = this._oModel.getProperty("ReleaserUrl");
+			var oReleaserSignPad = this.byId("signature-pad"); 
+		    this._oModel.ReleaserUrl = oReleaserSignPad.value;
+		    this._wizard.validateStep(this.byId("signReleaserStep"));
+		},	
+		
+		onCompleteSignReceiverStep: function(vValue) {
+			var vReceiverUrl = this._oModel.getProperty("ReceiverUrl");
+
+	        this._wizard.validateStep(this.byId("signReceiverStep"));	
+			var fnAfterSave = function(oData){
+				if(oData.PDFUrl !== ""){
+					sap.m.MessageToast.show("PDF created.");
+				}
+			};	        
+			sap.m.MessageToast.show("Unterschriften speichern");
+			this._oHelper.saveSignature(this.sVbeln, fnAfterSave);
+		},	
 		
 		onInputChange: function(oEvent) {
 			// Whenever the value of an input field is changed, the system must

@@ -10,24 +10,23 @@ sap.ui.define([
 	"sap/ui/base/Object",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast"
-], function(Object, JSONModel, MessageToast) {
+], function (Object, JSONModel, MessageToast) {
 	"use strict";
 
 	return Object.extend("mit_sign.model.Signature", {
-		constructor: function(oComponent, oMainView) {
+		constructor: function (oComponent, oMainView) {
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this._oODataModel = oComponent.getModel();
 			//this._oApplicationProperties = oComponent.getModel("appProperties");
 			//this._oApplicationController = this._oApplicationProperties.getProperty("/applicationController");
 			this._oMainView = oMainView;
-			this._oWhenNoDraft = new Promise(function(fnResolve) {
+			this._oWhenNoDraft = new Promise(function (fnResolve) {
 				fnResolve(); // Since we are currently not in the process of deleting a draft, the Promise is resolved immediately
 			});
 			//this._fnSetBackBusyDraftState = this._oApplicationProperties.setProperty.bind(this._oApplicationProperties, "/isBusyCreatingDraft",false);
 
-			
 		},
-		getPathForSignature: function(sVbeln) {
+		getPathForSignature: function (sVbeln) {
 			return this._oODataModel.createKey("/Event", {
 				VBELN: sVbeln
 			});
@@ -37,11 +36,11 @@ sap.ui.define([
 		// When a draft was found the id of the draft and the whole draft object are
 		// transferred as parameters to fnHandleDraft. Otherwise fnHandleDraft is called
 		// with faulty parameters.
-		readSignature: function(sVbeln, fnHandleDraft, fnError) {
-			var fnSuccess = function(oResponseContent) {
-				if(oResponseContent.results === 0){
-					this._createSignature(sVbeln,fnHandleDraft);
-				}else{
+		readSignature: function (sVbeln, fnHandleDraft, fnError) {
+			var fnSuccess = function (oResponseContent) {
+				if (oResponseContent.results === 0) {
+					this._createSignature(sVbeln, fnHandleDraft);
+				} else {
 					var oSig = oResponseContent.results[0];
 					//var sDraftId = oProductDraft && oProductDraft.Id;
 					MessageToast.show("Signatur geladen");
@@ -54,17 +53,17 @@ sap.ui.define([
 				error: fnError
 			});
 		},
-		
+
 		// This method checks whether the user currently possesses a draft.
 		// fnHandleDraftId is called when this information has been retrieved.
 		// When a draft was found the id of the draft and the whole draft object are
 		// transferred as parameters to fnHandleDraft. Otherwise fnHandleDraft is called
 		// with faulty parameters.
-		readEvent: function(sVbeln, fnHandleDraft, fnError) {
-			var fnSuccess = function(oResponseContent) {
-				if(oResponseContent.results === 0){
+		readEvent: function (sVbeln, fnHandleDraft, fnError) {
+			var fnSuccess = function (oResponseContent) {
+				if (oResponseContent.results === 0) {
 					MessageToast.show("nix gefunden");
-				}else{
+				} else {
 					var oSig = oResponseContent.results[0];
 					//var sDraftId = oProductDraft && oProductDraft.Id;
 					MessageToast.show("Signatur geladen");
@@ -82,15 +81,15 @@ sap.ui.define([
 				error: fnError
 			});
 		},
-		
+
 		// externer Aufruf Entwurf anlegen
-		createSignature: function(sVbeln,fnDraftCreated) {
+		createSignature: function (sVbeln, fnDraftCreated) {
 			//this._oApplicationProperties.setProperty("/isBusyCreatingDraft", true);
 			//prüfen, ob es bereits einen Entwurf gibt
-			this.readSignature(sVbeln,fnDraftCreated,this._createDraft);
+			this.readSignature(sVbeln, fnDraftCreated, this._createDraft);
 		},
-		
-		_createSignature : function(sVbeln,fnDraftCreated) {
+
+		_createSignature: function (sVbeln, fnDraftCreated) {
 			// At least one attribute must be filled in the object passed to the create call (requirement of the oData
 			// service)
 			var oNew = {
@@ -101,41 +100,45 @@ sap.ui.define([
 				error: this._getErrorForProcessing("isBusyCreatingDraft")
 			});
 		},
-		
+
 		// Saves ProductDraft each time a user edits a field
-		saveSignature: function(sVbeln,fnAfterSaved) {
+		saveSignature: function (sVbeln, fnAfterSaved) {
 			this._submitChanges(null, null);
-			
+
 			var data = {
-					Vbeln: sVbeln
-				};
+				Vbeln: sVbeln
+			};
 			this._callFunctionImport("/SaveSignature", data, fnAfterSaved, "isBusySaving");
 		},
-		
-		updateSignature: function(fnAfterSaved) {
+
+		updateSignature: function (fnAfterSaved) {
 			this._submitChanges(null, null);
 		},
-		
-		_submitChanges: function(fnSaveFailed, fnAfterSaved) {
+
+		_submitChanges: function (fnSaveFailed, fnAfterSaved) {
 			if (this._bIsChanging) {
 				return;
 			}
 			if (this._oODataModel.hasPendingChanges()) {
 				this._sMessage = null;
-				var fnSuccess = function(oResponseData) {
+				var fnSuccess = function (oResponseData) {
 					this._bIsChanging = false;
 					//if(oResponseData.__batchResponses){
 						if (!this._oODataModel.hasPendingChanges() || !this._sMessage) {
-							var i;
-							for (i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i++) {
-								var oEntry = oResponseData.__batchResponses[i];
-								if (oEntry.response) {
-									var obj = JSON.parse(oEntry.response.body);
-									this._sMessage = obj.error.message.value;
-									
-									// this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
+					if (oResponseData !== {}) {
+
+								var i;
+								for (i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i++) {
+									var oEntry = oResponseData.__batchResponses[i];
+									if (oEntry.response) {
+										var obj = JSON.parse(oEntry.response.body);
+										this._sMessage = obj.error.message.value;
+
+										// this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
+									}
 								}
-							}
+					}
+
 						}
 					//}
 					if (this._sMessage) {
@@ -151,16 +154,17 @@ sap.ui.define([
 					batchGroupId: "editsignature"
 				};
 				this._oODataModel.submitChanges(oParameters);
-			}/* else if (this.oDraftToActivate) {
-				if (this._sMessage) {
-					this._oApplicationProperties.setProperty("/isBusySaving", false);
-				} else {
-					this._callFunctionImport("/ActivateDraft", {
-						UNAME: ""
-					}, this.oDraftToActivate.fnAfterActivation, "isBusySaving");
-				}
-				this.oDraftToActivate = null;
-			}*/
+			}
+			/* else if (this.oDraftToActivate) {
+							if (this._sMessage) {
+								this._oApplicationProperties.setProperty("/isBusySaving", false);
+							} else {
+								this._callFunctionImport("/ActivateDraft", {
+									UNAME: ""
+								}, this.oDraftToActivate.fnAfterActivation, "isBusySaving");
+							}
+							this.oDraftToActivate = null;
+						}*/
 		},
 
 		// Saves Draft each time a user edits a field
@@ -176,8 +180,8 @@ sap.ui.define([
 			}.bind(this);
 			this._callFunctionImport("/DraftDelete", {}, _fnAfter, "");
 		},*/
-		
-		_callFunctionImport: function(sFunctionName, oURLParameters, fnAfterFunctionExecuted, sProcessingProperty) {
+
+		_callFunctionImport: function (sFunctionName, oURLParameters, fnAfterFunctionExecuted, sProcessingProperty) {
 			this._oODataModel.callFunction(sFunctionName, {
 				method: "POST",
 				urlParameters: oURLParameters,
@@ -185,31 +189,33 @@ sap.ui.define([
 				error: this._getErrorForProcessing(sProcessingProperty)
 			});
 		},
-		_getErrorForProcessing: function(sProcessingProperty) {
-			return function(oError) {
+		_getErrorForProcessing: function (sProcessingProperty) {
+			return function (oError) {
 				//this._oApplicationProperties.setProperty("/" + sProcessingProperty, false);
 				// MessageToast.show(oError);
 				MessageToast.show(sProcessingProperty + oError);
 			};
 		},
-		
-		clearSignature: function(sVbeln){
+
+		clearSignature: function (sVbeln) {
 			var data = {
 				Vbeln: sVbeln
 			};
 			this._callFunctionImport("/ClearSignature", data, null, "isBusySaving");
 		},
 
-		bindVbelnTo: function(oModel, sVbeln, target){
+		bindVbelnTo: function (oModel, sVbeln, target) {
 			// the binding should be done after insuring that the metadata is loaded successfully
-		    var oView = target.getView();
-		    target.sVbeln = sVbeln;
-		    
+			var oView = target.getView();
+			target.sVbeln = sVbeln;
+
 			oModel.metadataLoaded().then(function () {
-				
-				var sPath = "/" + target.getModel().createKey("Events", { VBELN: sVbeln});
+
+				var sPath = "/" + target.getModel().createKey("Events", {
+					VBELN: sVbeln
+				});
 				oView.bindElement({
-					path : sPath,
+					path: sPath,
 					events: {
 						dataRequested: function () {
 							oView.setBusy(true);
@@ -224,7 +230,7 @@ sap.ui.define([
 				//if there is no data the model has to request new data
 				if (!oData) {
 					oView.setBusyIndicatorDelay(0);
-					oView.getElementBinding().attachEventOnce("dataReceived", function() {
+					oView.getElementBinding().attachEventOnce("dataReceived", function () {
 						// reset to default
 						oView.setBusyIndicatorDelay(null);
 						//this._checkIfProductAvailable(sPath);
