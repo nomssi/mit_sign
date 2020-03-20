@@ -68,34 +68,28 @@
 							
 							<WizardStep id="signReleaserStep" nextStep="signReceiverStep" title="{i18n>SignPad1Title}" icon="sap-icon://signature" 
 							            validated="false" complete="onCompleteSignReleaserStep" >
-			    			<MessageStrip class="sapUiSmallMarginBottom" text="{i18n>strip.ReleaseStorage}"	showIcon="true"/>									
-								<f:SimpleForm id="FormSignReleaser" editable="true" layout="ResponsiveGridLayout" title="{i18n>SignPad1Title}"
-								              labelSpanL="2" labelSpanM="4" columnsL="1" columnsM="1">
-								<f:content>
-	                              <Label text="{i18n>lbl.Signer}" required="true">
-                                		<layoutData>
-											<layout:GridData span="L2 M2" />
-										</layoutData>
-									</Label>
-                                  <Input id="sName" value="{SignerName}" change="onInputChange"	placeholder="{{i18n>placeholder.Signer}">                                  
-                                		<layoutData>
-											<layout:GridData span="L8 M8" />
-										</layoutData>
-								  </Input>
-
-	                              <Label text="{i18n>lbl.Signature}">
-                                		<layoutData>
-											<layout:GridData span="L2 M2" linebreak="true" />
-										</layoutData>
-	                              </Label>
-     								<C:SignPad id="signature-pad" value="{SignatureReleaser}" change="onSignChange" bgColor="#d6f5ff" width="800px"/>
-                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" type="Transparent" press="onClearButton" id="btnClear">
-                                		<layoutData>
-											<layout:GridData span="L2 M2" />
-										</layoutData>
-                                	</Button>
+			    			<MessageStrip class="sapUiSmallMarginBottom"
+										text="{i18n>strip.ReleaseStorage}"
+										showIcon="true"/>									
+								<f:SimpleForm id="FormSigner354" editable="true" layout="ResponsiveGridLayout" title="{i18n>SignPad1Title}"
+								              labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="2" columnsM="2">
+								<f:content>									
+	                              <Label text="{i18n>lbl.Signer}" required="true"/>
+                                  <Input id="sName" value="{SignerName}" change="onInputChange"
+									placeholder="{{i18n>placeholder.Signer}"/>                                  
+	                              <Label text="{i18n>lbl.Signature}"/>
+     								<C:SignPad id="signature-pad" value="{SignatureReleaser}" change="onSignChange" bgColor="#d6f5ff" width="100%"/>
 								</f:content>
 	 							</f:SimpleForm> 
+								<HBox
+										alignItems="Center"
+										justifyContent="Center"
+										width="500px">
+									<SegmentedButton
+									        selectedButton="btnClear">
+	                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear"/>
+									</SegmentedButton>
+								</HBox>		 							
 							</WizardStep>							
 								
 							<WizardStep id="signReceiverStep" nextStep="showPDFStep" title="{i18n>SignPad2Title}" icon="sap-icon://signature" 
@@ -131,7 +125,6 @@
 	 							</f:SimpleForm> 
 							</WizardStep>										
 
-							
 						<WizardStep id="showPDFStep" activate=".onCheckStepActivation" validated="false" title="{i18n>lastViewTitle}" icon="sap-icon://complete">
 							<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 									<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
