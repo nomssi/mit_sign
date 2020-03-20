@@ -142,7 +142,7 @@ sap.ui.define([
 					if (this._sMessage) {
 						fnAfterSaved(this._sMessage);
 					} else {
-						this._submitChanges(fnSaveFailed, fnAfterSaved);
+						this._submitChanges(fnSaveFailed, fnAfterSaved);  // Loop
 					}
 				}.bind(this);
 				this._bIsChanging = true;

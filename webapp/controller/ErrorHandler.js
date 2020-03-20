@@ -1,7 +1,8 @@
 sap.ui.define([
 		"sap/ui/base/Object",
-		"sap/m/MessageBox"
-	], function (UI5Object, MessageBox) {
+		"sap/m/MessageBox",
+		"sap/m/MessageToast"
+	], function (UI5Object, MessageBox, MessageToast) {
 		"use strict";
 
 		return UI5Object.extend("mit_sign.controller.ErrorHandler", {
@@ -11,7 +12,7 @@ sap.ui.define([
 			 * @class
 			 * @param {sap.ui.core.UIComponent} oComponent reference to the app's component
 			 * @public
-			 * @alias com.so.controller.ErrorHandler
+			 * @alias mit_sign.controller.ErrorHandler
 			 */
 			constructor : function (oComponent) {
 				this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
@@ -71,7 +72,9 @@ sap.ui.define([
 				if (this._bMessageOpen) {
 					return;
 				}
+				// to suppress all message boxes, just make the ErrorHandler believe there's a message box open already
 				this._bMessageOpen = true;
+				/*
 				MessageBox.error(
 					this._sErrorText,
 					{
@@ -83,7 +86,13 @@ sap.ui.define([
 							this._bMessageOpen = false;
 						}.bind(this)
 					}
-				);
+				);*/
+				
+				var aDetails = JSON.parse(sDetails.responseText);
+				MessageToast.show(this._sErrorText + " " + aDetails.error.message.value);
+				
+				// done with the special service and custom handler,  fall back on the default ErrorHandler
+				this._bMessageOpen = false;				
 			}
 
 		});

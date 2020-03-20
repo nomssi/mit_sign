@@ -1,21 +1,17 @@
 sap.ui.define([
 	"./BaseController",
-	"../model/formatter",
-	"sap/ui/Device",
 	"../model/Signature",
+	"../model/formatter",	
 	"sap/m/MessageBox",
-	"sap/ui/core/Fragment",
 	"sap/base/Log",
 	"sap/m/MessagePopover",
 	"sap/m/MessagePopoverItem",	
 	"sap/m/Link"
 ], function (
 	BaseController,
-	formatter,
-	Device,
 	Signature,
+	formatter,
     MessageBox,	
-	Fragment,
 	Log,
 	MessagePopover,
 	MessagePopoverItem,
@@ -23,25 +19,15 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("mit_sign.controller.Sign", {
-		formatter : formatter,
 
+        formatter: formatter,
+        
 		onInit: function () {
 
 			this._wizard = this.byId("signWizard");
 			this._oNavContainer = this.byId("wizardNavContainer");
 			this._oWizardContentPage = this.byId("wizardContentPage");
 
-/*
-			Fragment.load({
-				name: "sap.m.sample.Wizard.view.ReviewPage",
-				controller: this
-			}).then(function (oWizardReviewPage) {
-				this._oWizardReviewPage = oWizardReviewPage;
-				this._oNavContainer.addPage(this._oWizardReviewPage);
-			}.bind(this));
-*/
-
-	
 			this._oView = this.getView();
 			//this._initViewPropertiesModel();
 			var oComponent = this.getOwnerComponent();
@@ -54,12 +40,16 @@ sap.ui.define([
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this._oHelper = new Signature(oComponent, this._oView);		
 			
-			this._sValidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample.pdf";
-			this._sInvalidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample_nonexisting.pdf";
+			// this._sValidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample.pdf";
+			// this._sInvalidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample_nonexisting.pdf";
 			this._oModel = new sap.ui.model.json.JSONModel({
+				// Draft
 				Vbeln: "",
-				sReleaserUrl : this._sInvalidPath,
-				sReceiverUrl: this._sInvalidPath
+				sReleaserName : "",
+				sReceiverName : "",
+
+				sReleaserUrl : "",
+				sReceiverUrl : ""
 				// Set binding 2 ways
 			});
 			this._oView.setModel(this._oModel, "PDFModel");
@@ -75,7 +65,7 @@ sap.ui.define([
 				
 			var sVbeln = oEvent.getParameter("arguments").id;
 			this._oHelper.bindVbelnTo(this.getView().getModel(),sVbeln,this);
-
+			this._updateViewModel("Vbeln", sVbeln);
 		},
 
 		/**
@@ -130,6 +120,12 @@ sap.ui.define([
 			return false;
 		},
 
+		_updateViewModel : function(sProperty, vValue) {
+			// this._oModel.getProperty(ssProperty);
+			var oViewModel = this.getView().getModel("PDFModel");
+			oViewModel.setProperty(sProperty, vValue );
+		},
+					
 		onClearButton: function(oEvent){
 			var sSignPadId;
 			var oStep;
@@ -154,9 +150,44 @@ sap.ui.define([
 			this._wizard.setCurrentStep(oStep);	  			
 		},
 
+		onInputChange: function(oEvent) {
+			// Whenever the value of an input field is changed, the system must
+			// update the product draft. For most of the fields, no specific
+			// processing is required on the update of the product draft. onInputChange is the
+			// change event defined in the XML view for such fields.
+			var oStep;		
+			var sProperty;
+			var oNameField = oEvent.getSource();
+			var oReleaserName = this.byId("sName");     // Ausgebender
+			var oReceiverName = this.byId("sRcvName");  // Empfänger
+
+			if (oNameField === oReleaserName) {
+				oStep = this.byId("signReleaserStep");
+				sProperty = "sReleaserName";
+			} else
+			if (oNameField === oReceiverName) { 
+				oStep = this.byId("signReceiverStep");
+				sProperty = "sReceiverName";
+			} else 
+			{ return; }
+
+			this._updateViewModel(sProperty, oNameField.value );
+			
+           if (oNameField.getValue() === ""){
+			 oStep.setValidated(false);
+	       }
+	       
+			// Workaround to ensure that both the supplier Id and Name are updated in the model before the
+			// draft is updated, otherwise only the Supplier Name is saved to the draft and Supplier Id is lost
+			setTimeout(function() {
+				this._fieldChange(oNameField);
+			}.bind(this), 0);
+		},
+		
 		onSignChange: function(oEvent) {
 			var oStep;
 			var oField;
+			var sProperty;
 			var sUrl = oEvent.getParameter("value");
 
 			var oSignPad = oEvent.getSource();
@@ -166,14 +197,16 @@ sap.ui.define([
 			if (oSignPad === oReleaserSignPad) {
 				oStep = this.byId("signReleaserStep");
 				oField = this.byId("sName");
-				this._oModel.setProperty("ReleaseUrl", sUrl);
+				sProperty = "sReleaserUrl";
 			} else
 			if (oSignPad === oReceiverSignPad) { 
 				oField = this.byId("sRecvName");
 				oStep = this.byId("signReceiverStep");
-				this._oModel.setProperty("ReceiverUrl", sUrl);		
+				sProperty = "sReceiverUrl";
 			} else 
 			{ return; }
+
+			this._updateViewModel(sProperty, sUrl );
 
            if (oField.getValue() !== ""){
 			 oStep.setValidated(true);
@@ -183,18 +216,10 @@ sap.ui.define([
 				this._fieldChange(oField);
 			}.bind(this), 0);
 		},
-
-		onCompleteSignReleaserStep: function() {
-			var vReleaseUrl = this._oModel.getProperty("ReleaserUrl");
-			var oReleaserSignPad = this.byId("signature-pad"); 
-		    this._oModel.ReleaserUrl = oReleaserSignPad.value;
-		    this._wizard.validateStep(this.byId("signReleaserStep"));
-		},	
 		
-		onCompleteSignReceiverStep: function(vValue) {
-			var vReceiverUrl = this._oModel.getProperty("ReceiverUrl");
+		onCompleteSignReceiverStep: function(oEvent) {
 
-	        this._wizard.validateStep(this.byId("signReceiverStep"));	
+	        // this._wizard.validateStep(this.byId("signReceiverStep"));	
 			var fnAfterSave = function(oData){
 				if(oData.PDFUrl !== ""){
 					sap.m.MessageToast.show("PDF created.");
@@ -203,21 +228,6 @@ sap.ui.define([
 			sap.m.MessageToast.show("Unterschriften speichern");
 			this._oHelper.saveSignature(this.sVbeln, fnAfterSave);
 		},	
-		
-		onInputChange: function(oEvent) {
-			// Whenever the value of an input field is changed, the system must
-			// update the product draft. For most of the fields, no specific
-			// processing is required on the update of the product draft. onInputChange is the
-			// change event defined in the XML view for such fields.
-			var oField = oEvent.getSource();
-			Log.trace(oField);
-			
-			// Workaround to ensure that both the supplier Id and Name are updated in the model before the
-			// draft is updated, otherwise only the Supplier Name is saved to the draft and Supplier Id is lost
-			setTimeout(function() {
-				this._fieldChange(oField);
-			}.bind(this), 0);
-		},
 		
 		_fieldChange: function(oControl) {
 			// Handler for a changed field that needs to be written to the draft.  This allows
@@ -283,6 +293,12 @@ sap.ui.define([
 			}
 
 			oMessagePopover.openBy(oButton);
-		}		
-	});
+		},		
+
+		//To be able to stub the addDependent function in unit test, we added it in a separate function
+		_addDependent: function (oMessagePopover) {
+			this.getView().addDependent(oMessagePopover);
+		}
+		
+	});		
 });

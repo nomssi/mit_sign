@@ -1,8 +1,9 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"./model/models",
-	"sap/ui/Device"
-], function(UIComponent, models, Device) {
+	"sap/ui/Device",
+	"./controller/ErrorHandler"
+], function(UIComponent, models, Device, ErrorHandler) {
 	"use strict";
 
 	return UIComponent.extend("mit_sign.Component", {
@@ -19,6 +20,8 @@ sap.ui.define([
 		 */
 		init: function () {
 
+			this._oErrorHandler = new ErrorHandler(this);
+			
 			//aus der manifest.json unter models
 			/*	"": {
 				"dataSource": "mainService",
