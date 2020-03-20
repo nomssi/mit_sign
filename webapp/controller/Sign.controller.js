@@ -5,7 +5,10 @@ sap.ui.define([
 	"../model/Signature",
 	"sap/m/MessageBox",
 	"sap/ui/core/Fragment",
-	"sap/base/Log"
+	"sap/base/Log",
+	"sap/m/MessagePopover",
+	"sap/m/MessagePopoverItem",	
+	"sap/m/Link"
 ], function (
 	BaseController,
 	formatter,
@@ -13,7 +16,10 @@ sap.ui.define([
 	Signature,
     MessageBox,	
 	Fragment,
-	Log) {
+	Log,
+	MessagePopover,
+	MessagePopoverItem,
+	Link) {
 	"use strict";
 
 	return BaseController.extend("mit_sign.controller.Sign", {
@@ -237,6 +243,46 @@ sap.ui.define([
 
 		optionalStepCompletion: function () {
 			sap.m.MessageToast.show("Unterscrift Step3 completed.");
-		}
+		},
+		
+		/**
+		 * Only validation on client side, does not involve a back-end server.
+		 * @param {sap.ui.base.Event} oEvent Press event of the button to display the MessagePopover
+		 * From: openui5/src/sap.m/test/sap/m/demokit/cart/webapp/
+		 */
+		onShowMessagePopoverPress: function (oEvent) {
+			var oButton = oEvent.getSource();
+
+			var oLink = new Link({
+				text: "Allgemeine Informationen anzeigen",
+				href: "http://eins.de",
+				target: "_blank"
+			});
+
+			/**
+			 * Gather information that will be visible on the MessagePopover
+			 */
+			var oMessageTemplate = new MessagePopoverItem({
+				type: "{message>type}",
+				title: "{message>message}",
+				subtitle: "{message>additionalText}",
+				link: oLink
+			});
+
+			if (!this.byId("errorMessagePopover")) {
+				var oMessagePopover = new MessagePopover(this.createId("messagePopover"), {
+					items: {
+						path: "message>/",
+						template: oMessageTemplate
+					},
+					afterClose: function () {
+						oMessagePopover.destroy();
+					}
+				});
+				this._addDependent(oMessagePopover);
+			}
+
+			oMessagePopover.openBy(oButton);
+		}		
 	});
 });
