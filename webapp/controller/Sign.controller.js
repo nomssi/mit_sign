@@ -40,19 +40,29 @@ sap.ui.define([
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this._oHelper = new Signature(oComponent, this._oView);		
 			
+			// declare controller variable
+			var iOriginalBusyDelay = this.getView().getBusyIndicatorDelay();
+				
 			// this._sValidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample.pdf";
 			// this._sInvalidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample_nonexisting.pdf";
-			this._oModel = new sap.ui.model.json.JSONModel({
+			this._oViewModel = new sap.ui.model.json.JSONModel({
 				// Draft
 				Vbeln: "",
-				sReleaserName : "",
-				sReceiverName : "",
-
-				sReleaserUrl : "",
-				sReceiverUrl : ""
+				PDFurl: "",
+				Releaser : { Name: "", Url: "" },
+				Receiver : { Name: "", Url: "" },
+				// we want to set busy and delay values
+				busy: false,
+				delay: 0
 				// Set binding 2 ways
 			});
-			this._oView.setModel(this._oModel, "PDFModel");
+			this.setModel(this._oViewModel, "pdfView");
+			
+			// function remove busy indicator
+			this.fnSetAppNotBusy = function() {
+				this._oViewModel.setProperty("/busy", false);
+				this._oViewModel.setProperty("/delay", iOriginalBusyDelay);
+			};			
 			
 			/*this._router.getTarget("product").attachDisplay(function (oEvent) {
 				this.fnUpdateProduct(oEvent.getParameter("data").productId);// update the binding based on products cart selection
@@ -65,7 +75,7 @@ sap.ui.define([
 				
 			var sVbeln = oEvent.getParameter("arguments").id;
 			this._oHelper.bindVbelnTo(this.getView().getModel(),sVbeln,this);
-			this._updateViewModel("Vbeln", sVbeln);
+			this._updateViewModel("/Vbeln", sVbeln);
 		},
 
 		/**
@@ -114,15 +124,36 @@ sap.ui.define([
 			}.bind(this);
 			this._oHelper.saveSignature(this.sVbeln, fnAfterSave);
 		},
-		
-		onCompleteSigning: function(){
+
+		oCompleteContent: function(oEvent){
 			
+			return false;
+		},
+		
+		oSignCommit: function(oEvent){
+			// Initiate COMMIT, PDF generation
+			return false;
+		},
+		
+		onSigningCompleted: function(oEvent){
+
+            // Button icon="sap-icon://accept"  press="onCorrectPathClick"
+			// Add message - sVeln signed - OK ?
+			// Initiate/Inform about send Mail
+			
+			this.getRouter().navTo("home");
+			this._wizard.setCurrentStep(this.byId("contentStep"));
+		},
+
+		onSigningFailed: function(oEvent){
+            // Initiate Error procedure  
+			// Add message - sVeln signed - Error ?
 			return false;
 		},
 
 		_updateViewModel : function(sProperty, vValue) {
-			// this._oModel.getProperty(ssProperty);
-			var oViewModel = this.getView().getModel("PDFModel");
+			// this._oViewModel.getProperty(ssProperty);
+			var oViewModel = this.getView().getModel("pdfView");
 			oViewModel.setProperty(sProperty, vValue );
 		},
 					
@@ -136,12 +167,12 @@ sap.ui.define([
 			if (oSource === oReleaserBtn) {
 				sSignPadId = "signature-pad";   // Ausgebender
 				oStep = this.byId("signReleaserStep");
-				this._oModel.sReleaserUrl = "";
+				this._updateViewModel("/Releaser>Url", "");
 			} else
 			if (oSource === oReceiverBtn) { 
 				sSignPadId = "signature-pad2";  // Empfänger
 				oStep = this.byId("signReceiverStep");
-				this._oModel.sReceiverUrl = "";
+				this._updateViewModel("/Receiver>Url", "");				
 			} else 
 			{ return; }
 			this._oHelper.clearSignature(this.sVbeln);
@@ -163,11 +194,11 @@ sap.ui.define([
 
 			if (oNameField === oReleaserName) {
 				oStep = this.byId("signReleaserStep");
-				sProperty = "sReleaserName";
+				sProperty = "/Releaser>Name";
 			} else
 			if (oNameField === oReceiverName) { 
 				oStep = this.byId("signReceiverStep");
-				sProperty = "sReceiverName";
+				sProperty = "/Receiver>Name";
 			} else 
 			{ return; }
 
@@ -197,12 +228,12 @@ sap.ui.define([
 			if (oSignPad === oReleaserSignPad) {
 				oStep = this.byId("signReleaserStep");
 				oField = this.byId("sName");
-				sProperty = "sReleaserUrl";
+				sProperty = "/Releaser>Url";
 			} else
 			if (oSignPad === oReceiverSignPad) { 
 				oField = this.byId("sRecvName");
 				oStep = this.byId("signReceiverStep");
-				sProperty = "sReceiverUrl";
+				sProperty = "/Receiver>Url";
 			} else 
 			{ return; }
 
@@ -276,8 +307,11 @@ sap.ui.define([
 				type: "{message>type}",
 				title: "{message>message}",
 				subtitle: "{message>additionalText}",
+				// activeTitle: "{message>active}",
+				// description: '{message>description}',
 				link: oLink
 			});
+
 
 			if (!this.byId("errorMessagePopover")) {
 				var oMessagePopover = new MessagePopover(this.createId("messagePopover"), {

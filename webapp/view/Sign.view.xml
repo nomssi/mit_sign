@@ -1,7 +1,9 @@
 <core:View xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" 
            xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" 
            xmlns:C="mit_sign.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" 
-           controllerName="mit_sign.controller.Sign" xmlns:html="http://www.w3.org/1999/xhtml">	
+           controllerName="mit_sign.controller.Sign" xmlns:html="http://www.w3.org/1999/xhtml"
+           busy="{pdfView>/busy}" 
+		   busyIndicatorDelay="{pdfView>/delay}">
 	<NavContainer id="wizardNavContainer">
 		<pages>
 			<Page id="wizardContentPage" showHeader="true" title="{i18n>signTitle}  {Vbeln}">
@@ -16,13 +18,13 @@
 					<Button id="settingsButton" type="Emphasized" text="{i18n>settingsButtonText}" press=".onSettingsButtonPress"/>
 				</headerContent>
 				<content>
-					<Wizard id="signWizard" complete="signingCompleted"
+					<Wizard id="signWizard" complete="onSigningCompleted"
 					        finishButtonText="{i18n>checkoutWizardReviewbtn}">
 						<steps>
 							<WizardStep id="contentStep" 
 							            nextStep="signReleaserStep" 
 							            icon="sap-icon://detail-view" 
-							            complete="onCompleteSigning" validated="true" 
+							            complete="onCompleteContent" validated="true" 
 							            title="{i18n>contentTitle} {VBELN}">
 			    			<MessageStrip class="sapUiSmallMarginBottom"
 										text="{i18n>strip.Review}"
@@ -133,14 +135,14 @@
 	 							</f:SimpleForm> 
 							</WizardStep>										
 
-						<WizardStep id="showPDFStep" activate=".onCheckStepActivation" validated="false" title="{i18n>lastViewTitle}" icon="sap-icon://complete">
+						<WizardStep id="showPDFStep" activate="onSignCommit" validated="false" title="{i18n>lastViewTitle}" icon="sap-icon://complete">
+						<MessageStrip class="sapUiSmallMarginBottom" text="{i18n>strip.Finish}" showIcon="true"/>										
 							<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 									<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
 									<SegmentedButton selectedButton="btnCorrect">
-											<Button icon="sap-icon://accept" text="{i18n>pdf.Correct}" press="onCorrectPathClick" id="btnCorrect"/>
-											<Button icon="sap-icon://decline" text="{i18n>pdf.Incorrect}" press="onIncorrectPathClick"/>
-									</SegmentedButton>
-
+											<Button icon="sap-icon://accept" text="{i18n>pdf.Correct}" press="onSigningCompleted" id="btnCorrect"/>
+											<Button icon="sap-icon://error" text="{i18n>pdf.Incorrect}" press="onSigningFailed" id="btnIncorrect"/>
+									</SegmentedButton>										
 	                                    <PDFViewer source="{PDFUrl}" title="{/Title}" height="600px" id="PDF" displayType="Embedded" >											
 											<layoutData>
 												<FlexItemData growFactor="1"/>

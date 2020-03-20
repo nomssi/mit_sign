@@ -101,12 +101,12 @@ sap.ui.define([
 				var context = canvas.getContext("2d");
 				var uri = oControl.getValue();
 				if (uri) {
-					var img = document.createElement("img"); //  $.parseHTML("<img/>");
+					var oImage = document.createElement("img"); //  $.parseHTML("<img/>");
 
-					img.onload = function () {
-						context.drawImage(img, 0, 0);
+					oImage.onload = function () {
+						context.drawImage(oImage, 0, 0);
 					};
-					img.src = uri;
+					oImage.src = uri;
 					
 					 //var oImage = new Image.Image("img", {
 					 //	src: uri,
