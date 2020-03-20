@@ -33,10 +33,11 @@
 									<headerToolbar>
 									</headerToolbar>
 									<columns>
-										<Column width="10em">
+										<Column minScreenWidth="Tablet"
+										        demandPopin="true">
 											<Text text="{i18n>lbl.item}" />
 										</Column>
-										<Column width="12em">
+										<Column width="auto">
 											<Text text="{i18n>lbl.Material}" />
 										</Column>
 										<Column>
@@ -64,72 +65,81 @@
 									</items>
 								</Table>
 							</WizardStep>
+							
 							<WizardStep id="signReleaserStep" nextStep="signReceiverStep" title="{i18n>SignPad1Title}" icon="sap-icon://signature" 
 							            validated="false" complete="onCompleteSignReleaserStep" >
-			    			<MessageStrip class="sapUiSmallMarginBottom"
-										text="{i18n>strip.ReleaseStorage}"
-										showIcon="true"/>									
-								<f:SimpleForm id="FormSigner354" editable="true" layout="ResponsiveGridLayout" title="{i18n>SignPad1Title}"
-								              labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="1" columnsM="1">
-								<f:content>									
-	                              <Label text="{i18n>lbl.Signer}" required="true"/>
-                                  <Input id="sName" value="{SignerName}" change="onInputChange"
-									placeholder="{{i18n>placeholder.Signer}"/>                                  
-	                              <Label text="{i18n>lbl.Signature}"/>
-     								<C:SignPad id="signature-pad" value="{SignatureReleaser}" change="onSignChange" bgColor="#d6f5ff" width="100%"/>
+			    			<MessageStrip class="sapUiSmallMarginBottom" text="{i18n>strip.ReleaseStorage}"	showIcon="true"/>									
+								<f:SimpleForm id="FormSignReleaser" editable="true" layout="ResponsiveGridLayout" title="{i18n>SignPad1Title}"
+								              labelSpanL="2" labelSpanM="4" columnsL="1" columnsM="1">
+								<f:content>
+	                              <Label text="{i18n>lbl.Signer}" required="true">
+                                		<layoutData>
+											<layout:GridData span="L2 M2" />
+										</layoutData>
+									</Label>
+                                  <Input id="sName" value="{SignerName}" change="onInputChange"	placeholder="{{i18n>placeholder.Signer}">                                  
+                                		<layoutData>
+											<layout:GridData span="L8 M8" />
+										</layoutData>
+								  </Input>
+
+	                              <Label text="{i18n>lbl.Signature}">
+                                		<layoutData>
+											<layout:GridData span="L2 M2" linebreak="true" />
+										</layoutData>
+	                              </Label>
+     								<C:SignPad id="signature-pad" value="{SignatureReleaser}" change="onSignChange" bgColor="#d6f5ff" width="800px"/>
+                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" type="Transparent" press="onClearButton" id="btnClear">
+                                		<layoutData>
+											<layout:GridData span="L2 M2" />
+										</layoutData>
+                                	</Button>
 								</f:content>
 	 							</f:SimpleForm> 
-								<HBox
-										alignItems="Center"
-										justifyContent="Center"
-										width="100%">
-									<SegmentedButton
-									        selectedButton="btnClear">
-	                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear"/>
-									</SegmentedButton>
-								</HBox>		 							
 							</WizardStep>							
+								
 							<WizardStep id="signReceiverStep" nextStep="showPDFStep" title="{i18n>SignPad2Title}" icon="sap-icon://signature" 
 							            validated="false" complete="onCompleteSignReceiverStep">
-			    			<MessageStrip class="sapUiSmallMarginBottom"
-										text="{i18n>strip.ReleaseReceiver}"
-										showIcon="true"/>									
-								<f:Form id="FormDisplay355">
-			                        <f:layout>
-                                      <f:ResponsiveGridLayout labelSpanL="4" labelSpanM="3" emptySpanL="2" emptySpanM="3" columnsL="1" columnsM="1"/>
-			                        </f:layout>
+			    			<MessageStrip class="sapUiSmallMarginBottom" text="{i18n>strip.ReleaseReceiver}" showIcon="true"/>									
+								<f:SimpleForm id="FormSignReceiver" editable="true" layout="ResponsiveGridLayout" title="{i18n>SignPad1Title}"
+								              labelSpanL="2" labelSpanM="4" columnsL="1" columnsM="1" adjustLabelSpan="true">
+								<f:content>
+									<Label text="{i18n>lbl.Receiver}" required="true">
+                                		<layoutData>
+											<layout:GridData span="L2 M2" />
+										</layoutData>
+									</Label>
+                                  <Input id="sRecvName" value="{ReceiverName}" change="onInputChange" placeholder="{{i18n>placeholder.Receiver}">                                  
+                                		<layoutData>
+											<layout:GridData span="L8 M8" />
+										</layoutData>
+								  </Input>
+								  
+								<Label text="{i18n>lbl.Signature2}">
+                                		<layoutData>
+											<layout:GridData span="L2 M2" linebreak="true" />
+										</layoutData>
+	                              </Label>
+									<C:SignPad id="signature-pad2" value="{SignatureReceiver}" change="onSignChange" bgColor="#d6f5ff" width="800px"/>
+                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Transparent" id="btnClear2">
+                                		<layoutData>
+											<layout:GridData span="L2 M2" />
+										</layoutData>
+                                	</Button>
+                                	
+								</f:content>
+	 							</f:SimpleForm> 
+							</WizardStep>										
 
-									<f:formContainers>
-			                          <f:FormContainer>
-			                            <f:formElements>
-                                           <f:FormElement label="{i18n>lbl.Receiver}">
-			                                <f:fields>
-			                                	    <Input id="sRecvName" value="{ReceiverName}" change="onInputChange"/>
-			                                </f:fields>
-			                              </f:FormElement>
-			                              <f:FormElement label="{i18n>lbl.Signature2}">
-			                                <f:fields>
-													<C:SignPad id="signature-pad2" value="{SignatureReceiver}" change="onSignChange" bgColor="#d6f5ff" width="100%"/>
-			                                </f:fields>
-			                              </f:FormElement>
-			                              <f:FormElement label="">
-			                                <SegmentedButton>
-			                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Reject" id="btnClear2"/>
-			                                </SegmentedButton>
-			                                </f:FormElement>
-			                            </f:formElements>
-			                          </f:FormContainer>
-			                        </f:formContainers>
-								<!-- </f:SimpleForm> -->
-								</f:Form>
-							</WizardStep>
+							
 						<WizardStep id="showPDFStep" activate=".onCheckStepActivation" validated="false" title="{i18n>lastViewTitle}" icon="sap-icon://complete">
 							<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 									<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
-										<FlexBox>
-											<Button text="{i18n>pdf.Correct}" press="onCorrectPathClick"/>
-											<Button text="{i18n>pdf.Incorrect}" press="onIncorrectPathClick"/>
-										</FlexBox>
+									<SegmentedButton selectedButton="btnCorrect">
+											<Button icon="sap-icon://accept" text="{i18n>pdf.Correct}" press="onCorrectPathClick" id="btnCorrect"/>
+											<Button icon="sap-icon://decline" text="{i18n>pdf.Incorrect}" press="onIncorrectPathClick"/>
+									</SegmentedButton>
+
 	                                    <PDFViewer source="{PDFUrl}" title="{/Title}" height="600px" id="PDF" displayType="Embedded" >											
 											<layoutData>
 												<FlexItemData growFactor="1"/>
@@ -138,6 +148,7 @@
 									</FlexBox>
 								</ScrollContainer>
 						</WizardStep>
+						
 						</steps>
 					</Wizard>
 				</content>

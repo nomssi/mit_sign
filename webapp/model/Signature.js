@@ -125,7 +125,6 @@ sap.ui.define([
 					this._bIsChanging = false;
 					//if(oResponseData.__batchResponses){
 						if (!this._oODataModel.hasPendingChanges() || !this._sMessage) {
-					if (oResponseData !== {}) {
 
 								var i;
 								for (i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i++) {
@@ -137,7 +136,6 @@ sap.ui.define([
 										// this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
 									}
 								}
-					}
 
 						}
 					//}

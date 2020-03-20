@@ -54,6 +54,7 @@ sap.ui.define([
 				Vbeln: "",
 				sReleaserUrl : this._sInvalidPath,
 				sReceiverUrl: this._sInvalidPath
+				// Set binding 2 ways
 			});
 			this._oView.setModel(this._oModel, "PDFModel");
 			
@@ -147,9 +148,10 @@ sap.ui.define([
 			this._wizard.setCurrentStep(oStep);	  			
 		},
 
-		onSignChange: function(oEvent, vUrl) {
+		onSignChange: function(oEvent) {
 			var oStep;
 			var oField;
+			var sUrl = oEvent.getParameter("value");
 
 			var oSignPad = oEvent.getSource();
 			var oReleaserSignPad = this.byId("signature-pad");   // Ausgebender
@@ -158,12 +160,12 @@ sap.ui.define([
 			if (oSignPad === oReleaserSignPad) {
 				oStep = this.byId("signReleaserStep");
 				oField = this.byId("sName");
-				this._oModel.setProperty("ReleaseUrl", vUrl);
+				this._oModel.setProperty("ReleaseUrl", sUrl);
 			} else
 			if (oSignPad === oReceiverSignPad) { 
 				oField = this.byId("sRecvName");
 				oStep = this.byId("signReceiverStep");
-				this._oModel.setProperty("ReceiverUrl", vUrl);		
+				this._oModel.setProperty("ReceiverUrl", sUrl);		
 			} else 
 			{ return; }
 
