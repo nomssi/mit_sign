@@ -9,8 +9,9 @@
 sap.ui.define([
 	"sap/ui/base/Object",
 	"sap/ui/model/json/JSONModel",
-	"sap/m/MessageToast"
-], function (Object, JSONModel, MessageToast) {
+	"sap/m/MessageToast",
+	"../reuse/util/messages"
+], function (Object, JSONModel, MessageToast, messages) {
 	"use strict";
 
 	return Object.extend("mit_sign.model.Signature", {
@@ -130,10 +131,10 @@ sap.ui.define([
 								for (i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i++) {
 									var oEntry = oResponseData.__batchResponses[i];
 									if (oEntry.response) {
-										var obj = JSON.parse(oEntry.response.body);
-										this._sMessage = obj.error.message.value;
+										// var obj = JSON.parse(oEntry.response.body);
+										// this._sMessage = obj.error.message.value;
 
-										// this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
+										this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
 									}
 								}
 

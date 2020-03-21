@@ -29,9 +29,16 @@ sap.ui.define([
 			this._oWizardContentPage = this.byId("wizardContentPage");
 
 			this._oView = this.getView();
+			
+			// create a message manager and register the message model
+			this._oMessageManager = sap.ui.getCore().getMessageManager();
+			this._oMessageManager.registerObject(this._oView, true);
+			this._oView.setModel(this._oMessageManager.getMessageModel(), "message");	
+			
 			//this._initViewPropertiesModel();
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
+
 			this._router.getRoute("sign").attachPatternMatched(this._routePatternMatched, this);
 			this._router.getRoute("signcompleted").attachMatched(this._routePatternMatched, this);
 
@@ -40,35 +47,23 @@ sap.ui.define([
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this._oHelper = new Signature(oComponent, this._oView);		
 			
-			// declare controller variable
-			var iOriginalBusyDelay = this.getView().getBusyIndicatorDelay();
-				
-			// this._sValidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample.pdf";
-			// this._sInvalidPath = sap.ui.require.toUrl("sap/m/sample/PDFViewerEmbedded") + "/sample_nonexisting.pdf";
+			// View register Model for Draft handling
 			this._oViewModel = new sap.ui.model.json.JSONModel({
-				// Draft
 				Vbeln: "",
 				PDFurl: "",
 				Releaser : { Name: "", Url: "" },
-				Receiver : { Name: "", Url: "" },
-				// we want to set busy and delay values
-				busy: false,
-				delay: 0
+				Receiver : { Name: "", Url: "" }
 				// Set binding 2 ways
 			});
 			this.setModel(this._oViewModel, "pdfView");
 			
-			// function remove busy indicator
-			this.fnSetAppNotBusy = function() {
-				this._oViewModel.setProperty("/busy", false);
-				this._oViewModel.setProperty("/delay", iOriginalBusyDelay);
-			};			
 			
 			/*this._router.getTarget("product").attachDisplay(function (oEvent) {
 				this.fnUpdateProduct(oEvent.getParameter("data").productId);// update the binding based on products cart selection
 			}, this);*/
 			//Binding für die Signatur erstellen, am besten die Kopfdaten der Lieferung mit den zwei Feldern für die Signatur verknüpfen
 			//so kann die Signatur als base64 an SAP gesendet werden und im nächsten schritt angezeigt werden
+			
 		},
 
 		_routePatternMatched: function(oEvent) {
@@ -76,6 +71,7 @@ sap.ui.define([
 			var sVbeln = oEvent.getParameter("arguments").id;
 			this._oHelper.bindVbelnTo(this.getView().getModel(),sVbeln,this);
 			this._updateViewModel("/Vbeln", sVbeln);
+			this._oMessageManager.removeAllMessages();   // reset potential server-side messages
 		},
 
 		/**
@@ -181,6 +177,35 @@ sap.ui.define([
 			this._wizard.setCurrentStep(oStep);	  			
 		},
 
+		removeMessageFromTarget: function (sTarget) {
+			// clear potential server-side messages to allow saving the item again			
+			this._oMessageManager.getMessageModel().getData().forEach(function(oMessage){
+				if (oMessage.target === sTarget) {
+					this._oMessageManager.removeMessages(oMessage);
+				}
+			}.bind(this));
+		},
+		
+		_handleRequiredField: function (oInput, oStep) {
+			var sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
+
+			this.removeMessageFromTarget(sTarget);
+
+			if (!oInput.getValue()) {
+				oStep.setValidated(false);
+							 
+				this._oMessageManager.addMessages(
+					new sap.ui.core.message.Message({
+						message: this._oResourceBundle.getText("mandatory.field"),
+						type: sap.ui.core.MessageType.Error,
+						additionalText: oInput.getLabels()[0].getText(),
+						target: sTarget,
+						processor: this._oView.getModel()
+					})
+				);
+			}
+		},
+
 		onInputChange: function(oEvent) {
 			// Whenever the value of an input field is changed, the system must
 			// update the product draft. For most of the fields, no specific
@@ -189,8 +214,8 @@ sap.ui.define([
 			var oStep;		
 			var sProperty;
 			var oNameField = oEvent.getSource();
-			var oReleaserName = this.byId("sName");     // Ausgebender
-			var oReceiverName = this.byId("sRcvName");  // Empfänger
+			var oReleaserName = this.byId("sName");      // Ausgebender
+			var oReceiverName = this.byId("sRecvName");  // Empfänger
 
 			if (oNameField === oReleaserName) {
 				oStep = this.byId("signReleaserStep");
@@ -203,11 +228,9 @@ sap.ui.define([
 			{ return; }
 
 			this._updateViewModel(sProperty, oNameField.value );
-			
-           if (oNameField.getValue() === ""){
-			 oStep.setValidated(false);
-	       }
-	       
+
+			this._handleRequiredField(oNameField, oStep);			
+
 			// Workaround to ensure that both the supplier Id and Name are updated in the model before the
 			// draft is updated, otherwise only the Supplier Name is saved to the draft and Supplier Id is lost
 			setTimeout(function() {
@@ -291,7 +314,7 @@ sap.ui.define([
 		 * @param {sap.ui.base.Event} oEvent Press event of the button to display the MessagePopover
 		 * From: openui5/src/sap.m/test/sap/m/demokit/cart/webapp/
 		 */
-		onShowMessagePopoverPress: function (oEvent) {
+		handleMessagePopoverPress: function (oEvent) {
 			var oButton = oEvent.getSource();
 
 			var oLink = new Link({

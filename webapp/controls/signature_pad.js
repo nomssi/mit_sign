@@ -4,10 +4,11 @@
  */
 
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
+  typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory() :
+  typeof define === "function" && define.amd ? define(factory) :
   (global.SignaturePad = factory());
-}(this, (function () { 'use strict';
+  }(this, (function () { 
+  		"use strict";
 
   var Point = (function () {
       function Point(x, y, time) {
@@ -181,8 +182,8 @@
           this.velocityFilterWeight = options.velocityFilterWeight || 0.7;
           this.minWidth = options.minWidth || 0.5;
           this.maxWidth = options.maxWidth || 2.5;
-          this.throttle = ('throttle' in options ? options.throttle : 16);
-          this.minDistance = ('minDistance' in options
+          this.throttle = ("throttle" in options ? options.throttle : 16);
+          this.minDistance = ("minDistance" in options
               ? options.minDistance
               : 5);
           if (this.throttle) {
@@ -196,11 +197,11 @@
                   function dotSize() {
                       return (this.minWidth + this.maxWidth) / 2;
                   };
-          this.penColor = options.penColor || 'black';
-          this.backgroundColor = options.backgroundColor || 'rgba(0,0,0,0)';
+          this.penColor = options.penColor || "black";
+          this.backgroundColor = options.backgroundColor || "rgba(0,0,0,0)";
           this.onBegin = options.onBegin;
           this.onEnd = options.onEnd;
-          this._ctx = canvas.getContext('2d');
+          this._ctx = canvas.getContext("2d");
           this.clear();
           this.on();
       }
@@ -246,30 +247,30 @@
           }
       };
       SignaturePad.prototype.on = function () {
-          this.canvas.style.touchAction = 'none';
-          this.canvas.style.msTouchAction = 'none';
+          this.canvas.style.touchAction = "none";
+          this.canvas.style.msTouchAction = "none";
           if (window.PointerEvent) {
               this._handlePointerEvents();
           }
           else {
               this._handleMouseEvents();
-              if ('ontouchstart' in window) {
+              if ("ontouchstart" in window) {
                   this._handleTouchEvents();
               }
           }
       };
       SignaturePad.prototype.off = function () {
-          this.canvas.style.touchAction = 'auto';
-          this.canvas.style.msTouchAction = 'auto';
-          this.canvas.removeEventListener('pointerdown', this._handleMouseDown);
-          this.canvas.removeEventListener('pointermove', this._handleMouseMove);
-          document.removeEventListener('pointerup', this._handleMouseUp);
-          this.canvas.removeEventListener('mousedown', this._handleMouseDown);
-          this.canvas.removeEventListener('mousemove', this._handleMouseMove);
-          document.removeEventListener('mouseup', this._handleMouseUp);
-          this.canvas.removeEventListener('touchstart', this._handleTouchStart);
-          this.canvas.removeEventListener('touchmove', this._handleTouchMove);
-          this.canvas.removeEventListener('touchend', this._handleTouchEnd);
+          this.canvas.style.touchAction = "auto";
+          this.canvas.style.msTouchAction = "auto";
+          this.canvas.removeEventListener("pointerdown", this._handleMouseDown);
+          this.canvas.removeEventListener("pointermove", this._handleMouseMove);
+          document.removeEventListener("pointerup", this._handleMouseUp);
+          this.canvas.removeEventListener("mousedown", this._handleMouseDown);
+          this.canvas.removeEventListener("mousemove", this._handleMouseMove);
+          document.removeEventListener("mouseup", this._handleMouseUp);
+          this.canvas.removeEventListener("touchstart", this._handleTouchStart);
+          this.canvas.removeEventListener("touchmove", this._handleTouchMove);
+          this.canvas.removeEventListener("touchend", this._handleTouchEnd);
       };
       SignaturePad.prototype.isEmpty = function () {
           return this._isEmpty;
@@ -294,7 +295,7 @@
               color: this.penColor,
               points: []
           };
-          if (typeof this.onBegin === 'function') {
+          if (typeof this.onBegin === "function") {
               this.onBegin(event);
           }
           this._data.push(newPointGroup);
@@ -329,26 +330,26 @@
       };
       SignaturePad.prototype._strokeEnd = function (event) {
           this._strokeUpdate(event);
-          if (typeof this.onEnd === 'function') {
+          if (typeof this.onEnd === "function") {
               this.onEnd(event);
           }
       };
       SignaturePad.prototype._handlePointerEvents = function () {
           this._mouseButtonDown = false;
-          this.canvas.addEventListener('pointerdown', this._handleMouseDown);
-          this.canvas.addEventListener('pointermove', this._handleMouseMove);
-          document.addEventListener('pointerup', this._handleMouseUp);
+          this.canvas.addEventListener("pointerdown", this._handleMouseDown);
+          this.canvas.addEventListener("pointermove", this._handleMouseMove);
+          document.addEventListener("pointerup", this._handleMouseUp);
       };
       SignaturePad.prototype._handleMouseEvents = function () {
           this._mouseButtonDown = false;
-          this.canvas.addEventListener('mousedown', this._handleMouseDown);
-          this.canvas.addEventListener('mousemove', this._handleMouseMove);
-          document.addEventListener('mouseup', this._handleMouseUp);
+          this.canvas.addEventListener("mousedown", this._handleMouseDown);
+          this.canvas.addEventListener("mousemove", this._handleMouseMove);
+          document.addEventListener("mouseup", this._handleMouseUp);
       };
       SignaturePad.prototype._handleTouchEvents = function () {
-          this.canvas.addEventListener('touchstart', this._handleTouchStart);
-          this.canvas.addEventListener('touchmove', this._handleTouchMove);
-          this.canvas.addEventListener('touchend', this._handleTouchEnd);
+          this.canvas.addEventListener("touchstart", this._handleTouchStart);
+          this.canvas.addEventListener("touchmove", this._handleTouchMove);
+          this.canvas.addEventListener("touchend", this._handleTouchEnd);
       };
       SignaturePad.prototype._reset = function () {
           this._lastPoints = [];
@@ -417,7 +418,8 @@
               y += 3 * uu * t * curve.control1.y;
               y += 3 * u * tt * curve.control2.y;
               y += ttt * curve.endPoint.y;
-              var width = Math.min(curve.startWidth + ttt * widthDelta, this.maxWidth);  // fix
+              // var width = curve.startWidth + ttt * widthDelta;
+              var width = Math.min(curve.startWidth + ttt * widthDelta, this.maxWidth);
               this._drawCurveSegment(x, y, width);
           }
           ctx.closePath();
@@ -426,7 +428,7 @@
       SignaturePad.prototype._drawDot = function (_a) {
           var color = _a.color, point = _a.point;
           var ctx = this._ctx;
-          var width = typeof this.dotSize === 'function' ? this.dotSize() : this.dotSize;
+          var width = typeof this.dotSize === "function" ? this.dotSize() : this.dotSize;
           ctx.beginPath();
           this._drawCurveSegment(point.x, point.y, width);
           ctx.closePath();
@@ -468,12 +470,12 @@
           var minY = 0;
           var maxX = this.canvas.width / ratio;
           var maxY = this.canvas.height / ratio;
-          var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-          svg.setAttribute('width', this.canvas.width.toString());
-          svg.setAttribute('height', this.canvas.height.toString());
+          var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          svg.setAttribute("width", this.canvas.width.toString());
+          svg.setAttribute("height", this.canvas.height.toString());
           this._fromData(pointGroups, function (_a) {
               var color = _a.color, curve = _a.curve;
-              var path = document.createElement('path');
+              var path = document.createElement("path");
               if (!isNaN(curve.control1.x) &&
                   !isNaN(curve.control1.y) &&
                   !isNaN(curve.control2.x) &&
@@ -482,24 +484,24 @@
                       ("C " + curve.control1.x.toFixed(3) + "," + curve.control1.y.toFixed(3) + " ") +
                       (curve.control2.x.toFixed(3) + "," + curve.control2.y.toFixed(3) + " ") +
                       (curve.endPoint.x.toFixed(3) + "," + curve.endPoint.y.toFixed(3));
-                  path.setAttribute('d', attr);
-                  path.setAttribute('stroke-width', (curve.endWidth * 2.25).toFixed(3));
-                  path.setAttribute('stroke', color);
-                  path.setAttribute('fill', 'none');
-                  path.setAttribute('stroke-linecap', 'round');
+                  path.setAttribute("d", attr);
+                  path.setAttribute("stroke-width", (curve.endWidth * 2.25).toFixed(3));
+                  path.setAttribute("stroke", color);
+                  path.setAttribute("fill", 'none');
+                  path.setAttribute("stroke-linecap", 'round');
                   svg.appendChild(path);
               }
           }, function (_a) {
               var color = _a.color, point = _a.point;
-              var circle = document.createElement('circle');
-              var dotSize = typeof _this.dotSize === 'function' ? _this.dotSize() : _this.dotSize;
-              circle.setAttribute('r', dotSize.toString());
-              circle.setAttribute('cx', point.x.toString());
-              circle.setAttribute('cy', point.y.toString());
-              circle.setAttribute('fill', color);
+              var circle = document.createElement("circle");
+              var dotSize = typeof _this.dotSize === "function" ? _this.dotSize() : _this.dotSize;
+              circle.setAttribute("r", dotSize.toString());
+              circle.setAttribute("cx", point.x.toString());
+              circle.setAttribute("cy", point.y.toString());
+              circle.setAttribute("fill", color);
               svg.appendChild(circle);
           });
-          var prefix = 'data:image/svg+xml;base64,';
+          var prefix = "data:image/svg+xml;base64,";
           var header = '<svg' +
               ' xmlns="http://www.w3.org/2000/svg"' +
               ' xmlns:xlink="http://www.w3.org/1999/xlink"' +
@@ -511,13 +513,13 @@
           if (body === undefined) {
               var dummy = document.createElement('dummy');
               var nodes = svg.childNodes;
-              dummy.innerHTML = '';
+              dummy.innerHTML = "";
               for (var i = 0; i < nodes.length; i += 1) {
                   dummy.appendChild(nodes[i].cloneNode(true));
               }
               body = dummy.innerHTML;
           }
-          var footer = '</svg>';
+          var footer = "</svg>";
           var data = header + body + footer;
           return prefix + btoa(data);
       };

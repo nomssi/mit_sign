@@ -81,7 +81,9 @@
 											<layout:GridData span="L2 M2" />
 										</layoutData>
 									</Label>
-                                  <Input id="sName" value="{SignerName}" change="onInputChange" placeholder="{{i18n>placeholder.Signer}">
+                                  <Input id="sName" value="{ path: 'SignerName',
+                                                             type: 'sap.ui.model.type.String' }" 
+                                         change="onInputChange" placeholder="{{i18n>placeholder.Signer}">
                                 		<layoutData>
 											<layout:GridData span="L8 M8" />
 										</layoutData>
@@ -92,7 +94,9 @@
 											<layout:GridData span="L2 M2" linebreak="true" />
 										</layoutData>
 	                              </Label>	                              
-     								<C:SignPad id="signature-pad" value="{SignatureReleaser}" change="onSignChange" bgColor="#d6f5ff" width="800px"/>
+     								<C:SignPad id="signature-pad" value="{SignatureReleaser}" 
+     								                change="onSignChange" 
+     								                bgColor="#d6f5ff" width="800px"/>
                                 	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Transparent" id="btnClear">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" />
@@ -113,7 +117,9 @@
 											<layout:GridData span="L2 M2" />
 										</layoutData>
 									</Label>
-                                  <Input id="sRecvName" value="{ReceiverName}" change="onInputChange" placeholder="{{i18n>placeholder.Receiver}">                                  
+                                  <Input id="sRecvName" value="{ path: 'ReceiverName',
+                                                                 type: 'sap.ui.model.type.String' }"
+                                         change="onInputChange" placeholder="{{i18n>placeholder.Receiver}">                                  
                                 		<layoutData>
 											<layout:GridData span="L8 M8" />
 										</layoutData>
@@ -158,7 +164,9 @@
 				<footer>
 					<Bar id="wizardFooterBar" visible="{= ${message>/}.length === 0 ? false : true}">
 						<contentLeft>
-							<Button id="showPopoverButton" icon="sap-icon://message-popup" text="{= ${message>/}.length }" type="Emphasized" press=".onShowMessagePopoverPress"/>
+							<Button id="showPopoverButton" icon="sap-icon://message-popup" type="Emphasized" 
+							        text="{= ${message>/}.length }"
+							        press=".handleMessagePopoverPress"/>
 						</contentLeft>
 					</Bar>
 				</footer>

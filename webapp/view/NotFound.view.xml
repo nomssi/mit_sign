@@ -1,8 +1,14 @@
-<mvc:View controllerName="mit_sign.controller.Home"
+<mvc:View id="EmptyPageView" controllerName="mit_sign.controller.BaseController"
+xmlns:l="sap.ui.layout" height="100%"
 xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
 <MessagePage 
+   id="signEmptyPage" showHeader="false"  showNavButton="true" 
    icon="sap-icon://doctor"
    navButtonPress="backToHome"
-   text="Etwas lief schief..."
-   title="Fehler"></MessagePage>
+   text="{i18n>ymsg.pageNotFoundTitle}"
+   description="{i18n>ymsg.pageNotFoundIntro}"
+   title="Fehler" />
 </mvc:View>
+
+
+		

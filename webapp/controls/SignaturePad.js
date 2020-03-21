@@ -1,7 +1,7 @@
 sap.ui.define([
 		"./signature_pad",
 		"sap/ui/core/Control",
-		"sap/m/Log"
+		"sap/base/Log"
 	],
 	function (Szimek, Control, Log) {
 		"use strict";
@@ -75,14 +75,14 @@ sap.ui.define([
 				 * @param {mit_sign.controls.SignPad} oControl - this UI5 custom control
 				 */
 				render: function (oRm, oSignPad) {
-					var thickness = parseInt(oControl.getProperty('thickness'), 10);
+					var thickness = parseInt(oSignPad.getProperty("thickness"), 10);
 
 					oRm.openStart("canvas", oSignPad)
 						//	   .writeControlData(oSignPad) // e.g id='signature-pad'
 						.class("signature-pad")
 						.style("width", oSignPad.getProperty("width"))
 						.style("height", oSignPad.getProperty("height"))
-						.style("background-color", oSignPad.getProperty("bgcolor"))
+					//	.style("background-color", oSignPad.getProperty("bgcolor"))
 						.style("border", oSignPad.getBorderSize() + " " + oSignPad.getBorderStyle() + " " + oSignPad.getBorderColor())
 						.writeClasses() // this call writes the above class plus enables support for Square.addStyleClass(...)
 						.openEnd();
@@ -90,40 +90,21 @@ sap.ui.define([
 					oRm.close("canvas");
 					
 				 //TODO Write a canvas
-				
-				// oRm.openStart("canvas", oSignPad);
-				 //   oRm.write("<canvas width='" + oControl.getProperty('width') + "' " +
-				 //   "height='" + oControl.getProperty('height') + "'");
-				 //   oRm.writeControlData(oControl);  // writes the Control ID and enables event handling - important!
-				 //   oRm.addStyle("width", oControl.getProperty('width'));  // write the Control property size; the Control has validated it to be a CSS size
-				 //   oRm.addStyle("height", oControl.getProperty('height'));
-				 //   oRm.writeStyles();
-				 //   oRm.write("></canvas>");
-				 //   oRm.write("</div>");
-				 //   oRm.openEnd();
+					oRm.openStart("canvas", oSignPad);
+				    oRm.write(" width='" + oSignPad.getProperty("width") + "' " +  "height='" + oSignPad.getProperty("height") + "'");
+				    oRm.writeControlData(oSignPad);  // writes the Control ID and enables event handling - important!
+				    oRm.addStyle("width", oSignPad.getProperty("width"));  // write the Control property size; the Control has validated it to be a CSS size
+				    oRm.addStyle("height", oSignPad.getProperty("height"));
+				    oRm.writeStyles();
+				    oRm.write("></canvas>");
+				    oRm.write("</div>");
+				    oRm.openEnd();
 				  
 				}
 			},
 
-			onAfterRendering: function () {
-                signpad = this.getView().byId("signpad");
-                signpad.activate();
-				// if (sap.ui.core.Control.prototype.onAfterRendering) {
-				// 	sap.ui.core.Control.prototype.onAfterRendering.apply(this, arguments); //super class
-				// 	this._drawSignatureArea(this);
-				// 	this._makeCanvasDrawable(this);
-				// 	var that = this; //make the control resizable and redraw when something changed
-				// 	sap.ui.core.ResizeHandler.register(this, function () {
-				// 		that._drawSignatureArea(that);
-				// 	});
-
-				// 	this._bindImage(this);
-				// }
-
-			},
-
-			
-			resizeCanvas: function resizeCanvas() {
+		
+			resizeCanvas: function () {
 				// When zoomed out to less than 100%, for some very strange reason,
 				// some browsers report devicePixelRatio as less than 1
 				// and only part of the canvas is cleared then.
@@ -137,6 +118,24 @@ sap.ui.define([
 				}
 			},
 
+			onAfterRendering: function () {
+				if (sap.ui.core.Control.prototype.onAfterRendering) {
+					sap.ui.core.Control.prototype.onAfterRendering.apply(this, arguments); //super class
+					var that = this; //make the control resizable and redraw when something changed
+                var oSignpad = this.getView().byId("signpad");
+                oSignpad.activate();
+					sap.ui.core.ResizeHandler.register(this, this.resizeCanvas);
+				}
+			},
+
+
+			_strokeEnd : function(oEvent){
+				var url = this.export();
+				this.fireEvent("change", {
+							value: url
+						});			   
+			},
+			
 			activate: function(){
 		    	var canvasList = document.querySelectorAll("canvas");
 		    	var canvas;
@@ -146,7 +145,7 @@ sap.ui.define([
 		    		}
 		    	}
 		    	try {
-					this.signaturePad = new Szimek.SignaturePad(canvas);
+					this.signaturePad = new Szimek.SignaturePad(canvas, {onEnd: this._strokeEnd});
 		    	}
 		    	catch(e) {
 		    		Log.error(e);
@@ -154,12 +153,17 @@ sap.ui.define([
 	       },
 			       
 			clear: function () {
-				if (this.signaturePad)
-					this.signaturePad.clear();
-				else
-					Log.error("SignaturePad not initialized properly")
+				this.signaturePad.clear();
 			},
 
+			isEmpty: function () {
+				return this.signaturePad.isEmpty();
+			},
+			
+			undo: function () {
+				this.signaturePad.undo();
+			},
+			
 			export: function () {
 				return this.signaturePad.toDataURL();
 			}
