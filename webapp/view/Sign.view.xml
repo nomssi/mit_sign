@@ -75,7 +75,7 @@
 								<f:SimpleForm id="FormSignReleaser" editable="true" layout="ResponsiveGridLayout" title="{i18n>SignPad1Title}"
 								              labelSpanL="2" labelSpanM="4" columnsL="1" columnsM="1" adjustLabelSpan="true">
 								<f:content>			
-									<Label text="{i18n>lbl.Signer}" required="true">
+									<Label text="{i18n>lbl.Signer}" required="true" labelFor="sName">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" />
 										</layoutData>
@@ -88,14 +88,14 @@
 										</layoutData>
 								  </Input>
 
-	                              <Label text="{i18n>lbl.Signature}">
+	                              <Label text="{i18n>lbl.Signature}" labelFor="signature-pad">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" linebreak="true" />
 										</layoutData>
 	                              </Label>	                              
 									<pad:SignaturePad id="signature-pad" value="{SignatureReleaser}" 
      								                change="onSignChange" 
-     								                bgColor="#d6f5ff" width="800px"/>
+     								                width="800px"/>
                                 	<Button icon="sap-icon://undo" text="{i18n>Clear}" press="onUndoButton" type="Transparent" id="btnClear">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" />
@@ -111,7 +111,7 @@
 								<f:SimpleForm id="FormSignReceiver" editable="true" layout="ResponsiveGridLayout" title="{i18n>SignPad2Title}"
 								              labelSpanL="2" labelSpanM="4" columnsL="1" columnsM="1" adjustLabelSpan="true">
 								<f:content>
-									<Label text="{i18n>lbl.Receiver}" required="true">
+									<Label text="{i18n>lbl.Receiver}" required="true" labelFor="sRecvName">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" />
 										</layoutData>
@@ -124,13 +124,13 @@
 										</layoutData>
 								  </Input>
 								  
-								<Label text="{i18n>lbl.Signature2}">
+								<Label text="{i18n>lbl.Signature2}" labelFor="signature-pad2">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" linebreak="true" />
 										</layoutData>
 	                              </Label>
 									<pad:SignPad id="signature-pad2" value="{SignatureReceiver}" change="onSignChange" 
-									             bgColor="#d6f5ff" width="800px"/>
+									             width="800px"/>
                                 	<Button icon="sap-icon://undo" text="{i18n>Clear}" press="onClearButton" type="Transparent" id="btnClear2">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" />

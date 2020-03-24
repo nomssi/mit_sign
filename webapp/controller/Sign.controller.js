@@ -192,7 +192,7 @@ sap.ui.define([
 			this._updateViewModel("/Releaser>Url", "");
 			
 			this._oHelper.clearSignature(this.sVbeln);
-			this.byId(sSignPadId).clear();
+			this.byId(sSignPadId).undo();
 			this._wizard.invalidateStep(oStep);	
 			this._wizard.setCurrentStep(oStep);	  			
 		},

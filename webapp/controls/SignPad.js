@@ -30,7 +30,7 @@ sap.ui.define([
 					},
 					"bgColor": {
 						"type": "sap.ui.core.CSSColor",
-						"defaultValue": "#d6f5ff"
+						"defaultValue": sap.ui.core.theming.Parameters.get("sapUiContentImagePlaceholderBackground")
 					},
 					"lineColor": {
 						"type": "sap.ui.core.CSSColor",

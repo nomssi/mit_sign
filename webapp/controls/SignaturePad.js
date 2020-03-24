@@ -36,7 +36,7 @@ sap.ui.define([
 					},
 					"bgColor": {
 						"type": "sap.ui.core.CSSColor",
-						"defaultValue": "#d6f5ff" // or "lightgrey"??
+						"defaultValue": sap.ui.core.theming.Parameters.get("sapUiButtonHoverBackground")
 					},
 					"signcolor": {
 						type: "sap.ui.core.CSSColor",
@@ -84,7 +84,12 @@ sap.ui.define([
 
 			undo: function () {
 				if (this.signaturePad) {
-					this.signaturePad.undo();
+					// Undo
+					var data = this.signaturePad.toData();
+					if (data) {
+					   data.pop(); // remove the last dot or line
+					   this.signaturePad.fromData(data);
+					}					
 					if (this.signaturePad.isEmpty()) {
 						this.fireEvent("change", { value: "" });
 					}
@@ -102,7 +107,7 @@ sap.ui.define([
 			init: function () {
 				// var oControl = this;
 			},
-
+			
 			renderer: {
 				apiVersion: 2, // enable in-place DOM patching
 				/*
@@ -166,6 +171,12 @@ sap.ui.define([
 
 					//this.signaturePad.fromDataURL(sDataUrl, oOptions);
 					this._resizeCanvas(this);
+				}
+			},
+			
+			exit: function() {
+				if (this.signaturePad) 	{
+					this.signaturePad.destroy();
 				}
 			}
 

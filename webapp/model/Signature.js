@@ -123,14 +123,13 @@ sap.ui.define([
 				this._sMessage = null;
 				var fnSuccess = function (oResponseData) {
 					this._bIsChanging = false;
-					//if(oResponseData.__batchResponses){
+
 					if (!this._oODataModel.hasPendingChanges() || !this._sMessage) {
 
-						var i;
 						if (oResponseData.__batchResponses === undefined) {
                            return; 
 						} else {
-							for (i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i++) {
+							for (var i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i++) {
 								var oEntry = oResponseData.__batchResponses[i];
 								if (oEntry.response) {
 									this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
@@ -139,7 +138,6 @@ sap.ui.define([
 						}
 
 					}
-					//}
 					if (this._sMessage) {
 						fnAfterSaved(this._sMessage);
 					} else {
