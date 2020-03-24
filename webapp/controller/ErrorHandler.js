@@ -74,7 +74,7 @@ sap.ui.define([
 				}
 				// to suppress all message boxes, just make the ErrorHandler believe there's a message box open already
 				this._bMessageOpen = true;
-				/*
+				
 				MessageBox.error(
 					this._sErrorText,
 					{
@@ -86,10 +86,10 @@ sap.ui.define([
 							this._bMessageOpen = false;
 						}.bind(this)
 					}
-				);*/
+				);
 				
-				var aDetails = JSON.parse(sDetails.responseText);
-				MessageToast.show(this._sErrorText + " " + aDetails.error.message.value);
+				// var aDetails = JSON.parse(sDetails.responseText);
+				// MessageToast.show(this._sErrorText + " " + aDetails.error.message.value);
 				
 				// done with the special service and custom handler,  fall back on the default ErrorHandler
 				this._bMessageOpen = false;				

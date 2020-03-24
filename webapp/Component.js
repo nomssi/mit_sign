@@ -2,8 +2,9 @@ sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"./model/models",
 	"sap/ui/Device",
-	"./controller/ErrorHandler"
-], function(UIComponent, models, Device, ErrorHandler) {
+	"./controller/ErrorHandler",
+	"./reuse/util/controls",	
+], function(UIComponent, models, Device, ErrorHandler, controls) {
 	"use strict";
 
 	return UIComponent.extend("mit_sign.Component", {
@@ -20,8 +21,6 @@ sap.ui.define([
 		 */
 		init: function () {
 
-			this._oErrorHandler = new ErrorHandler(this);
-			
 			//aus der manifest.json unter models
 			/*	"": {
 				"dataSource": "mainService",
@@ -70,6 +69,8 @@ sap.ui.define([
 			// call the base component's init function and create the App view
 			UIComponent.prototype.init.apply(this, arguments);
 
+			this._oErrorHandler = new ErrorHandler(this);
+			
 			// enable routing
 			var oRouter = this.getRouter();
 			if (oRouter) {
@@ -85,6 +86,12 @@ sap.ui.define([
 			});*/
 		},
 
+		destroy: function() {
+			this._oErrorHandler.destroy();
+			// call the base component's destroy function
+			UIComponent.prototype.destroy.apply(this, arguments);
+		},
+		
 		/**
 		 * This method can be called to determine whether the sapUiSizeCompact or sapUiSizeCozy
 		 * design mode class should be set, which influences the size appearance of some controls.
@@ -92,17 +99,9 @@ sap.ui.define([
 		 * @return {string} css class, either 'sapUiSizeCompact' or 'sapUiSizeCozy' - or an empty string if no css class should be set
 		 */
 		getContentDensityClass : function() {
+			// check whether FLP has already set the content density class; do nothing in this case
 			if (this._sContentDensityClass === undefined) {
-				// check whether FLP has already set the content density class; do nothing in this case
-				// eslint-disable-next-line sap-no-proprietary-browser-api
-				if (document.body.classList.contains("sapUiSizeCozy") || document.body.classList.contains("sapUiSizeCompact")) {
-					this._sContentDensityClass = "";
-				} else if (!Device.support.touch) { // apply "compact" mode if touch is not supported
-					this._sContentDensityClass = "sapUiSizeCompact";
-				} else {
-					// "cozy" in case of touch support; default for most sap.m controls, but needed for desktop-first controls like sap.ui.table.Table
-					this._sContentDensityClass = "sapUiSizeCozy";
-				}
+				this._sContentDensityClass = controls.getContentDensityClass();
 			}
 			return this._sContentDensityClass;
 		}

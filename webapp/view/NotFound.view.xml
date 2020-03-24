@@ -4,7 +4,7 @@ xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
 <MessagePage 
    id="signEmptyPage" showHeader="false"  showNavButton="true" 
    icon="sap-icon://doctor"
-   navButtonPress="backToHome"
+   navButtonPress="onBack"
    text="{i18n>ymsg.pageNotFoundTitle}"
    description="{i18n>ymsg.pageNotFoundIntro}"
    title="Fehler" />

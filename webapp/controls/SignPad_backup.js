@@ -134,15 +134,6 @@ sap.ui.define([
 				/******************************************************/
 			},
 
-			clear: function (oEvent) {
-				// Clear canvas using background color
-				var canvas = $("#" + this.getId())[0]; // document.getElementById("signature-pad");
-				var context = canvas.getContext("2d");
-				context.clearRect(0, 0, canvas.width, canvas.height);
-
-				this._drawSignatureArea(this);
-			},
-			
 			_makeCanvasDrawable: function (oControl) {
 				var that = this;
 				var canvas = $("#" + oControl.getId())[0];
@@ -258,8 +249,16 @@ sap.ui.define([
 
 				canvas.addEventListener("touchstart", onMouseDown, false);
 				canvas.addEventListener("mousedown", onMouseDown, false);
-			}
+			},
 
+			clear: function (oEvent) {
+				// Clear canvas using background color
+				var canvas = $("#" + this.getId())[0]; // document.getElementById("signature-pad");
+				var context = canvas.getContext("2d");
+				context.clearRect(0, 0, canvas.width, canvas.height);
+
+				this._drawSignatureArea(this);
+			}
 		});
 	}
 );

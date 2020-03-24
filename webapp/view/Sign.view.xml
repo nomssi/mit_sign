@@ -1,6 +1,6 @@
 <core:View xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" 
            xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" 
-           xmlns:C="mit_sign.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" 
+           xmlns:pad="mit_sign.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" 
            controllerName="mit_sign.controller.Sign" xmlns:html="http://www.w3.org/1999/xhtml"
            busy="{pdfView>/busy}" 
 		   busyIndicatorDelay="{pdfView>/delay}">
@@ -15,7 +15,6 @@
 				</landmarkInfo>				
 				<headerContent>
 					<Button id="homeButton" type="Emphasized" text="{i18n>homeButtonText}" press=".onBack"/>
-					<Button id="settingsButton" type="Emphasized" text="{i18n>settingsButtonText}" press=".onSettingsButtonPress"/>
 				</headerContent>
 				<content>
 					<Wizard id="signWizard" complete="onSigningCompleted"
@@ -94,10 +93,10 @@
 											<layout:GridData span="L2 M2" linebreak="true" />
 										</layoutData>
 	                              </Label>	                              
-     								<C:SignPad id="signature-pad" value="{SignatureReleaser}" 
+									<pad:SignaturePad id="signature-pad" value="{SignatureReleaser}" 
      								                change="onSignChange" 
      								                bgColor="#d6f5ff" width="800px"/>
-                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Transparent" id="btnClear">
+                                	<Button icon="sap-icon://undo" text="{i18n>Clear}" press="onUndoButton" type="Transparent" id="btnClear">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" />
 										</layoutData>
@@ -130,8 +129,9 @@
 											<layout:GridData span="L2 M2" linebreak="true" />
 										</layoutData>
 	                              </Label>
-									<C:SignPad id="signature-pad2" value="{SignatureReceiver}" change="onSignChange" bgColor="#d6f5ff" width="800px"/>
-                                	<Button icon="sap-icon://reset" text="{i18n>Clear}" press="onClearButton" type="Transparent" id="btnClear2">
+									<pad:SignPad id="signature-pad2" value="{SignatureReceiver}" change="onSignChange" 
+									             bgColor="#d6f5ff" width="800px"/>
+                                	<Button icon="sap-icon://undo" text="{i18n>Clear}" press="onClearButton" type="Transparent" id="btnClear2">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" />
 										</layoutData>
@@ -141,7 +141,7 @@
 	 							</f:SimpleForm> 
 							</WizardStep>										
 
-						<WizardStep id="showPDFStep" activate="onSignCommit" validated="false" title="{i18n>lastViewTitle}" icon="sap-icon://complete">
+						<WizardStep id="showPDFStep" activate="onSignCommit" validated="false" title="{i18n>lastViewTitle}" icon="sap-icon://display">
 						<MessageStrip class="sapUiSmallMarginBottom" text="{i18n>strip.Finish}" showIcon="true"/>										
 							<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 									<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">

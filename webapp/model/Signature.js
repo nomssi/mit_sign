@@ -91,8 +91,7 @@ sap.ui.define([
 		},
 
 		_createSignature: function (sVbeln, fnDraftCreated) {
-			// At least one attribute must be filled in the object passed to the create call (requirement of the oData
-			// service)
+			// At least one attribute must be filled in the object passed to the create call (requirement of the oData service)
 			var oNew = {
 				Vbeln: sVbeln
 			};
@@ -125,25 +124,26 @@ sap.ui.define([
 				var fnSuccess = function (oResponseData) {
 					this._bIsChanging = false;
 					//if(oResponseData.__batchResponses){
-						if (!this._oODataModel.hasPendingChanges() || !this._sMessage) {
+					if (!this._oODataModel.hasPendingChanges() || !this._sMessage) {
 
-								var i;
-								for (i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i++) {
-									var oEntry = oResponseData.__batchResponses[i];
-									if (oEntry.response) {
-										// var obj = JSON.parse(oEntry.response.body);
-										// this._sMessage = obj.error.message.value;
-
-										this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
-									}
+						var i;
+						if (oResponseData.__batchResponses === undefined) {
+                           return; 
+						} else {
+							for (i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i++) {
+								var oEntry = oResponseData.__batchResponses[i];
+								if (oEntry.response) {
+									this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
 								}
-
+							}
 						}
+
+					}
 					//}
 					if (this._sMessage) {
 						fnAfterSaved(this._sMessage);
 					} else {
-						this._submitChanges(fnSaveFailed, fnAfterSaved);  // Loop
+						this._submitChanges(fnSaveFailed, fnAfterSaved); // Loop
 					}
 				}.bind(this);
 				this._bIsChanging = true;

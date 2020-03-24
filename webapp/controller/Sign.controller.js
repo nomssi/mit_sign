@@ -2,8 +2,6 @@ sap.ui.define([
 	"./BaseController",
 	"../model/Signature",
 	"../model/formatter",	
-	"sap/m/MessageBox",
-	"sap/base/Log",
 	"sap/m/MessagePopover",
 	"sap/m/MessagePopoverItem",	
 	"sap/m/Link"
@@ -11,8 +9,6 @@ sap.ui.define([
 	BaseController,
 	Signature,
 	formatter,
-    MessageBox,	
-	Log,
 	MessagePopover,
 	MessagePopoverItem,
 	Link) {
@@ -23,6 +19,13 @@ sap.ui.define([
         formatter: formatter,
         
 		onInit: function () {
+            const generalInfoUrl = "https://eins.de";
+        
+			this._oLink = new Link({
+				text: "Allgemeine Informationen anzeigen",
+				href: generalInfoUrl,
+				target: "_blank"
+			});
 
 			this._wizard = this.byId("signWizard");
 			this._oNavContainer = this.byId("wizardNavContainer");
@@ -144,6 +147,10 @@ sap.ui.define([
 		onSigningFailed: function(oEvent){
             // Initiate Error procedure  
 			// Add message - sVeln signed - Error ?
+			this._popoverMessage(this.sVbeln, 
+			    		         "Fehler bei der PDF Anzeige.", 
+			                	 sap.ui.core.MessageType.Error, 
+			                	 this._oLink);			
 			return false;
 		},
 
@@ -177,6 +184,19 @@ sap.ui.define([
 			this._wizard.setCurrentStep(oStep);	  			
 		},
 
+		onUndoButton: function(oEvent){
+			var oSource = oEvent.getSource();
+			var oId = oSource;
+			var sSignPadId = "signature-pad";   // Ausgebender
+			var oStep = this.byId("signReleaserStep");
+			this._updateViewModel("/Releaser>Url", "");
+			
+			this._oHelper.clearSignature(this.sVbeln);
+			this.byId(sSignPadId).clear();
+			this._wizard.invalidateStep(oStep);	
+			this._wizard.setCurrentStep(oStep);	  			
+		},
+
 		removeMessageFromTarget: function (sTarget) {
 			// clear potential server-side messages to allow saving the item again			
 			this._oMessageManager.getMessageModel().getData().forEach(function(oMessage){
@@ -186,6 +206,18 @@ sap.ui.define([
 			}.bind(this));
 		},
 		
+		_popoverMessage: function(sMessage, sText, sType, sTarget) {
+			this._oMessageManager.addMessages(
+				new sap.ui.core.message.Message({
+					message: sMessage,
+					type: sType,
+					additionalText: sText,
+					target: sTarget,
+					processor: this._oView.getModel()
+				})
+			);	
+		},
+		
 		_handleRequiredField: function (oInput, oStep) {
 			var sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
 
@@ -193,16 +225,11 @@ sap.ui.define([
 
 			if (!oInput.getValue()) {
 				oStep.setValidated(false);
-							 
-				this._oMessageManager.addMessages(
-					new sap.ui.core.message.Message({
-						message: this._oResourceBundle.getText("mandatory.field"),
-						type: sap.ui.core.MessageType.Error,
-						additionalText: oInput.getLabels()[0].getText(),
-						target: sTarget,
-						processor: this._oView.getModel()
-					})
-				);
+				
+				this._popoverMessage(this._oResourceBundle.getText("mandatory.field"), 
+				    		         oInput.getLabels()[0].getText(), 
+				                	 sap.ui.core.MessageType.Error, 
+				                	 sTarget);
 			}
 		},
 
@@ -276,10 +303,16 @@ sap.ui.define([
 	        // this._wizard.validateStep(this.byId("signReceiverStep"));	
 			var fnAfterSave = function(oData){
 				if(oData.PDFUrl !== ""){
-					sap.m.MessageToast.show("PDF created.");
+					this._popoverMessage(this.sVbeln, 
+					    		         "PDF created.", 
+					                	 sap.ui.core.MessageType.Success, 
+					                	 this._oLink);
 				}
 			};	        
-			sap.m.MessageToast.show("Unterschriften speichern");
+			this._popoverMessage(this.sVbeln, 
+			    		         "Unterschriften speichern", 
+			                	 sap.ui.core.MessageType.Information, 
+			                	 this._oLink);
 			this._oHelper.saveSignature(this.sVbeln, fnAfterSave);
 		},	
 		
@@ -301,12 +334,17 @@ sap.ui.define([
 		},
 		
 		optionalStepActivation: function () {
-			sap.m.MessageToast.show("Unterschrift Step3 active.");
-			sap.base.Log.info("Unterschrift Step3 active.");
+			this._popoverMessage(this.sVbeln, 
+			    		         "Unterschrift Step3 active.", 
+			                	 sap.ui.core.MessageType.Information, 
+			                	 this._oLink);
 		},
 
 		optionalStepCompletion: function () {
-			sap.m.MessageToast.show("Unterscrift Step3 completed.");
+			this._popoverMessage(this.sVbeln, 
+			    		         "Unterschrift Step3 completed.", 
+			                	 sap.ui.core.MessageType.Information, 
+			                	 this._oLink);
 		},
 		
 		/**
@@ -317,12 +355,6 @@ sap.ui.define([
 		handleMessagePopoverPress: function (oEvent) {
 			var oButton = oEvent.getSource();
 
-			var oLink = new Link({
-				text: "Allgemeine Informationen anzeigen",
-				href: "http://eins.de",
-				target: "_blank"
-			});
-
 			/**
 			 * Gather information that will be visible on the MessagePopover
 			 */
@@ -332,7 +364,7 @@ sap.ui.define([
 				subtitle: "{message>additionalText}",
 				// activeTitle: "{message>active}",
 				// description: '{message>description}',
-				link: oLink
+				link: this._oLink
 			});
 
 
