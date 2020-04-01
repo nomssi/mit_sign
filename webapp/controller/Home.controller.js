@@ -28,6 +28,20 @@ sap.ui.define([
 			this._initViewPropertiesModel();
 		},
 
+		_onRouteMatched: function() {
+			var bSmallScreen = this.getModel("appView").getProperty("/smallScreenMode");
+			if (bSmallScreen) {
+				this._setLayout("One");
+			}
+		},
+			
+		_reloadData :function(){
+			var oEventsList = this.byId("eventsList");
+			oEventsList.getBinding("items").refresh(true);
+			var date = new Date();
+			this._oViewProperties.setProperty("/updateTime", date.toLocaleTimeString("de-DE"));
+		},
+		
 		_initViewPropertiesModel: function() {
 			var date = new Date();
 			this._oViewProperties = new JSONModel({
@@ -35,68 +49,20 @@ sap.ui.define([
 			});
 			this.getView().setModel(this._oViewProperties, "viewProperties");
 		},
-
-		_onRouteMatched: function() {
-			var bSmallScreen = this.getModel("appView").getProperty("/smallScreenMode");
-			if (bSmallScreen) {
-				this._setLayout("One");
-			}
-			
-			
-		},
-
-		_reloadData :function(){
-			// var oView = this.getView(),
-			// oModel = oView.getModel(),
-			var oList = this.byId("eventsList");
-			oList.getBinding("items").refresh(true);
-			var date = new Date();
-			this._oViewProperties.setProperty("/updateTime", date.toLocaleTimeString("de-DE"));
-		},
 		
-		onSearch: function () {
-			this._search();
-		},
-
 		onRefresh: function () {
 			// trigger search again and hide pullToRefresh when data ready
-			var oProductList = this.byId("productList");
-			var oBinding = oProductList.getBinding("items");
+			var oEventsList = this.byId("eventsList");
+			var oBinding = oEventsList.getBinding("items");
+			
 			var fnHandler = function () {
 				this.byId("pullToRefresh").hide();
 				oBinding.detachDataReceived(fnHandler);
 			}.bind(this);
 			oBinding.attachDataReceived(fnHandler);
-			this._search();
+			this._reloadData();	
 		},
 
-		_search: function () {
-			var oView = this.getView();
-			var oProductList = oView.byId("productList");
-			var oCategoryList = oView.byId("categoryList");
-			var oSearchField = oView.byId("searchField");
-
-			// switch visibility of lists
-			var bShowSearchResults = oSearchField.getValue().length !== 0;
-			oProductList.setVisible(bShowSearchResults);
-			oCategoryList.setVisible(!bShowSearchResults);
-
-			// filter product list
-			var oBinding = oProductList.getBinding("items");
-			if (oBinding) {
-				if (bShowSearchResults) {
-			 		var oFilter = new Filter("Name", FilterOperator.Contains, oSearchField.getValue());
-					oBinding.filter([oFilter]);
-				} else {
-					oBinding.filter([]);
-				}
-			}
-		},
-
-		onUpdateFinished: function(oEvent){
-
-		},
-		
 		onEventListItemPress: function (oEvent) {
 			var oSelectedItem = oEvent.getSource();
 			var oBindContext = oSelectedItem.getBindingContext();
@@ -107,7 +73,6 @@ sap.ui.define([
 			this._router.navTo("sign", {id: sId});
 //			sPath = sPath.substr(1);
 //			this._router.navTo("sign", {path: sPath});
-
 		},
 
         onFilterEvents: function(oEvent) {

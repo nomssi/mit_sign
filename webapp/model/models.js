@@ -46,7 +46,7 @@ sap.ui.define([
 
 			if (!oModelOptions.url) {
 				jQuery.sap.log.error("Please provide a url when you want to create an ODataModel",
-					"nw/epm/refapps/ext/prod/manage.model.models.createODataModel");
+					"mit_sign.model.models.createODataModel");
 				return null;
 			}
 

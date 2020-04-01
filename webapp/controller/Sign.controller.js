@@ -45,8 +45,6 @@ sap.ui.define([
 			this._router.getRoute("sign").attachPatternMatched(this._routePatternMatched, this);
 			this._router.getRoute("signcompleted").attachMatched(this._routePatternMatched, this);
 
-			/*this._oApplicationProperties = oComponent.getModel("appProperties");
-			this._oApplicationController = this._oApplicationProperties.getProperty("/applicationController");*/
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this._oHelper = new Signature(oComponent, this._oView);		
 			
@@ -61,19 +59,22 @@ sap.ui.define([
 			this.setModel(this._oViewModel, "pdfView");
 			
 			
-			/*this._router.getTarget("product").attachDisplay(function (oEvent) {
-				this.fnUpdateProduct(oEvent.getParameter("data").productId);// update the binding based on products cart selection
-			}, this);*/
 			//Binding für die Signatur erstellen, am besten die Kopfdaten der Lieferung mit den zwei Feldern für die Signatur verknüpfen
 			//so kann die Signatur als base64 an SAP gesendet werden und im nächsten schritt angezeigt werden
 			
 		},
 
+		exit: function () {
+			this._oHelper.destroy();
+			this._oViewModel.destroy();
+		},
+		
 		_routePatternMatched: function(oEvent) {
 				
 			var sVbeln = oEvent.getParameter("arguments").id;
 			this._oHelper.bindVbelnTo(this.getView().getModel(),sVbeln,this);
 			this._updateViewModel("/Vbeln", sVbeln);
+			
 			this._oMessageManager.removeAllMessages();   // reset potential server-side messages
 		},
 
@@ -139,6 +140,8 @@ sap.ui.define([
             // Button icon="sap-icon://accept"  press="onCorrectPathClick"
 			// Add message - sVeln signed - OK ?
 			// Initiate/Inform about send Mail
+			var oViewModel = this.getView().getModel();
+			oViewModel.setProperty("/Status", "1");
 			
 			this.getRouter().navTo("home");
 			this._wizard.setCurrentStep(this.byId("contentStep"));
@@ -146,6 +149,9 @@ sap.ui.define([
 
 		onSigningFailed: function(oEvent){
             // Initiate Error procedure  
+			var oViewModel = this.getView().getModel();
+			oViewModel.setProperty("/Status", "2");
+			
 			// Add message - sVeln signed - Error ?
 			this._popoverMessage(this.sVbeln, 
 			    		         "Fehler bei der PDF Anzeige.", 
@@ -155,8 +161,8 @@ sap.ui.define([
 		},
 
 		_updateViewModel : function(sProperty, vValue) {
-			// this._oViewModel.getProperty(ssProperty);
 			var oViewModel = this.getView().getModel("pdfView");
+			// oViewModel.getProperty(ssProperty);
 			oViewModel.setProperty(sProperty, vValue );
 		},
 					

@@ -29,7 +29,8 @@ sap.ui.define([
 		},
 		getPathForSignature: function (sVbeln) {
 			return this._oODataModel.createKey("/Event", {
-				VBELN: sVbeln
+				VBELN: sVbeln,
+				Status: "0"
 			});
 		},
 		// This method checks whether the user currently possesses a draft.
@@ -73,6 +74,7 @@ sap.ui.define([
 			};
 			this._oODataModel.read("/Head", {
 				VBELN: sVbeln,
+				Status: "0",
 				success: fnSuccess,
 				error: fnError
 			});
@@ -93,7 +95,8 @@ sap.ui.define([
 		_createSignature: function (sVbeln, fnDraftCreated) {
 			// At least one attribute must be filled in the object passed to the create call (requirement of the oData service)
 			var oNew = {
-				Vbeln: sVbeln
+				Vbeln: sVbeln,
+				Status: "0"
 			};
 			this._oODataModel.create("/Signatures", oNew, {
 				success: fnDraftCreated,
@@ -164,19 +167,6 @@ sap.ui.define([
 						}*/
 		},
 
-		// Saves Draft each time a user edits a field
-		/*deleteDraft: function(fnAfter){
-			var _fnAfter = function(){
-				
-				this.createDraft(null);
-				this._oODataModel.read("/Drafts", {
-					success: null,
-					error: null
-				});
-				fnAfter();
-			}.bind(this);
-			this._callFunctionImport("/DraftDelete", {}, _fnAfter, "");
-		},*/
 
 		_callFunctionImport: function (sFunctionName, oURLParameters, fnAfterFunctionExecuted, sProcessingProperty) {
 			this._oODataModel.callFunction(sFunctionName, {

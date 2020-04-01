@@ -25,14 +25,8 @@ sap.ui.define([
 			/*	"": {
 				"dataSource": "mainService",
 				"preload": true,
-				"metadataUrlParams": {
-						"sap-documentation": "heading"
-					},
-					"json": true,
-					"defaultBindingMode": "TwoWay",
-					"useBatch": true,
-					"defaultCountMode": "Inline",
-					"loadMetadataAsync": true
+				...
+				
 			}*/
 			
 			var oModel = models.createODataModel({

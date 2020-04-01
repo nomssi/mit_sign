@@ -19,20 +19,24 @@ sap.ui.define([
 			});
 			return numberFormat.format(sValue);
 		},
-
+		
 		/**
-		 * Returns the relative URL to a product picture
-		 * @param {string} sUrl image URL
-		 * @return {string} relative image URL
+		 * Returns the status text based on the delivery  status
+		 * @param {string} sStatus delivery  status
+		 * @return {string} the corresponding text if found or the original value
 		 */
-		pictureUrl: function (sUrl) {
-			if (sUrl){
-				return  sap.ui.require.toUrl(sUrl);
-			} else {
-				return undefined;
-			}
-		}
+		statusText: function (sStatus) {
+			var oBundle = this.getResourceBundle();
 
+			var mStatusText = {
+				"0": oBundle.getText("statusNew"),
+				"1": oBundle.getText("statusProcessed"),
+				"2": oBundle.getText("statusError")
+			};
+
+			return mStatusText[sStatus] || sStatus;
+		}
+		
 	};
 
 	return formatter;
