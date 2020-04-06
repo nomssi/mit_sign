@@ -1,6 +1,6 @@
 /*!
  * Signature Pad v3.0.0-beta.3 | https://github.com/szimek/signature_pad
- * (c) 2018 Szymon Nowak | Released under the MIT license
+ * (c) 2020 Szymon Nowak | Released under the MIT license
  
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

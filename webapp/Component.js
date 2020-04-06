@@ -3,7 +3,7 @@ sap.ui.define([
 	"./model/models",
 	"sap/ui/Device",
 	"./controller/ErrorHandler",
-	"./reuse/util/controls",	
+	"./reuse/util/controls"	
 ], function(UIComponent, models, Device, ErrorHandler, controls) {
 	"use strict";
 

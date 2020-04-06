@@ -16,7 +16,7 @@ sap.ui.define([
 			 * @alias mit_sign.controller.ErrorHandler
 			 */
 			constructor : function (oComponent) {
-	            const generalInfoUrl = "https://eins.de";
+	            var generalInfoUrl = "https://eins.de";
 	        
 				this._oLink = new Link({
 					text: "Allgemeine Informationen anzeigen",

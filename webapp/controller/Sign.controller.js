@@ -19,7 +19,7 @@ sap.ui.define([
         formatter: formatter,
         
 		onInit: function () {
-            const generalInfoUrl = "https://eins.de";
+            var generalInfoUrl = "https://eins.de";
         
 			this._oLink = new Link({
 				text: "Allgemeine Informationen anzeigen",

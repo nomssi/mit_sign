@@ -11,9 +11,6 @@ sap.ui.define([
 
 			sign_canvas: null,
 			signaturePad: null,
-			// Adjust canvas coordinate space taking into account pixel ratio,
-			// to make it look crisp on mobile devices.
-			// This also causes canvas to be cleared.
 
 			metadata: {
 				properties: {
@@ -197,15 +194,24 @@ sap.ui.define([
 				}
 			},
 
+// Adjust canvas coordinate space taking into account pixel ratio,
+// to make it look crisp on mobile devices.
+// This also causes canvas to be cleared.
 			_resizeCanvas: function (oControl) {
 				var that = this;
 				if (that.signaturePad) {
 					var ratio = Math.max(window.devicePixelRatio || 1, 1);
+					var oCanvas = that.sign_canvas;
 
-					that.sign_canvas.width = that.sign_canvas.offsetWidth * ratio;
-					that.sign_canvas.height = that.sign_canvas.offsetHeight * ratio;
-					that.sign_canvas.getContext("2d").scale(ratio, ratio);
+					oCanvas.width = oCanvas.offsetWidth * ratio;
+					oCanvas.height = oCanvas.offsetHeight * ratio;
+					oCanvas.getContext("2d").scale(ratio, ratio);
 
+  // This library does not listen for canvas changes, so after the canvas is automatically
+  // cleared by the browser, SignaturePad#isEmpty might still return false, even though the
+  // canvas looks empty, because the internal data of this library wasn't cleared. To make sure
+  // that the state of this library is consistent with visual state of the canvas, you
+  // have to clear it manually.
 					that.signaturePad.clear(); // otherwise isEmpty() might return incorrect value	
 				}
 			},
@@ -217,7 +223,11 @@ sap.ui.define([
 
 					this.sign_canvas = document.querySelector("canvas");
 					// this.sign_canvas = $("#" + this.getId())[0];
-					var oOptions = { // onBegin: ??,
+					var oOptions = { 
+					// It's Necessary to use an opaque color when saving image as JPEG;
+					// this option can be omitted if only saving as PNG or SVG
+						// backgroundColor: "rgb(255, 255, 255)",
+						// onBegin: ??,
 						onEnd: this._raise_change_event.bind(this)
 					};
 

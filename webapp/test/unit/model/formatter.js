@@ -1,8 +1,8 @@
 sap.ui.define([
-		"mt_sign/model/formatter",
-		"test/unit/helper/FakeI18nModel",
-		"sap/ui/thirdparty/sinon",
-		"sap/ui/thirdparty/sinon-qunit"
+		"mit_sign/model/formatter"
+	//	"test/unit/helper/FakeI18nModel",
+	//	"sap/ui/thirdparty/sinon",
+	//	"sap/ui/thirdparty/sinon-qunit"
 	], function (formatter, FakeI18n) {
 		"use strict";
 

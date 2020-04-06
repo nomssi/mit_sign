@@ -132,7 +132,7 @@ sap.ui.define([
 						if (oResponseData.__batchResponses === undefined) {
                            return; 
 						} else {
-							for (var i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i++) {
+							for (var i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i += 1) {
 								var oEntry = oResponseData.__batchResponses[i];
 								if (oEntry.response) {
 									this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
