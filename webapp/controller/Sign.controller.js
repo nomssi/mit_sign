@@ -189,18 +189,70 @@ sap.ui.define([
 			this._wizard.invalidateStep(oStep);	
 			this._wizard.setCurrentStep(oStep);	  			
 		},
-
+		
 		onUndoButton: function(oEvent){
-			var oSource = oEvent.getSource();
-			var oId = oSource;
-			var sSignPadId = "signature-pad";   // Ausgebender
-			var oStep = this.byId("signReleaserStep");
-			this._updateViewModel("/Releaser>Url", "");
+			var sSignPadId;
+			var oStep;
 			
-			this._oHelper.clearSignature(this.sVbeln);
+			var oSource = oEvent.getSource();
+
+			var oReleaserBtn = this.byId("btnClear");
+			var oReceiverBtn = this.byId("btnClear2");
+
+			if (oSource === oReleaserBtn) {
+				sSignPadId = "signature-pad";   // Ausgebender
+				oStep = this.byId("signReleaserStep");
+				this._updateViewModel("/Releaser>Url", "");
+			} else
+			if (oSource === oReceiverBtn) { 
+				sSignPadId = "signature-pad2";  // Empfänger
+				oStep = this.byId("signReceiverStep");
+				this._updateViewModel("/Receiver>Url", "");				
+			} else 
+			{ return; }
+
 			this.byId(sSignPadId).undo();
-			this._wizard.invalidateStep(oStep);	
-			this._wizard.setCurrentStep(oStep);	  			
+			
+			var oSignPad = this.byId(sSignPadId);
+			
+			if (oSignPad.isEmpty()) {
+				this._oHelper.clearSignature(this.sVbeln);
+				this._wizard.invalidateStep(oStep);
+				this._wizard.setCurrentStep(oStep);
+			}
+		},		
+
+		onSignChange: function(oEvent) {
+			var oStep;
+			var oField;
+			var sProperty;
+			var sUrl = oEvent.getParameter("value");
+
+			var oSignPad = oEvent.getSource();
+			var oReleaserSignPad = this.byId("signature-pad");   // Ausgebender
+			var oReceiverSignPad = this.byId("signature-pad2");  // Empfänger
+
+			if (oSignPad === oReleaserSignPad) {
+				oStep = this.byId("signReleaserStep");
+				oField = this.byId("sName");
+				sProperty = "/Releaser>Url";
+			} else
+			if (oSignPad === oReceiverSignPad) { 
+				oField = this.byId("sRecvName");
+				oStep = this.byId("signReceiverStep");
+				sProperty = "/Receiver>Url";
+			} else 
+			{ return; }
+
+	        if (oField.getValue() !== "" && !oSignPad.isEmpty() ){
+	     		 oStep.setValidated(true);
+	        }				
+
+			this._updateViewModel(sProperty, sUrl );
+
+			setTimeout(function() {
+				this._fieldChange(oField);
+			}.bind(this), 0);
 		},
 
 		removeMessageFromTarget: function (sTarget) {
@@ -268,39 +320,6 @@ sap.ui.define([
 			// draft is updated, otherwise only the Supplier Name is saved to the draft and Supplier Id is lost
 			setTimeout(function() {
 				this._fieldChange(oNameField);
-			}.bind(this), 0);
-		},
-		
-		onSignChange: function(oEvent) {
-			var oStep;
-			var oField;
-			var sProperty;
-			var sUrl = oEvent.getParameter("value");
-
-			var oSignPad = oEvent.getSource();
-			var oReleaserSignPad = this.byId("signature-pad");   // Ausgebender
-			var oReceiverSignPad = this.byId("signature-pad2");  // Empfänger
-
-			if (oSignPad === oReleaserSignPad) {
-				oStep = this.byId("signReleaserStep");
-				oField = this.byId("sName");
-				sProperty = "/Releaser>Url";
-			} else
-			if (oSignPad === oReceiverSignPad) { 
-				oField = this.byId("sRecvName");
-				oStep = this.byId("signReceiverStep");
-				sProperty = "/Receiver>Url";
-			} else 
-			{ return; }
-
-			this._updateViewModel(sProperty, sUrl );
-
-           if (oField.getValue() !== ""){
-			 oStep.setValidated(true);
-	       }
-
-			setTimeout(function() {
-				this._fieldChange(oField);
 			}.bind(this), 0);
 		},
 		

@@ -156,8 +156,8 @@ SOFTWARE.
 
   var SignaturePad = (function () {
       function SignaturePad(canvas, options) {
-          if (options === void 0) { options = {}; }
           var _this = this;
+          if (options === void 0) { options = {}; }
           this.canvas = canvas;
           this.options = options;
           this._handleMouseDown = function (event) {
@@ -436,7 +436,6 @@ SOFTWARE.
               y += 3 * uu * t * curve.control1.y;
               y += 3 * u * tt * curve.control2.y;
               y += ttt * curve.endPoint.y;
-              // var width = curve.startWidth + ttt * widthDelta;
               var width = Math.min(curve.startWidth + ttt * widthDelta, this.maxWidth);
               this._drawCurveSegment(x, y, width);
           }

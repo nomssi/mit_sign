@@ -9,7 +9,7 @@ sap.ui.define([
 
 		return Control.extend("mit_sign.controls.SignaturePad", {
 
-			sign_canvas: null,
+			signCanvas: null,
 			signaturePad: null,
 
 			metadata: {
@@ -33,6 +33,7 @@ sap.ui.define([
 					},
 					"bgColor": {
 						"type": "sap.ui.core.CSSColor",
+						// "defaultValue": sap.ui.core.theming.Parameters.get("sapUiContentImagePlaceholderBackground")
 						"defaultValue": sap.ui.core.theming.Parameters.get("sapUiButtonHoverBackground")
 					},
 					"signcolor": {
@@ -43,7 +44,7 @@ sap.ui.define([
 					"name": "string"
 				},
 				events: {
-					change: {
+					onEndEvent: {
 						parameters: {
 							value: {
 								type: "string"
@@ -58,11 +59,11 @@ sap.ui.define([
 			 *
 			 * @since 1.0.0
 			 */
-			cropSignatureCanvas: function (canvas) {
+			_cropSignatureCanvas: function (canvas) {
 
 				// First duplicate the canvas to not alter the original
-				var croppedCanvas = document.createElement("canvas"),
-					croppedCtx = croppedCanvas.getContext("2d");
+				var croppedCanvas = document.createElement("canvas");
+				var croppedCtx = croppedCanvas.getContext("2d");
 
 				croppedCanvas.width = canvas.width;
 				croppedCanvas.height = canvas.height;
@@ -106,13 +107,13 @@ sap.ui.define([
 				return croppedCanvas.toDataURL("image/jpeg", 1.0);
 			},
 
-			_raise_change_event: function (oEvent) {
+			_raiseEndEvent: function (oEvent) {
 				var that = this.signaturePad;
 				var _url = "";
 				if (that) {
-					_url = this.cropSignatureCanvas(this.sign_canvas);
+					_url = this._cropSignatureCanvas(this.signCanvas);
 				}
-				this.fireEvent("change", {
+				this.fireEvent("onEndEvent", {
 					value: _url
 				});
 			},
@@ -120,18 +121,23 @@ sap.ui.define([
 			clear: function () {
 				if (this.signaturePad) {
 					this.signaturePad.clear();
-					this.fireEvent("change", {
+					this.fireEvent("onEndEvent", {
 						value: ""
 					});
 				}
 			},
 
 			isEmpty: function () {
-				var _state;
+				var bState;
 				if (this.signaturePad) {
-					_state = this.signaturePad.isEmpty();
+					bState = this.signaturePad.isEmpty();
+					if (!bState) {
+						var aGroups = this.signaturePad.toData();
+						// check if there's at leat one group with more than 5 points
+						bState = !aGroups.some(function (group) { return group.points.length > 5; });
+					}
 				}
-				return _state;
+				return bState;
 			},
 
 			undo: function () {
@@ -143,7 +149,7 @@ sap.ui.define([
 						this.signaturePad.fromData(data);
 					}
 					if (this.signaturePad.isEmpty()) {
-						this.fireEvent("change", {
+						this.fireEvent("onEndEvent", {
 							value: ""
 						});
 					}
@@ -153,7 +159,7 @@ sap.ui.define([
 			export: function () {
 				var _url;
 				if (this.signaturePad) {
-					_url = this.cropSignatureCanvas(this.sign_canvas);
+					_url = this._cropSignatureCanvas(this.signCanvas);
 				}
 				return _url;
 			},
@@ -171,7 +177,7 @@ sap.ui.define([
 				 */
 				render: function (oRm, oSignPad) {
 					// initialize button width
-					var thickness = parseInt(oSignPad.getProperty("thickness"), 10);
+					var iThickness = parseInt(oSignPad.getProperty("thickness"), 10);
 
 					oRm.openStart("div", oSignPad)
 						.openEnd();
@@ -201,7 +207,7 @@ sap.ui.define([
 				var that = this;
 				if (that.signaturePad) {
 					var ratio = Math.max(window.devicePixelRatio || 1, 1);
-					var oCanvas = that.sign_canvas;
+					var oCanvas = that.signCanvas;
 
 					oCanvas.width = oCanvas.offsetWidth * ratio;
 					oCanvas.height = oCanvas.offsetHeight * ratio;
@@ -221,17 +227,16 @@ sap.ui.define([
 				if (sap.ui.core.Control.prototype.onAfterRendering) {
 					sap.ui.core.Control.prototype.onAfterRendering.apply(this, arguments); //super class
 
-					this.sign_canvas = document.querySelector("canvas");
-					// this.sign_canvas = $("#" + this.getId())[0];
+					this.signCanvas = document.querySelector("canvas[id=" + this.getId() + "]");  
 					var oOptions = { 
 					// It's Necessary to use an opaque color when saving image as JPEG;
 					// this option can be omitted if only saving as PNG or SVG
 						// backgroundColor: "rgb(255, 255, 255)",
 						// onBegin: ??,
-						onEnd: this._raise_change_event.bind(this)
+						onEnd: this._raiseEndEvent.bind(this)
 					};
 
-					this.signaturePad = new SignaturePad(this.sign_canvas, oOptions);
+					this.signaturePad = new SignaturePad(this.signCanvas, oOptions);
 
 					var that = this; //make the control resizable and redraw when something changed
 					sap.ui.core.ResizeHandler.register(that, that._resizeCanvas.bind(this));
