@@ -1,0 +1,49 @@
+[{
+	"Vbeln": "0080055875",
+	"Kunnr": "LNM2GASXXX",
+	"Name1": "NM2 Sondermeßtechnik Gas ",
+	"__metadata": {
+		"uri": "Heads('VBELN%201')",
+		"type": "MAK.SIGNATURE_SRV.Head"
+	}
+}, {
+	"Vbeln": "0080054160",
+	"Kunnr": "LSAGPLAUEN",
+	"Name1": "SPIE SAG Plauen",
+	"__metadata": {
+		"uri": "Heads('VBELN%202')",
+		"type": "MAK.SIGNATURE_SRV.Head"
+	}
+}, {
+	"Vbeln": "0080055880",
+	"Kunnr": "LRACSMXXXX",
+	"Name1": "RAC Service GmbH"
+}, {
+	"Vbeln": "0080055813",
+	"Kunnr": "LCEGECEELE",
+	"Name1": "CeGeCe Elektrobau "
+}, {
+	"Vbeln": "0080054199",
+	"Kunnr": "LNM2GASXXX",
+	"Name1": "NM2 Sondermeßtechnik Gas "
+}, {
+	"Vbeln": "0080VBELN6",
+	"Kunnr": "LIDV6DEMOX",
+	"Name1": "IDV Demo6"
+}, {
+	"Vbeln": "0080VBELN7",
+	"Name1": "IDV Demo7",
+	"Kunnr": "LIDV7DEMOX"
+}, {
+	"Vbeln": "0080VBELN8",
+	"Name1": "IDV Demo8",
+	"Kunnr": "LIDV8DEMOX"
+}, {
+	"Vbeln": "0080VBELN9",
+	"Name1": "IDV Demo9",
+	"Kunnr": "LIDV9DEMOX"
+}, {
+	"Vbeln": "008VBELN10",
+	"Name1": "IDV Demo10",
+	"Kunnr": "LIDV10DEMO"
+}]

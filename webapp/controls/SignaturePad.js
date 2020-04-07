@@ -177,7 +177,7 @@ sap.ui.define([
 				 */
 				render: function (oRm, oSignPad) {
 					// initialize button width
-					var iThickness = parseInt(oSignPad.getProperty("thickness"), 10);
+					// var iThickness = parseInt(oSignPad.getProperty("thickness"), 10);
 
 					oRm.openStart("div", oSignPad)
 						.openEnd();

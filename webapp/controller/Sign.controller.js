@@ -4,13 +4,14 @@ sap.ui.define([
 	"../model/formatter",	
 	"sap/m/MessagePopover",
 	"sap/m/MessagePopoverItem",	
-	"sap/m/Link"
+	"../resuse/util/messages"
 ], function (
 	BaseController,
 	Signature,
 	formatter,
 	MessagePopover,
 	MessagePopoverItem,
+	Messages,
 	Link) {
 	"use strict";
 
@@ -19,14 +20,9 @@ sap.ui.define([
         formatter: formatter,
         
 		onInit: function () {
-            var generalInfoUrl = "https://eins.de";
-        
-			this._oLink = new Link({
-				text: "Allgemeine Informationen anzeigen",
-				href: generalInfoUrl,
-				target: "_blank"
-			});
-
+			
+            this._oLink = Messages.createDefaultLink();
+            
 			this._wizard = this.byId("signWizard");
 			this._oNavContainer = this.byId("wizardNavContainer");
 			this._oWizardContentPage = this.byId("wizardContentPage");

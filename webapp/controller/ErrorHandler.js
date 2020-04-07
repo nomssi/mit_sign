@@ -2,8 +2,8 @@ sap.ui.define([
 		"sap/ui/base/Object",
 		"sap/m/MessageBox",
 		"sap/m/MessageToast",
-		"sap/m/Link"
-	], function (UI5Object, MessageBox, MessageToast, Link) {
+		"../resuse/util/messages"
+	], function (UI5Object, MessageBox, MessageToast, Messages) {
 		"use strict";
 
 		return UI5Object.extend("mit_sign.controller.ErrorHandler", {
@@ -16,13 +16,8 @@ sap.ui.define([
 			 * @alias mit_sign.controller.ErrorHandler
 			 */
 			constructor : function (oComponent) {
-	            var generalInfoUrl = "https://eins.de";
-	        
-				this._oLink = new Link({
-					text: "Allgemeine Informationen anzeigen",
-					href: generalInfoUrl,
-					target: "_blank"
-				});
+
+				this._oLink = Messages.createDefaultLink();
 				
 				this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 				this._oComponent = oComponent;

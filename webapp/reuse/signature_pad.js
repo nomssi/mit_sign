@@ -528,7 +528,7 @@ SOFTWARE.
               '>';
           var body = svg.innerHTML;
           if (body === undefined) {
-              var dummy = document.createElement('dummy');
+              var dummy = document.createElement("dummy");
               var nodes = svg.childNodes;
               dummy.innerHTML = "";
               for (var i = 0; i < nodes.length; i += 1) {

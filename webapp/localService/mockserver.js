@@ -69,7 +69,7 @@ sap.ui.define([
 					        	var oResponse = jQuery.sap.sjax({
 					               	url: "/Signatures"
 					        	});
-					        	oXhr.respondJSON(200, {}, JSON.stringify("My SaveSignature response"));
+					        	oXhr.respondJSON(200, {}, JSON.stringify(oResponse));
 					        	return true;
 					        }
 					});

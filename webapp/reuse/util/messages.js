@@ -7,11 +7,13 @@ sap.ui.define([
 	"use strict";
 
 	function fnExtractErrorMessageFromDetails(sDetails) {
+		var sMessageText;
 		if (jQuery.sap.startsWith(sDetails || "", "{\"error\":")) {
 			var oErrModel = new JSONModel();
 			oErrModel.setJSON(sDetails);
-			return oErrModel.getProperty("/error/message/value") || "Error";
+			sMessageText = oErrModel.getProperty("/error/message/value") || "Error";
 		}
+		return sMessageText;
 	}
 
 	function fnParseError(oParameter) {
@@ -56,6 +58,16 @@ sap.ui.define([
 
 		extractErrorMessageFromDetails: function(sDetails) {
 			return fnExtractErrorMessageFromDetails(sDetails);
+		},
+		
+		createDefaultLink: function() {
+	       var generalInfoUrl = "https://eins.de";
+	        
+			return new sap.m.Link({
+					text: "Allgemeine Informationen anzeigen",
+					href: generalInfoUrl,
+					target: "_blank"
+				});	
 		}
 	};
 });

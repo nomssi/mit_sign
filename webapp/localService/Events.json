@@ -1,0 +1,96 @@
+[{
+	"VBELN": "0080055875",
+	"SignatureReleaser": "SignatureReleaser1",
+	"SignatureReceiver": "SignatureReceiver1",
+	"PDFUrl": "PDFUrl1",
+	"SignerName": "Jacques Nomssi Signer1",
+	"ReceiverName": "Conny Richter Receiver1",
+	"__metadata": {
+		"uri": "Events('VBELN%201')",
+		"type": "MAK.SIGNATURE_SRV.Event"
+	},
+	"EventPositions": {
+		"__deferred": {
+			"uri": "Events('VBELN%201')/EventPositions"
+		}
+	},
+	"EventHead": {
+		"__deferred": {
+			"uri": "Events('VBELN%201')/EventHead"
+		}
+	}
+}, {
+	"VBELN": "0080054160",
+	"SignatureReleaser": "SignatureReleaser2",
+	"SignatureReceiver": "SignatureReceiver2",
+	"PDFUrl": "file://PDFUrl2",
+	"SignerName": "Felix Lemke Signer2",
+	"ReceiverName": "Nomssi Nzali Receiver2",
+	"__metadata": {
+		"uri": "Events('VBELN%202')",
+		"type": "MAK.SIGNATURE_SRV.Event"
+	},
+	"EventPositions": {
+		"__deferred": {
+			"uri": "Events('VBELN%202')/EventPositions"
+		}
+	},
+	"EventHead": {
+		"__deferred": {
+			"uri": "Events('VBELN%202')/EventHead"
+		}
+	}
+}, {
+	"VBELN": "0080055880",
+	"SignatureReleaser": "SignatureReleaser3",
+	"SignatureReceiver": "SignatureReceiver3",
+	"PDFUrl": "PDFUrl3",
+	"SignerName": "Nomssi Jacques Signer3",
+	"ReceiverName": "Jacques Nomssi Receiver3"
+}, {
+	"VBELN": "0080055813",
+	"SignatureReleaser": "SignatureReleaser4",
+	"SignatureReceiver": "SignatureReceiver4",
+	"SignerName": "Signer4",
+	"ReceiverName": "Receiver4",
+	"PDFUrl": "PDFUrl4"
+}, {
+	"VBELN": "0080054199",
+	"SignatureReleaser": "SignatureReleaser5",
+	"SignatureReceiver": "SignatureReceiver5",
+	"PDFUrl": "PDFUrl5",
+	"SignerName": "Signer5",
+	"ReceiverName": "Receiver5"
+}, {
+	"VBELN": "0080VBELN6",
+	"SignatureReleaser": "SignatureReleaser6",
+	"SignatureReceiver": "SignatureReceiver6",
+	"PDFUrl": "PDFUrl6",
+	"SignerName": "Signer06",
+	"ReceiverName": "Empfänger06"
+}, {
+	"VBELN": "0080VBELN7",
+	"PDFUrl": "PDFUrl7",
+	"SignerName": "Signer07",
+	"ReceiverName": "Empfänger07"
+}, {
+	"VBELN": "0080VBELN8",
+	"PDFUrl": "PDFUrl8",
+	"SignerName": "Signer08",
+	"ReceiverName": "Empfänger08"
+}, {
+	"VBELN": "0080VBELN9",
+	"PDFUrl": "PDFUrl9",
+	"SignerName": "Signer09",
+	"ReceiverName": "Empfänger09"
+}, {
+	"VBELN": "008VBELN10",
+	"PDFUrl": "PDFUrl10",
+	"SignerName": "Signer10",
+	"ReceiverName": "Empfänger10"
+}, {
+	"VBELN": "0080VBELN8",
+	"PDFUrl": "PDFUrl8b",
+	"SignerName": "Signer08b",
+	"ReceiverName": "Empfänger08b"
+}]

@@ -1,0 +1,129 @@
+[{
+	"Vbeln": "0080055875",
+	"Matnr": "1805",
+	"Posnr": 10,
+	"Lfimg": "20",
+	"Meins": "ST",
+	"Maktx": "Batterie Micro R3  1,5V",
+	"__metadata": {
+		"uri": "Positions('VBELN%201')",
+		"type": "MAK.SIGNATURE_SRV.Position"
+	}
+}, {
+	"Vbeln": "0080055875",
+	"Matnr": "1813",
+	"Posnr": 20,
+	"Lfimg": "50",
+	"Meins": "ST",
+	"Maktx": "Batterie Mignon R6 1,5V",
+	"__metadata": {
+		"uri": "Positions('VBELN%202')",
+		"type": "MAK.SIGNATURE_SRV.Position"
+	}
+}, {
+	"Vbeln": "0080054160",
+	"Matnr": "20724",
+	"Posnr": 10,
+	"Lfimg": "2",
+	"Meins": "ST",
+	"Maktx": "PE100-Reduzierstück -StF- SDR11 d225/180",
+	"__metadata": {
+		"uri": "Positions('VBELN%203')",
+		"type": "MAK.SIGNATURE_SRV.Position"
+	}
+}, {
+	"Vbeln": "0080054160",
+	"Matnr": "23977",
+	"Posnr": 20,
+	"Lfimg": "3",
+	"Meins": "ST",
+	"Maktx": "PE100-T-Stück-Elektro- SDR11 d225",
+	"__metadata": {
+		"uri": "Positions('VBELN%204')",
+		"type": "MAK.SIGNATURE_SRV.Position"
+	}
+}, {
+	"Vbeln": "0080054160",
+	"Matnr": "35925",
+	"Posnr": 30,
+	"Lfimg": "4",
+	"Meins": "ST",
+	"Maktx": "PE100-E-Verschlussmuffe SDR11 d225"
+}, {
+	"Vbeln": "0080055880",
+	"Matnr": "9200",
+	"Posnr": 10,
+	"Lfimg": "1",
+	"Meins": "ST",
+	"Maktx": "Laufrad für VRE 0200/5021 Z 288/11"
+}, {
+	"Vbeln": "0080055813",
+	"Matnr": "39498",
+	"Posnr": 10,
+	"Lfimg": "2",
+	"Meins": "ST",
+	"Maktx": "Innenraum Endverschluß"
+}, {
+	"Vbeln": "0080054199",
+	"Matnr": "21074",
+	"Lfimg": "500",
+	"Posnr": 10,
+	"Meins": "ST",
+	"Maktx": "Kabelbinder 3,5x150mmm"
+}, {
+	"Vbeln": "0080VBELN6",
+	"Matnr": "TEST6",
+	"Posnr": 60,
+	"Lfimg": "60.0",
+	"Meins": "KG",
+	"Maktx": "Test Gewicht"
+}, {
+	"Vbeln": "0080VBELN7",
+	"Matnr": "TEST7",
+	"Posnr": 70,
+	"Lfimg": "73.2",
+	"Meins": "M",
+	"Maktx": "Test Länge"
+}, {
+	"Vbeln": "0080VBELN8",
+	"Matnr": "TEST8",
+	"Posnr": 80,
+	"Lfimg": "82",
+	"Meins": "ST",
+	"Maktx": "Test Stück"
+}, {
+	"Vbeln": "0080VBELN9",
+	"Matnr": "TEST9",
+	"Posnr": 90,
+	"Lfimg": "9",
+	"Meins": "ST",
+	"Maktx": "TEst"
+}, {
+	"Vbeln": "008VBELN10",
+	"Matnr": "TEST10",
+	"Posnr": 100,
+	"Lfimg": "10",
+	"Meins": "ST",
+	"Maktx": "Test"
+}, {
+	"Vbeln": "0080VBELN7",
+	"Posnr": 20,
+	"Lfimg": "72",
+	"Meins": "ST",
+	"Matnr": "TEST72",
+	"Maktx": "Test Länge2"
+}, {
+	"Vbeln": "0080VBELN7",
+	"Posnr": 30,
+	"Lfimg": "73",
+	"Meins": "ST",
+	"Matnr": "TEST73",
+	"Maktx": "Test Länge3"
+}, {
+	"Vbeln": "0080VBELN7",
+	"Posnr": 40,
+	"Lfimg": "74",
+	"Meins": "ST",
+	"Matnr": "TEST74",
+	"Maktx": "Test Länge4"
+}]
