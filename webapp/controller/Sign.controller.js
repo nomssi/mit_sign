@@ -4,15 +4,14 @@ sap.ui.define([
 	"../model/formatter",	
 	"sap/m/MessagePopover",
 	"sap/m/MessagePopoverItem",	
-	"../resuse/util/messages"
+	"../reuse/util/messages"
 ], function (
 	BaseController,
 	Signature,
 	formatter,
 	MessagePopover,
 	MessagePopoverItem,
-	Messages,
-	Link) {
+	Messages) {
 	"use strict";
 
 	return BaseController.extend("mit_sign.controller.Sign", {

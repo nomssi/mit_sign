@@ -1,9 +1,10 @@
 sap.ui.define([
 		"sap/m/MessageBox",
 		"sap/ui/model/json/JSONModel",
-		"sap/ui/Device",
+		"sap/ui/Device",	
+		"sap/m/Link",
 		"./controls"
-	], function(MessageBox, JSONModel, Device, controls) {
+	], function(MessageBox, JSONModel, Device, Link, controls) {
 	"use strict";
 
 	function fnExtractErrorMessageFromDetails(sDetails) {
@@ -63,7 +64,7 @@ sap.ui.define([
 		createDefaultLink: function() {
 	       var generalInfoUrl = "https://eins.de";
 	        
-			return new sap.m.Link({
+			return new Link({
 					text: "Allgemeine Informationen anzeigen",
 					href: generalInfoUrl,
 					target: "_blank"

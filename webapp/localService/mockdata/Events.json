@@ -25,7 +25,7 @@
 	"SignatureReceiver": "SignatureReceiver2",
 	"PDFUrl": "file://PDFUrl2",
 	"SignerName": "Felix Lemke Signer2",
-	"ReceiverName": "Nomssi Nzali Receiver2",
+	"ReceiverName": "Jacques Nomssi Receiver2",
 	"__metadata": {
 		"uri": "Events('VBELN%202')",
 		"type": "MAK.SIGNATURE_SRV.Event"
@@ -52,7 +52,7 @@
 	"SignatureReleaser": "SignatureReleaser4",
 	"SignatureReceiver": "SignatureReceiver4",
 	"SignerName": "Signer4",
-	"ReceiverName": "Receiver4",
+	"ReceiverName": "Receiver5",
 	"PDFUrl": "PDFUrl4"
 }, {
 	"VBELN": "0080054199",
@@ -62,17 +62,17 @@
 	"SignerName": "Signer5",
 	"ReceiverName": "Receiver5"
 }, {
-	"VBELN": "0080VBELN6",
+	"VBELN": "0080057046",
 	"SignatureReleaser": "SignatureReleaser6",
 	"SignatureReceiver": "SignatureReceiver6",
 	"PDFUrl": "PDFUrl6",
-	"SignerName": "Signer06",
-	"ReceiverName": "Empfänger06"
+	"SignerName": "Signer",
+	"ReceiverName": "Servicebereich Erzgebirge"
 }, {
 	"VBELN": "0080VBELN7",
 	"PDFUrl": "PDFUrl7",
 	"SignerName": "Signer07",
-	"ReceiverName": "Empfänger07"
+	"ReceiverName": "Receiver06"
 }, {
 	"VBELN": "0080VBELN8",
 	"PDFUrl": "PDFUrl8",

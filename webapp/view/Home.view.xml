@@ -23,14 +23,15 @@
 					<Toolbar>
 						<Title text="{i18n>ReceiverName}" />
 						<ToolbarSpacer />
-						<Button icon="sap-icon://sort" tooltip="Sort by VBLEN"
+						<Button icon="sap-icon://sort" tooltip="Sort by VBELN"
 						        press="onSortVBELN" />
 						<SearchField width="50%" search="onFilterEvents" />
 					</Toolbar>
 				</headerToolbar>
 				<items>
-					<ObjectListItem type="Navigation" title="{ReceiverName}" 
-					                press="onEventListItemPress" intro="{SignerName}"
+					<ObjectListItem type="Navigation" title="{Head/Kunnr} {ReceiverName}" 
+					                press="onEventListItemPress" 
+					                intro="{SignerName}"
 						iconDensityAware="false">
 						<attributes>
 							<ObjectAttribute text="{VBELN}"/>

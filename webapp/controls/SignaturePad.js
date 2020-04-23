@@ -59,24 +59,24 @@ sap.ui.define([
 			 *
 			 * @since 1.0.0
 			 */
-			_cropSignatureCanvas: function (canvas) {
+			_cropSignatureCanvas: function (oCanvas) {
 
 				// First duplicate the canvas to not alter the original
-				var croppedCanvas = document.createElement("canvas");
-				var croppedCtx = croppedCanvas.getContext("2d");
+				var oCroppedCanvas = document.createElement("canvas");
+				var croppedCtx = oCroppedCanvas.getContext("2d");
 
-				croppedCanvas.width = canvas.width;
-				croppedCanvas.height = canvas.height;
-				croppedCtx.drawImage(canvas, 0, 0);
+				oCroppedCanvas.width = oCanvas.width;
+				oCroppedCanvas.height = oCanvas.height;
+				croppedCtx.drawImage(oCanvas, 0, 0);
 
 				// Next do the actual cropping
-				var w = croppedCanvas.width,
-					h = croppedCanvas.height,
+				var w = oCroppedCanvas.width,
+					h = oCroppedCanvas.height,
 					pix = {
 						x: [],
 						y: []
 					},
-					imageData = croppedCtx.getImageData(0, 0, croppedCanvas.width, croppedCanvas.height),
+					imageData = croppedCtx.getImageData(0, 0, oCroppedCanvas.width, oCroppedCanvas.height),
 					x, y, index;
 
 				for (y = 0; y < h; y++) {
@@ -100,11 +100,11 @@ sap.ui.define([
 				h = pix.y[n] - pix.y[0];
 				var cut = croppedCtx.getImageData(pix.x[0], pix.y[0], w, h);
 
-				croppedCanvas.width = w;
-				croppedCanvas.height = h;
+				oCroppedCanvas.width = w;
+				oCroppedCanvas.height = h;
 				croppedCtx.putImageData(cut, 0, 0);
 
-				return croppedCanvas.toDataURL("image/jpeg", 1.0);
+				return oCroppedCanvas.toDataURL("image/jpeg", 1.0);
 			},
 
 			_raiseEndEvent: function (oEvent) {

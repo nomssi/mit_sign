@@ -2,7 +2,7 @@ sap.ui.define([
 		"sap/ui/base/Object",
 		"sap/m/MessageBox",
 		"sap/m/MessageToast",
-		"../resuse/util/messages"
+		"../reuse/util/messages"
 	], function (UI5Object, MessageBox, MessageToast, Messages) {
 		"use strict";
 
