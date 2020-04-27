@@ -121,7 +121,6 @@
                                                                  type: 'sap.ui.model.type.String' }"
                                                mask="CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC" 
                                                placeholderSymbol="_" 
-                                               liveChange="onInputLiveChange"
                                                change="onInputChange" placeholder="{{i18n>placeholder.Receiver}">
 										<rules>
 											<MaskInputRule maskFormatSymbol="C" regex="[A-Za-z. ]"/>
