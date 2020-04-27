@@ -46,7 +46,7 @@ sap.ui.define([
 
 			if (!oModelOptions.url) {
 				jQuery.sap.log.error("Please provide a url when you want to create an ODataModel",
-					"mit_sign.model.models.createODataModel");
+					"Signature.model.models.createODataModel");
 				return null;
 			}
 

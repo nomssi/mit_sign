@@ -5,7 +5,7 @@ sap.ui.getCore().attachInit(function () {
 	"use strict";	
 	
 	sap.ui.require([
-		"mit_sign/test/unit/AllTests" 
+		"Signature/test/unit/AllTests" 
 	], function () {
 		QUnit.start();
 	});

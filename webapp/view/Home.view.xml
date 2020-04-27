@@ -1,4 +1,4 @@
-<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="mit_sign.controller.Home"
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="Signature.controller.Home"
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="{i18n>Deliveries} {viewProperties>/updateTime}">
 		<content>

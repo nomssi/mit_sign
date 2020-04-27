@@ -1,5 +1,5 @@
 <core:View 
-  controllerName="mit_sign.controller.App" 
+  controllerName="Signature.controller.App" 
   xmlns:html="http://www.w3.org/1999/xhtml"
   xmlns:mvc="sap.ui.core.mvc"
   xmlns:core="sap.ui.core"

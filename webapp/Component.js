@@ -7,7 +7,7 @@ sap.ui.define([
 ], function(UIComponent, models, Device, ErrorHandler, controls) {
 	"use strict";
 
-	return UIComponent.extend("mit_sign.Component", {
+	return UIComponent.extend("Signature.Component", {
 
 		metadata: {
 			manifest: "json"

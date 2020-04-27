@@ -1,6 +1,6 @@
 sap.ui.define([
 	"sap/ui/core",
-	"mit_sign/controls/SignaturePad"
+	"Signature/controls/SignaturePad"
 ], function (Core, Signature) {
 	"use strict";
 

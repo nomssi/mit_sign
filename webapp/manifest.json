@@ -48,7 +48,7 @@
 	"sap.ui5": {
 		"_version": "1.1.0",
 		"rootView": {
-			"viewName": "mit_sign.view.App",
+			"viewName": "Signature.view.App",
 			"type": "XML",
 			"async": true,
 			"id": "idAppControl"
@@ -70,13 +70,13 @@
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {
-					"bundleName": "mit_sign.i18n.i18n"
+					"bundleName": "Signature.i18n.i18n"
 				}
 			},
 			"": {
 				"dataSource": "mainService",
 				"settings": {
-					"useBatch" : true,
+					"useBatch": true,
 					"defaultBindingMode": "TwoWay"
 				}
 			}
@@ -92,7 +92,7 @@
 				"routerClass": "sap.m.routing.Router",
 				"viewType": "XML",
 				"async": true,
-				"viewPath": "mit_sign.view",
+				"viewPath": "Signature.view",
 				"controlAggregation": "pages",
 				"controlId": "app",
 				"bypassed": {

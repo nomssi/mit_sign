@@ -7,7 +7,7 @@ sap.ui.define([
 	"use strict";
 	
 	var oMockServer,
-		_sAppPath = "mit_sign/",
+		_sAppPath = "Signature/",
 		_sJsonFilesPath = _sAppPath + "localService/mockdata";
 
 	var oMockServerInterface = {

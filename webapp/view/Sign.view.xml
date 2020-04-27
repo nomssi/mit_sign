@@ -1,7 +1,7 @@
 <core:View xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" 
            xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" 
-           xmlns:pad="mit_sign.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" 
-           controllerName="mit_sign.controller.Sign" xmlns:html="http://www.w3.org/1999/xhtml"
+           xmlns:pad="Signature.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" 
+           controllerName="Signature.controller.Sign" xmlns:html="http://www.w3.org/1999/xhtml"
            busy="{pdfView>/busy}" 
 		   busyIndicatorDelay="{pdfView>/delay}">
 	<NavContainer id="wizardNavContainer">
@@ -80,18 +80,14 @@
 											<layout:GridData span="L2 M2" />
 										</layoutData>
 									</Label>
-									<MaskInput id="sName" value="{ path: 'SignerName',
-                                                             type: 'sap.ui.model.type.String' }"
-                                               mask="CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC" 
-                                               placeholderSymbol="_" 
-                                               change="onInputChange" placeholder="{{i18n>placeholder.Signer}">
-										<rules>
-											<MaskInputRule maskFormatSymbol="C" regex="[A-Za-z.]"/>
-										</rules>
+									<Input id="sName" value="{ path: 'SignerName',
+                                                               type: 'sap.ui.model.type.String' }"
+                                               liveChange="onInputChange"
+								               placeholder="{{i18n>placeholder.Signer}">
                                			<layoutData>
 											<layout:GridData span="L8 M8" />
 										</layoutData>										
-									</MaskInput>                                  
+									</Input>                                  
 
 	                              <Label text="{i18n>lbl.Signature}" labelFor="signature-pad">
                                 		<layoutData>
@@ -121,14 +117,20 @@
 											<layout:GridData span="L2 M2" />
 										</layoutData>
 									</Label>
-                                  <Input id="sRecvName" value="{ path: 'ReceiverName',
+									<MaskInput  id="sRecvName" value="{ path: 'ReceiverName',
                                                                  type: 'sap.ui.model.type.String' }"
-                                         change="onInputChange" placeholder="{{i18n>placeholder.Receiver}">                                  
-                                		<layoutData>
+                                               mask="CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC" 
+                                               placeholderSymbol="_" 
+                                               liveChange="onInputLiveChange"
+                                               change="onInputChange" placeholder="{{i18n>placeholder.Receiver}">
+										<rules>
+											<MaskInputRule maskFormatSymbol="C" regex="[A-Za-z. ]"/>
+										</rules>
+                               			<layoutData>
 											<layout:GridData span="L8 M8" />
-										</layoutData>
-								  </Input>
-								  
+										</layoutData>										
+									</MaskInput>   
+									
 								<Label text="{i18n>lbl.Signature2}" labelFor="signature-pad2">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" linebreak="true" />

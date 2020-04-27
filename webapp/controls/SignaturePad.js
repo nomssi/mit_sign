@@ -7,7 +7,7 @@ sap.ui.define([
 	function (Pad, Control, Log) {
 		"use strict";
 
-		return Control.extend("mit_sign.controls.SignaturePad", {
+		return Control.extend("Signature.controls.SignaturePad", {
 
 			signCanvas: null,
 			signaturePad: null,
@@ -173,7 +173,7 @@ sap.ui.define([
 				/*
 				 * renders as Signature Tab
 				 * @param {sap.ui.core.RenderManager} oRM - UI5's render manager
-				 * @param {mit_sign.controls.SignPad} oControl - this UI5 custom control
+				 * @param {Signature.controls.SignPad} oControl - this UI5 custom control
 				 */
 				render: function (oRm, oSignPad) {
 					// initialize button width

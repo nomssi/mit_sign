@@ -1,5 +1,5 @@
 sap.ui.define([
-		"mit_sign/model/formatter"
+		"Signature/model/formatter"
 	//	"test/unit/helper/FakeI18nModel",
 	//	"sap/ui/thirdparty/sinon",
 	//	"sap/ui/thirdparty/sinon-qunit"

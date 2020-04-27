@@ -7,24 +7,12 @@
 
 		<title>Warenausgabe - Lieferschein unterschreiben</title>
 
-	<style>
-    html {
-        height: 100%;
-    }
-    body {
-        display: inline-block;
-        background-image: url('https://www.sap.com/dam/application/shared/logos/sap-logo-svg.svg.adapt.svg/1493030643828.svg');
-        background-position: center;
-        background-repeat: no-repeat;
-    }
-    </style>
-    
 		<script id="sap-ui-bootstrap"
 			src="../../resources/sap-ui-core.js"
 			data-sap-ui-libs="sap.m"
 			data-sap-ui-theme="sap_belize"
 			data-sap-ui-compatVersion="edge"
-			data-sap-ui-resourceroots='{"mit_sign": ""}'>
+			data-sap-ui-resourceroots='{"Signature": ""}'>
 		</script>
 
 		<link rel="stylesheet" type="text/css" href="css/style.css">
@@ -34,7 +22,7 @@
 				new sap.m.Shell({
 					app: new sap.ui.core.ComponentContainer({
 						height : "100%",
-						name : "mit_sign"
+						name : "Signature"
 					})
 				}).placeAt("content");
 			});

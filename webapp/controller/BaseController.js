@@ -6,7 +6,7 @@ sap.ui.define([
 ], function(Controller, MessageToast, UIComponent, History) {
 	"use strict";
 
-	return Controller.extend("mit_sign.controller.BaseController", {
+	return Controller.extend("Signature.controller.BaseController", {
 		/**
 		 * Convenience method for accessing the router.
 		 * @public

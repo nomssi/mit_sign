@@ -14,7 +14,7 @@ sap.ui.define([
 	Messages) {
 	"use strict";
 
-	return BaseController.extend("mit_sign.controller.Sign", {
+	return BaseController.extend("Signature.controller.Sign", {
 
         formatter: formatter,
         

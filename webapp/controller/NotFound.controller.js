@@ -3,7 +3,7 @@ sap.ui.define([
 ], function(BaseController) {
 	"use strict";
 
-	return BaseController.extend("mit_sign.controller.NotFound", {
+	return BaseController.extend("Signature.controller.NotFound", {
 
 	});
 });

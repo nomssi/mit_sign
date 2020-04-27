@@ -14,12 +14,11 @@ sap.ui.define([
 ], function (Object, JSONModel, MessageToast, messages) {
 	"use strict";
 
-	return Object.extend("mit_sign.model.Signature", {
+	return Object.extend("Signature.model.Signature", {
 		constructor: function (oComponent, oMainView) {
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this._oODataModel = oComponent.getModel();
-			//this._oApplicationProperties = oComponent.getModel("appProperties");
-			//this._oApplicationController = this._oApplicationProperties.getProperty("/applicationController");
+			
 			this._oMainView = oMainView;
 			this._oWhenNoDraft = new Promise(function (fnResolve) {
 				fnResolve(); // Since we are currently not in the process of deleting a draft, the Promise is resolved immediately
