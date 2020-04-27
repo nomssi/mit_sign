@@ -80,13 +80,18 @@
 											<layout:GridData span="L2 M2" />
 										</layoutData>
 									</Label>
-                                  <Input id="sName" value="{ path: 'SignerName',
-                                                             type: 'sap.ui.model.type.String' }" 
-                                         change="onInputChange" placeholder="{{i18n>placeholder.Signer}">
-                                		<layoutData>
+									<MaskInput id="sName" value="{ path: 'SignerName',
+                                                             type: 'sap.ui.model.type.String' }"
+                                               mask="CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC" 
+                                               placeholderSymbol="_" 
+                                               change="onInputChange" placeholder="{{i18n>placeholder.Signer}">
+										<rules>
+											<MaskInputRule maskFormatSymbol="C" regex="[A-Za-z.]"/>
+										</rules>
+                               			<layoutData>
 											<layout:GridData span="L8 M8" />
-										</layoutData>
-								  </Input>
+										</layoutData>										
+									</MaskInput>                                  
 
 	                              <Label text="{i18n>lbl.Signature}" labelFor="signature-pad">
                                 		<layoutData>
