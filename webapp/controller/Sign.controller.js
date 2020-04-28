@@ -320,7 +320,7 @@ sap.ui.define([
 			this.removeMessageFromTarget(sTarget);
 			var sCurrentValue = oInput.getValue();
             
-			if (sCurrentValue!) {
+			if (!sCurrentValue) {
 				oStep.setValidated(false);
 
 				this._popoverMessage(this._oResourceBundle.getText("mandatory.field"),
@@ -343,6 +343,9 @@ sap.ui.define([
 		},
 
 		_validateStep: function (oField, oSignPad, oStep) {
+			
+			oStep.setValidated(false);
+			
 			if (oField.getValue() !== "" && !oSignPad.isEmpty()) {
 				oStep.setValidated(true);
 			}
