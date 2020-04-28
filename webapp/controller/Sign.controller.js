@@ -315,12 +315,12 @@ sap.ui.define([
 			);
 		},
 
-		_handleRequiredField: function (oInput, oStep) {
+		_validateField: function (oInput, oStep) {
 			var sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
-
 			this.removeMessageFromTarget(sTarget);
-
-			if (!oInput.getValue()) {
+			var sCurrentValue = oInput.getValue();
+            
+			if (sCurrentValue!) {
 				oStep.setValidated(false);
 
 				this._popoverMessage(this._oResourceBundle.getText("mandatory.field"),
@@ -328,15 +328,8 @@ sap.ui.define([
 					sap.ui.core.MessageType.Error,
 					sTarget);
 			}
-		},
-
-		_validateField: function (oInput, oStep) {
-			var sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
-
-			this.removeMessageFromTarget(sTarget);
-
-			if (oInput.getValue()) {
-				var isOK = /^[a-zA-ZäöüÄÖÜ ]+$/.test(oInput.getValue()); //test for valid entry and return true or false
+			else 
+			{ var isOK = /^[a-zA-ZäöüÄÖÜ ]+$/.test(oInput.getValue()); //test for valid entry and return true or false
 
 				if (!isOK) {
 					oStep.setValidated(false);
@@ -346,7 +339,6 @@ sap.ui.define([
 						sap.ui.core.MessageType.Error,
 						sTarget);
 				}
-
 			}
 		},
 
@@ -354,7 +346,6 @@ sap.ui.define([
 			if (oField.getValue() !== "" && !oSignPad.isEmpty()) {
 				oStep.setValidated(true);
 			}
-
 		},
 
 		onInputChange: function (oEvent) {
@@ -369,7 +360,6 @@ sap.ui.define([
 
 				this._validateStep(oSource.field, oSource.pad, oSource.step);
 				this._updateViewModel(oSource.property, oSource.field.value);
-				this._handleRequiredField(oSource.field, oSource.step);
 				this._validateField(oSource.field, oSource.step);
 
 				// Workaround to ensure that both the supplier Id and Name are updated in the model before the
