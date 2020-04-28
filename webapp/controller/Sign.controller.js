@@ -4,7 +4,7 @@ sap.ui.define([
 	"../model/formatter",
 	"sap/m/MessagePopover",
 	"sap/m/MessagePopoverItem",
-	"../reuse/util/messages"
+	"../util/messages"
 ], function (
 	BaseController,
 	Signature,
@@ -346,11 +346,20 @@ sap.ui.define([
 						sap.ui.core.MessageType.Error,
 						sTarget);
 				}
-
+			} else {
+				oStep.setValidated(false);
+				
+				this._popoverMessage(this._oResourceBundle.getText("mandatory.field"), 
+				    	oInput.getLabels()[0].getText(), 
+				        sap.ui.core.MessageType.Error, 
+				        sTarget);
 			}
 		},
 
 		_validateStep: function (oField, oSignPad, oStep) {
+			
+			oStep.setValidated(false);
+			
 			if (oField.getValue() !== "" && !oSignPad.isEmpty()) {
 				oStep.setValidated(true);
 			}

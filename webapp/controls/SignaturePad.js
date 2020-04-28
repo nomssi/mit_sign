@@ -1,6 +1,6 @@
 /* global SignaturePad:true */
 sap.ui.define([
-		"../reuse/signature_pad",
+		"./signature_pad",
 		"sap/ui/core/Control",
 		"sap/base/Log"
 	],
