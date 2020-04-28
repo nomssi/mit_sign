@@ -10,7 +10,7 @@ sap.ui.define([
 	"sap/ui/base/Object",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageToast",
-	"../reuse/util/messages"
+	"../util/messages"
 ], function (Object, JSONModel, MessageToast, messages) {
 	"use strict";
 

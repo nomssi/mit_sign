@@ -4,7 +4,7 @@ sap.ui.define([
 	"../model/formatter",
 	"sap/m/MessagePopover",
 	"sap/m/MessagePopoverItem",
-	"../reuse/util/messages"
+	"../util/messages"
 ], function (
 	BaseController,
 	Signature,
