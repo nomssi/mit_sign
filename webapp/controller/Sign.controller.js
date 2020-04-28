@@ -240,9 +240,7 @@ sap.ui.define([
 			} else 
 			{ return; }
 
-	        if (oField.getValue() !== "" && !oSignPad.isEmpty() ){
-	     		 oStep.setValidated(true);
-	        }				
+	        this._validateStep(oField, oSignPad, oStep);			
 
 			this._updateViewModel(sProperty, sUrl );
 
@@ -286,6 +284,33 @@ sap.ui.define([
 				                	 sTarget);
 			}
 		},
+		
+		_validateField: function (oInput, oStep) {
+			var sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
+
+			this.removeMessageFromTarget(sTarget);
+			
+			if (oInput.getValue()) {
+				var isOK = /^[a-zA-ZäöüÄÖÜ ]+$/.test(oInput.getValue()); //test for valid entry and return true or false
+				
+				if (!isOK) {
+					oStep.setValidated(false);
+					
+					this._popoverMessage("Es wurden ungültige Zeichen verwendet!\n\rBitte verwenden Sie nur Buchstaben und Leerzeichen.", 
+		    		         oInput.getLabels()[0].getText(), 
+		                	 sap.ui.core.MessageType.Error, 
+		                	 sTarget);
+				}
+				
+			}
+		},
+		
+		_validateStep: function ( oField, oSignPad, oStep) {
+			if (oField.getValue() !== "" && !oSignPad.isEmpty() ){
+	     		 oStep.setValidated(true);
+	        }
+			
+		},
 
 		onInputChange: function(oEvent) {
 			// Whenever the value of an input field is changed, the system must
@@ -301,16 +326,24 @@ sap.ui.define([
 			if (oNameField === oReleaserName) {
 				oStep = this.byId("signReleaserStep");
 				sProperty = "/Releaser>Name";
+				oField = this.byId("sName");
+				oSignPad = this.byId("signature-pad");
 			} else
 			if (oNameField === oReceiverName) { 
 				oStep = this.byId("signReceiverStep");
 				sProperty = "/Receiver>Name";
+				oField = this.byId("sRecvName");
+				oSignPad = this.byId("signature-pad2");
 			} else 
 			{ return; }
+			
+			this._validateStep(oField, oSignPad, oStep);
 
 			this._updateViewModel(sProperty, oNameField.value );
 
-			this._handleRequiredField(oNameField, oStep);			
+			this._handleRequiredField(oNameField, oStep);
+			
+			this._validateField(oNameField, oStep);
 
 			// Workaround to ensure that both the supplier Id and Name are updated in the model before the
 			// draft is updated, otherwise only the Supplier Name is saved to the draft and Supplier Id is lost
