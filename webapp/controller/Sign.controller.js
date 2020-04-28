@@ -335,14 +335,14 @@ sap.ui.define([
 				oSignPad = this.byId("signature-pad2");
 			} else 
 			{ return; }
+			
+			this._validateStep(oField, oSignPad, oStep);
 
 			this._updateViewModel(sProperty, oNameField.value );
 
 			this._handleRequiredField(oNameField, oStep);
 			
 			this._validateField(oNameField, oStep);
-			
-			this._validateStep(oField, oSignPad, oStep);
 
 			// Workaround to ensure that both the supplier Id and Name are updated in the model before the
 			// draft is updated, otherwise only the Supplier Name is saved to the draft and Supplier Id is lost
