@@ -336,7 +336,7 @@ sap.ui.define([
 			this.removeMessageFromTarget(sTarget);
 
 			if (oInput.getValue()) {
-				var isOK = /^[a-zA-ZäöüÄÖÜ ]+$/.test(oInput.getValue()); //test for valid entry and return true or false
+				var isOK = /^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\- ]+$/.test(oInput.getValue()); //test for valid entry and return true or false
 
 				if (!isOK) {
 					oStep.setValidated(false);
