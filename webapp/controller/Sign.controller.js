@@ -163,26 +163,28 @@ sap.ui.define([
 					
 		onClearButton: function(oEvent){
 			var sSignPadId;
+			var sProperty;
 			var oStep;
 			
 			var oSource = oEvent.getSource();
 			var oReleaserBtn = this.byId("btnClear");
 			var oReceiverBtn = this.byId("btnClear2");
 			if (oSource === oReleaserBtn) {
-				sSignPadId = "signature-pad";   // Ausgebender
+				sSignPadId = "signature-pad";   // Lager
 				oStep = this.byId("signReleaserStep");
-				this._updateViewModel("/Releaser>Url", "");
+				sProperty = "/Releaser>Url";
 			} else
 			if (oSource === oReceiverBtn) { 
 				sSignPadId = "signature-pad2";  // Empfänger
 				oStep = this.byId("signReceiverStep");
-				this._updateViewModel("/Receiver>Url", "");				
+				sProperty = "/Receiver>Url";				
 			} else 
 			{ return; }
-			this._oHelper.clearSignature(this.sVbeln);
+			this._updateViewModel(sProperty, "");
 			this.byId(sSignPadId).clear();
 			this._wizard.invalidateStep(oStep);	
-			this._wizard.setCurrentStep(oStep);	  			
+			this._wizard.setCurrentStep(oStep);	
+			// this._oHelper.clearSignature(this.sVbeln);
 		},
 		
 		onUndoButton: function(oEvent){
@@ -190,12 +192,11 @@ sap.ui.define([
 			var oStep;
 			
 			var oSource = oEvent.getSource();
-
 			var oReleaserBtn = this.byId("btnClear");
 			var oReceiverBtn = this.byId("btnClear2");
 
 			if (oSource === oReleaserBtn) {
-				sSignPadId = "signature-pad";   // Ausgebender
+				sSignPadId = "signature-pad";   // Lager
 				oStep = this.byId("signReleaserStep");
 				this._updateViewModel("/Releaser>Url", "");
 			} else

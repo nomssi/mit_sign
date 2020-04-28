@@ -97,7 +97,7 @@
 									<pad:SignaturePad id="signature-pad" value="{SignatureReleaser}" 
      								                onEndEvent="onSignChange" 
      								                width="800px" height="200px" />
-                                	<Button icon="sap-icon://undo" text="{i18n>Clear}" press="onUndoButton" type="Transparent" id="btnClear">
+                                	<Button icon="sap-icon://undo" text="{i18n>Clear}" press="onClearButton" type="Transparent" id="btnClear">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" />
 										</layoutData>
@@ -138,7 +138,7 @@
 									<pad:SignaturePad id="signature-pad2" value="{SignatureReceiver}"
      								                onEndEvent="onSignChange" 
      								                width="800px" height="200px" />
-                                	<Button icon="sap-icon://undo" text="{i18n>Clear}" press="onUndoButton" type="Transparent" id="btnClear2">
+                                	<Button icon="sap-icon://undo" text="{i18n>Clear}" press="onClearButton" type="Transparent" id="btnClear2">
                                 		<layoutData>
 											<layout:GridData span="L2 M2" />
 										</layoutData>
