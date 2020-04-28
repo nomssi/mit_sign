@@ -1,0 +1,9 @@
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="Signature.controller.Error"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Erfolg">
+		<content>
+			<Text text="Bei der Verarbeitung der Auslieferung {Vbeln} traten Fehler auf."/>
+			<Button id="homeButtonErr" type="Emphasized" text="{i18n>homeButtonText}" press=".onBack"/>
+		</content>
+	</Page>
+</core:View>
