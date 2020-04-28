@@ -3,7 +3,7 @@ sap.ui.define([
 ], function (BaseController) {
 	"use strict";
 	
-	return BaseController.extend("Signature.controller.Sign", {
+	return BaseController.extend("Signature.controller.Complete", {
 	
 		/**
 		 * Always navigates back to home
