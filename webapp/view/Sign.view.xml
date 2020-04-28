@@ -136,27 +136,15 @@
 											<layout:GridData span="L2 M2" />
 										</layoutData>
                                 	</Button>
+                                	<Button icon="sap-icon://complete" text="{i18n>Complete}" press="onCompleteButton" type="Transparent" id="btnCmplt">
+                                		<layoutData>
+											<layout:GridData span="L4 M4" />
+										</layoutData>
+                                	</Button>
                                 	
 								</f:content>
 	 							</f:SimpleForm> 
 							</WizardStep>										
-
-						<WizardStep id="showPDFStep" activate="onSignCommit" validated="false" title="{i18n>lastViewTitle}" icon="sap-icon://display">
-						<MessageStrip class="sapUiSmallMarginBottom" text="{i18n>strip.Finish}" showIcon="true"/>										
-							<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
-									<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
-									<SegmentedButton selectedButton="btnCorrect">
-											<Button icon="sap-icon://accept" text="{i18n>pdf.Correct}" press="onSigningCompleted" id="btnCorrect"/>
-											<Button icon="sap-icon://error" text="{i18n>pdf.Incorrect}" press="onSigningFailed" id="btnIncorrect"/>
-									</SegmentedButton>										
-	                                    <PDFViewer source="{PDFUrl}" title="{/Title}" height="600px" id="PDF" displayType="Embedded" >											
-											<layoutData>
-												<FlexItemData growFactor="1"/>
-											</layoutData>
-										</PDFViewer>
-									</FlexBox>
-								</ScrollContainer>
-						</WizardStep>
 						
 						</steps>
 					</Wizard>

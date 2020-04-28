@@ -277,6 +277,19 @@ sap.ui.define([
 				}
 			}
 		},
+		
+		onCompleteButton: function (oEvent) {
+			var oReceiverName = this.byId("sRecvName");
+			
+			if ( oReceiverName.getValue().includes("RAC")) {
+				this.getRouter().navTo("complete");
+				this._wizard.setCurrentStep(this.byId("contentStep"));
+			} else {
+				this.getRouter().navTo("error");
+				this._wizard.setCurrentStep(this.byId("contentStep"));
+			}
+
+		},
 
 		onSignChange: function (oEvent) {
 			var oSource = this._getSignPadSource(oEvent);
