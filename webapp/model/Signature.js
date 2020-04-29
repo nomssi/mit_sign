@@ -103,11 +103,8 @@ sap.ui.define([
 			});
 		},
 
-		// Saves ProductDraft each time a user edits a field
-		saveSignature: function (sVbeln, fnAfterSaved, oModel) {
-			this._submitChanges(null, null);
-			
-			//var sVbeln = Model sVbeln;
+        _getSignData: function (oModel) {
+        	var sVbeln = oModel.getProperty("/Vbeln"); 
             var sLager = oModel.getProperty("/Releaser>Name"); 
             var sAbholer = oModel.getProperty("/Receiver>Name");  
             var sSignLager = oModel.getProperty("/Releaser>Url"); 
@@ -115,15 +112,25 @@ sap.ui.define([
             
 			var data = {
 				Vbeln: sVbeln,
-				Lager: sLager,  // Klartext Name Lager
-				Abholer: sAbholer,  // Klartext Name Abholer
-				Sign_Lager: sSignLager, // Signatur Lager
-				Sign_Abholer: sSignAbholer // Signatur Lager
+				Lager: sLager,               // Klartext Name Lager
+				Abholer: sAbholer,           // Klartext Name Abholer
+				Sign_Lager: sSignLager,      // Signatur Lager
+				Sign_Abholer: sSignAbholer   // Signatur Lager
 			};
-			this._callFunctionImport("/SaveSignature", data, fnAfterSaved, "isBusySaving");
+        	return data;
+        },
+        
+		// Saves ProductDraft each time a user edits a field
+		saveSignature: function (sVbeln, fnAfterSaved, oModel) {
+			this._submitChanges(null, null);
+			//var sVbeln = Model sVbeln;
+			this._callFunctionImport("/SaveSignature", this._getSignData(oModel), fnAfterSaved, "isBusySaving");
+			this._submitChanges(null, null);
 		},
 
-		updateSignature: function (fnAfterSaved) {
+		updateSignature: function (fnAfterSaved, oModel) {
+			var data = this._getSignData(oModel);
+			this.saveSignature(data.Vbeln, null, oModel);
 			this._submitChanges(null, null);
 		},
 

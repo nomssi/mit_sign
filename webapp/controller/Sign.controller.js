@@ -292,20 +292,6 @@ sap.ui.define([
 
 		},
 
-		onSignChange: function (oEvent) {
-			var oSource = this._getSignPadSource(oEvent);
-
-			if (oSource !== undefined) {
-				
-				this._validateStep(oSource);
-				this._updateViewModel(oSource.property, oEvent.getParameter("value"));
-
-				setTimeout(function () {
-					this._fieldChange(oSource.field);
-				}.bind(this), 0);
-			};
-		},
-
 		removeMessageFromTarget: function (sTarget) {
 			// clear potential server-side messages to allow saving the item again			
 			this._oMessageManager.getMessageModel().getData().forEach(function (oMessage) {
@@ -365,7 +351,6 @@ sap.ui.define([
 		onInputChange: function (oEvent) {
 			// Whenever the clear text name is changed in the input field, update the draft model and validate
 			// onInputChange is the change event defined in the XML view.
-
 			var oSource = this._getSignInputSource(oEvent);
 
 			if (oSource !== undefined) {
@@ -381,6 +366,20 @@ sap.ui.define([
 				}.bind(this), 0);
 			}
 		},
+		
+		onSignChange: function (oEvent) {
+			var oSource = this._getSignPadSource(oEvent);
+
+			if (oSource !== undefined) {
+				
+				this._validateStep(oSource);
+				this._updateViewModel(oSource.property, oEvent.getParameter("value"));
+
+				setTimeout(function () {
+					this._fieldChange(oSource.pad);
+				}.bind(this), 0);
+			};
+		},		
 
 		onCompleteSignReceiverStep: function (oEvent) {
 
@@ -415,7 +414,8 @@ sap.ui.define([
 					oControl.setValueStateText(sMessage);
 				}
 			};
-			this._oHelper.updateSignature(fnSubmitDraftSuccess);
+			var oViewModel = this.getView().getModel("pdfView");
+			this._oHelper.updateSignature(fnSubmitDraftSuccess, oViewModel);
 		},
 
 		optionalStepActivation: function () {
