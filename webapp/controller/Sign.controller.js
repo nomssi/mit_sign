@@ -300,6 +300,8 @@ sap.ui.define([
 
 				var sUrl = oEvent.getParameter("value");
 				this._updateViewModel(oSource.property, sUrl);
+				
+				this._validateField(oSource.field, oSource.step);
 
 				setTimeout(function () {
 					this._fieldChange(oSource.field);
