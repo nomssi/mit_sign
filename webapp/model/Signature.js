@@ -107,11 +107,12 @@ sap.ui.define([
 		saveSignature: function (sVbeln, fnAfterSaved) {
 			this._submitChanges(null, null);
 			
+			var oModel = {};
 			//var sVbeln = Model sVbeln;
-            var sLager = "Test Klartext Lager"; // sName - Model Releaser.Name;
-            var sAbholer  = "Test Klartext Abholer";  // sRecvName - Model Receiver.Name;
-            var sSignLager = "Test Unterschrift Lager";  //  - Model Releaser.Url;
-            var sSignAbholer "Test Unterschrift Abholer";  // - - Model Receiver.Url;
+            var sLager = oModel.read("/Releaser>Name"); 
+            var sAbholer = oModel.read("/Receiver>Name");  
+            var sSignLager = oModel.read("/Releaser>Url"); 
+            var sSignAbholer oModel.read("/Receiver>Url"); 
             
 			var data = {
 				Vbeln: sVbeln,

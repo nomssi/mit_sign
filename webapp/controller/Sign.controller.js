@@ -122,6 +122,7 @@ sap.ui.define([
 					step.setValidated(true);
 				}
 			}.bind(this);
+			var oModel = {}; // this._oViewModel -  this.getView().getModel();
 			this._oHelper.saveSignature(this.sVbeln, fnAfterSave);
 		},
 
@@ -396,8 +397,7 @@ sap.ui.define([
 				"Unterschriften speichern",
 				sap.ui.core.MessageType.Information,
 				this._oLink);
-		// TO DO
-			// var oModel = this.geModel(this._oViewModel, "pdfView");
+		    var oModel = {}; // this._oViewModel
 			this._oHelper.saveSignature(this.sVbeln, fnAfterSave);
 		},
 
