@@ -106,9 +106,19 @@ sap.ui.define([
 		// Saves ProductDraft each time a user edits a field
 		saveSignature: function (sVbeln, fnAfterSaved) {
 			this._submitChanges(null, null);
-
+			
+			//var sVbeln = Model sVbeln;
+            var sLager = "Test Klartext Lager"; // sName - Model Releaser.Name;
+            var sAbholer  = "Test Klartext Abholer";  // sRecvName - Model Receiver.Name;
+            var sSignLager = "Test Unterschrift Lager";  //  - Model Releaser.Url;
+            var sSignAbholer "Test Unterschrift Abholer";  // - - Model Receiver.Url;
+            
 			var data = {
-				Vbeln: sVbeln
+				Vbeln: sVbeln,
+				Lager: sLager,  // Klartext Name Lager
+				Abholer: sAbholer,  // Klartext Name Abholer
+				Sign_Lager: sSignLager, // Signatur Lager
+				Sign_Abholer: sSignAbholer // Signatur Lager
 			};
 			this._callFunctionImport("/SaveSignature", data, fnAfterSaved, "isBusySaving");
 		},

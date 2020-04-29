@@ -370,7 +370,7 @@ sap.ui.define([
 			if (oSource !== undefined) {
 
 				this._validateStep(oSource);
-				this._updateViewModel(oSource.property, oSource.field.value);
+				this._updateViewModel(oSource.property, oSource.field.getValue());
 				this._validateField(oSource.field, oSource.step);
 
 				// Workaround to ensure that both the supplier Id and Name are updated in the model before the
@@ -396,6 +396,8 @@ sap.ui.define([
 				"Unterschriften speichern",
 				sap.ui.core.MessageType.Information,
 				this._oLink);
+		// TO DO
+			// var oModel = this.geModel(this._oViewModel, "pdfView");
 			this._oHelper.saveSignature(this.sVbeln, fnAfterSave);
 		},
 
