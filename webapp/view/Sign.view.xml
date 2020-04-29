@@ -1,147 +1,102 @@
-<core:View xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" 
-           xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" 
-           xmlns:pad="Signature.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" 
-           controllerName="Signature.controller.Sign" xmlns:html="http://www.w3.org/1999/xhtml"
-           busy="{pdfView>/busy}" 
-		   busyIndicatorDelay="{pdfView>/delay}">
+<core:View xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:pad="Signature.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="Signature.controller.Sign" busy="{pdfView&gt;/busy}" busyIndicatorDelay="{pdfView&gt;/delay}">
 	<NavContainer id="wizardNavContainer">
 		<pages>
-			<Page id="wizardContentPage" showHeader="true" title="{i18n>signTitle}  {Vbeln}">
+			<Page id="wizardContentPage" showHeader="true" title="{i18n&gt;signTitle}  {Vbeln}">
 				<landmarkInfo>
-					<PageAccessibleLandmarkInfo
-							rootRole="Region" rootLabel="{i18n>Checkout_rootLabel}"
-							contentRole="Main" contentLabel="{i18n>Checkout_summaryContentLabel}"
-							footerRole="Banner" footerLabel="{i18n>Checkout_footerLabel}"/>
+					<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n&gt;Checkout_rootLabel}" contentRole="Main" contentLabel="{i18n&gt;Checkout_summaryContentLabel}" footerRole="Banner" footerLabel="{i18n&gt;Checkout_footerLabel}"/>
 				</landmarkInfo>				
 				<headerContent>
-					<Button id="homeButton" type="Emphasized" text="{i18n>homeButtonText}" press=".onBack"/>
+					<Button id="homeButton" type="Emphasized" text="{i18n&gt;homeButtonText}" press=".onBack"/>
 				</headerContent>
 				<content>
-					<Wizard id="signWizard" complete="onSigningCompleted"
-					        finishButtonText="{i18n>checkoutWizardReviewbtn}">
+					<Wizard id="signWizard" complete="action" finishButtonText="{i18n&gt;checkoutWizardReviewbtn}" xmlns:action="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" action:wiring="\{'complete':\{'navigation':\{'routeName':'Complete'\}\}\}">
 						<steps>
-							<WizardStep id="contentStep" 
-							            nextStep="signReleaserStep" 
-							            icon="sap-icon://detail-view" 
-							            complete="onCompleteContent" validated="true" 
-							            title="{i18n>contentTitle} {VBELN}">
-			    			<MessageStrip class="sapUiSmallMarginBottom"
-										text="{i18n>strip.Review}"
-										showIcon="true"/>									
-								<Table id="lDelPos" inset="false" alternateRowColors="true" 
-								       noDataText="{i18n>homeNoData}" busyIndicatorDelay="0" 
-								      items="{EventPositions}" class="sapUiForceWidthAuto sapUiResponsiveMargin">
+							<WizardStep id="contentStep" nextStep="signReleaserStep" icon="sap-icon://detail-view" complete="onCompleteContent" validated="true" title="{i18n&gt;contentTitle} {VBELN}">
+			    			<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Review}" showIcon="true"/>									
+								<Table id="lDelPos" inset="false" alternateRowColors="true" noDataText="{i18n&gt;homeNoData}" busyIndicatorDelay="0" items="{EventPositions}" class="sapUiForceWidthAuto sapUiResponsiveMargin">
 									<headerToolbar>
 									</headerToolbar>
 									<columns>
-										<Column minScreenWidth="Tablet"
-										        demandPopin="true">
-											<Text text="{i18n>lbl.item}" />
+										<Column minScreenWidth="Tablet" demandPopin="true">
+											<Text text="{i18n&gt;lbl.item}"/>
 										</Column>
 										<Column width="auto">
-											<Text text="{i18n>lbl.Material}" />
+											<Text text="{i18n&gt;lbl.Material}"/>
 										</Column>
 										<Column>
-											<Text text="{i18n>lbl.Shorttext}" />
+											<Text text="{i18n&gt;lbl.Shorttext}"/>
 										</Column>
 										<Column>
-											<Text text="{i18n>lbl.Quantity}" />
+											<Text text="{i18n&gt;lbl.Quantity}"/>
 										</Column>
 									</columns>
 
 									<items>
 										<ColumnListItem>
 											<cells>
-												<Text
-												    text="{Posnr}" />
-												<Text
-													text="{Matnr}"/>
-												<ObjectIdentifier
-                                                    title="{Maktx}"/>
-												<ObjectNumber
-													number="{ path:'Lfimg', formatter:'.formatter.float'}"
-													unit="{Meins}" />													
+												<Text text="{Posnr}"/>
+												<Text text="{Matnr}"/>
+												<ObjectIdentifier title="{Maktx}"/>
+												<ObjectNumber number="{ path:'Lfimg', formatter:'.formatter.float'}" unit="{Meins}"/>													
 											</cells>
 										</ColumnListItem>
 									</items>
 								</Table>
 							</WizardStep>
 							
-							<WizardStep id="signReleaserStep" nextStep="signReceiverStep" title="{i18n>SignPad1Title}" icon="sap-icon://signature" 
-							            validated="false" >
-			    			<MessageStrip class="sapUiSmallMarginBottom"
-										text="{i18n>strip.ReleaseStorage}"
-										showIcon="true"/>									
-								<f:SimpleForm id="FormSignReleaser" editable="true" layout="ResponsiveGridLayout" title="{i18n>SignPad1Title}"
-								              labelSpanL="2" labelSpanM="4" columnsL="1" columnsM="1" adjustLabelSpan="true">
+							<WizardStep id="signReleaserStep" nextStep="signReceiverStep" title="{i18n&gt;SignPad1Title}" icon="sap-icon://signature" validated="false">
+			    			<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.ReleaseStorage}" showIcon="true"/>									
+								<f:SimpleForm id="FormSignReleaser" editable="true" layout="ResponsiveGridLayout" title="{i18n&gt;SignPad1Title}" labelSpanL="2" labelSpanM="4" columnsL="1" columnsM="1" adjustLabelSpan="true">
 								<f:content>			
-									<Label text="{i18n>lbl.Signer}" required="true" labelFor="sName">
+									<Label text="{i18n&gt;lbl.Signer}" required="true" labelFor="sName">
                                 		<layoutData>
-											<layout:GridData span="L2 M2" />
+											<layout:GridData span="L2 M2"/>
 										</layoutData>
 									</Label>
-									<Input id="sName" value="{ path: 'SignerName',
-                                                               type: 'sap.ui.model.type.String' }"
-                                               liveChange="onInputChange"
-								               placeholder="{{i18n>placeholder.Signer}">
+									<Input id="sName" value="{ path: 'SignerName',                                                                type: 'sap.ui.model.type.String' }" liveChange="onInputChange" placeholder="{{i18n&gt;placeholder.Signer}">
                                			<layoutData>
-											<layout:GridData span="L8 M8" />
+											<layout:GridData span="L8 M8"/>
 										</layoutData>										
 									</Input>                                  
 
-	                              <Label text="{i18n>lbl.Signature}" labelFor="signature-pad">
+	                              <Label text="{i18n&gt;lbl.Signature}" labelFor="signature-pad">
                                 		<layoutData>
-											<layout:GridData span="L2 M2" linebreak="true" />
+											<layout:GridData span="L2 M2" linebreak="true"/>
 										</layoutData>
 	                              </Label>	                              
-									<pad:SignaturePad id="signature-pad" value="{SignatureReleaser}" 
-     								                onEndEvent="onSignChange" 
-     								                width="800px" height="200px" />
-                                	<Button icon="sap-icon://undo" text="{i18n>Clear}" press="onClearButton" type="Transparent" id="btnClear">
+									<pad:SignaturePad id="signature-pad" value="{SignatureReleaser}" onEndEvent="onSignChange" width="800px" height="200px"/>
+                                	<Button icon="sap-icon://undo" text="{i18n&gt;Clear}" press="onClearButton" type="Transparent" id="btnClear">
                                 		<layoutData>
-											<layout:GridData span="L2 M2" />
+											<layout:GridData span="L2 M2"/>
 										</layoutData>
                                 	</Button>     								
 								</f:content>
 	 							</f:SimpleForm> 
 							</WizardStep>							
 								
-							<WizardStep id="signReceiverStep" nextStep="showPDFStep" title="{i18n>SignPad2Title}" icon="sap-icon://signature" 
-							            validated="false" complete="onCompleteSignReceiverStep">
-			    			<MessageStrip class="sapUiSmallMarginBottom" text="{i18n>strip.ReleaseReceiver}" showIcon="true"/>									
-								<f:SimpleForm id="FormSignReceiver" editable="true" layout="ResponsiveGridLayout" title="{i18n>SignPad2Title}"
-								              labelSpanL="2" labelSpanM="4" columnsL="1" columnsM="1" adjustLabelSpan="true">
+							<WizardStep id="signReceiverStep" nextStep="showPDFStep" title="{i18n&gt;SignPad2Title}" icon="sap-icon://signature" validated="false" complete="onCompleteSignReceiverStep">
+			    			<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.ReleaseReceiver}" showIcon="true"/>									
+								<f:SimpleForm id="FormSignReceiver" editable="true" layout="ResponsiveGridLayout" title="{i18n&gt;SignPad2Title}" labelSpanL="2" labelSpanM="4" columnsL="1" columnsM="1" adjustLabelSpan="true">
 								<f:content>
-									<Label text="{i18n>lbl.Receiver}" required="true" labelFor="sRecvName">
+									<Label text="{i18n&gt;lbl.Receiver}" required="true" labelFor="sRecvName">
                                 		<layoutData>
-											<layout:GridData span="L2 M2" />
+											<layout:GridData span="L2 M2"/>
 										</layoutData>
 									</Label>
-									<Input  id="sRecvName" value="{ path: 'ReceiverName',
-                                                                 type: 'sap.ui.model.type.String' }"
-                                               liveChange="onInputChange"
-                                               placeholder="{{i18n>placeholder.Receiver}">
+									<Input id="sRecvName" value="{ path: 'ReceiverName',                                                                  type: 'sap.ui.model.type.String' }" liveChange="onInputChange" placeholder="{{i18n&gt;placeholder.Receiver}">
 									</Input>
 									
-								<Label text="{i18n>lbl.Signature2}" labelFor="signature-pad2">
+								<Label text="{i18n&gt;lbl.Signature2}" labelFor="signature-pad2">
                                 		<layoutData>
-											<layout:GridData span="L2 M2" linebreak="true" />
+											<layout:GridData span="L2 M2" linebreak="true"/>
 										</layoutData>
 	                              </Label>
-									<pad:SignaturePad id="signature-pad2" value="{SignatureReceiver}"
-     								                onEndEvent="onSignChange" 
-     								                width="800px" height="200px" />
-                                	<Button icon="sap-icon://undo" text="{i18n>Clear}" press="onClearButton" type="Transparent" id="btnClear2">
+									<pad:SignaturePad id="signature-pad2" value="{SignatureReceiver}" onEndEvent="onSignChange" width="800px" height="200px"/>
+                                	<Button icon="sap-icon://undo" text="{i18n&gt;Clear}" press="onClearButton" type="Transparent" id="btnClear2">
                                 		<layoutData>
-											<layout:GridData span="L2 M2" />
+											<layout:GridData span="L2 M2"/>
 										</layoutData>
                                 	</Button>
-                                	<Button icon="sap-icon://complete" text="{i18n>Complete}" press="onCompleteButton" type="Transparent" id="btnCmplt">
-                                		<layoutData>
-											<layout:GridData span="L4 M4" />
-										</layoutData>
-                                	</Button>
-                                	
 								</f:content>
 	 							</f:SimpleForm> 
 							</WizardStep>										
@@ -150,11 +105,9 @@
 					</Wizard>
 				</content>
 				<footer>
-					<Bar id="wizardFooterBar" visible="{= ${message>/}.length === 0 ? false : true}">
+					<Bar id="wizardFooterBar" visible="{= ${message&gt;/}.length === 0 ? false : true}">
 						<contentLeft>
-							<Button id="showPopoverButton" icon="sap-icon://message-popup" type="Emphasized" 
-							        text="{= ${message>/}.length }"
-							        press=".handleMessagePopoverPress"/>
+							<Button id="showPopoverButton" icon="sap-icon://message-popup" type="Emphasized" text="{= ${message&gt;/}.length }" press=".handleMessagePopoverPress"/>
 						</contentLeft>
 					</Bar>
 				</footer>

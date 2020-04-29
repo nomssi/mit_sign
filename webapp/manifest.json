@@ -43,7 +43,10 @@
 			"tablet": true,
 			"phone": true
 		},
-		"supportedThemes": ["sap_hcb", "sap_bluecrystal"]
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_bluecrystal"
+		]
 	},
 	"sap.ui5": {
 		"_version": "1.1.0",
@@ -83,9 +86,11 @@
 		},
 		"handleValidation": true,
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"routing": {
 			"config": {
@@ -96,35 +101,52 @@
 				"controlAggregation": "pages",
 				"controlId": "app",
 				"bypassed": {
-					"target": ["notFound", "home"]
+					"target": [
+						"notFound",
+						"home"
+					]
 				}
 			},
-			"routes": [{
-				"pattern": "",
-				"name": "home",
-				"target": "home"
-			}, {
-				"pattern": "sign/{id}",
-				"name": "sign",
-				"target": "sign",
-				"subroutes": []
-			}, {
-				"pattern": "signcompleted",
-				"name": "signcompleted",
-				"target": "signcompleted"
-			}, {
-				"name": "notFound",
-				"pattern": "",
-				"target": "home"
-			},	{
-				"pattern": "complete",
-				"name": "complete",
-				"target": "complete"
-			},	{
-				"pattern": "error",
-				"name": "error",
-				"target": "error"
-				}],
+			"routes": [
+				{
+					"pattern": "",
+					"name": "home",
+					"target": "home"
+				},
+				{
+					"pattern": "sign/{id}",
+					"name": "sign",
+					"target": "sign",
+					"subroutes": []
+				},
+				{
+					"pattern": "signcompleted",
+					"name": "signcompleted",
+					"target": "signcompleted"
+				},
+				{
+					"name": "notFound",
+					"pattern": "",
+					"target": "home"
+				},
+				{
+					"pattern": "complete",
+					"name": "complete",
+					"target": "complete"
+				},
+				{
+					"pattern": "error",
+					"name": "error",
+					"target": "error"
+				},
+				{
+					"name": "Complete",
+					"pattern": "Complete",
+					"target": [
+						"complete"
+					]
+				}
+			],
 			"targets": {
 				"home": {
 					"viewName": "Home",
@@ -142,7 +164,8 @@
 					"viewLevel": 2,
 					"viewId": "signView",
 					"controlAggregation": "pages"
-				},"error": {
+				},
+				"error": {
 					"viewName": "Error",
 					"viewLevel": 2,
 					"viewId": "signView",
