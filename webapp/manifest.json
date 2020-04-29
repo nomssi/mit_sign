@@ -116,7 +116,15 @@
 				"name": "notFound",
 				"pattern": "",
 				"target": "home"
-			}],
+			},	{
+				"pattern": "complete",
+				"name": "complete",
+				"target": "complete"
+			},	{
+				"pattern": "error",
+				"name": "error",
+				"target": "error"
+				}],
 			"targets": {
 				"home": {
 					"viewName": "Home",
@@ -128,6 +136,17 @@
 					"viewName": "Sign",
 					"viewLevel": 2,
 					"viewId": "signView"
+				},
+				"complete": {
+					"viewName": "Complete",
+					"viewLevel": 2,
+					"viewId": "signView",
+					"controlAggregation": "pages"
+				},"error": {
+					"viewName": "Error",
+					"viewLevel": 2,
+					"viewId": "signView",
+					"controlAggregation": "pages"
 				}
 			}
 		}
