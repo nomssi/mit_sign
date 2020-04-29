@@ -295,19 +295,9 @@ sap.ui.define([
 			var oSource = this._getSignPadSource(oEvent);
 
 			if (oSource !== undefined) {
-<<<<<<< HEAD
 				
 				this._validateStep(oSource);
 				this._updateViewModel(oSource.property, oEvent.getParameter("value"));
-=======
-
-				this._validateStep(oSource.field, oSource.pad, oSource.step);
-
-				var sUrl = oEvent.getParameter("value");
-				this._updateViewModel(oSource.property, sUrl);
-				
-				this._validateField(oSource.field, oSource.step);
->>>>>>> refs/heads/master
 
 				setTimeout(function () {
 					this._fieldChange(oSource.field);
