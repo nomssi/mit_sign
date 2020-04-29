@@ -112,7 +112,7 @@ sap.ui.define([
             var sLager = oModel.read("/Releaser>Name"); 
             var sAbholer = oModel.read("/Receiver>Name");  
             var sSignLager = oModel.read("/Releaser>Url"); 
-            var sSignAbholer oModel.read("/Receiver>Url"); 
+            var sSignAbholer = oModel.read("/Receiver>Url"); 
             
 			var data = {
 				Vbeln: sVbeln,
