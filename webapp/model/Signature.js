@@ -119,6 +119,15 @@ sap.ui.define([
 			};
         	return data;
         },
+
+        _ValidData: function (oData) {
+        	if (oData.sLager !== null && oData.sAbholer !== null && oData.sSign_Lager !== null && oData.sSign_Abholer !== null) {
+        		return true;
+        	}
+        	else {
+        	  return false;	
+        	};
+        },
         
 		// Saves ProductDraft each time a user edits a field
 		saveSignature: function (sVbeln, fnAfterSaved, oModel) {
@@ -129,8 +138,10 @@ sap.ui.define([
 		},
 
 		updateSignature: function (fnAfterSaved, oModel) {
-			var data = this._getSignData(oModel);
-			this.saveSignature(data.Vbeln, null, oModel);
+			var oData = this._getSignData(oModel);
+			if (this._isValid(oData)) {
+				this.saveSignature(oData.Vbeln, fnAfterSaved, oModel);
+			};
 			this._submitChanges(null, null);
 		},
 

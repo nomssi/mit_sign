@@ -420,7 +420,7 @@ sap.ui.define([
 
 		optionalStepActivation: function () {
 			this._popoverMessage(this.sVbeln,
-				"Unterschrift Step3 active.",
+			    this._oResourceBundle.getText("step3.active"),
 				sap.ui.core.MessageType.Information,
 				this._oLink);
 		},
