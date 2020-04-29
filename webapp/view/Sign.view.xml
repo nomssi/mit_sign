@@ -117,18 +117,11 @@
 											<layout:GridData span="L2 M2" />
 										</layoutData>
 									</Label>
-									<MaskInput  id="sRecvName" value="{ path: 'ReceiverName',
+									<Input  id="sRecvName" value="{ path: 'ReceiverName',
                                                                  type: 'sap.ui.model.type.String' }"
-                                               mask="CCCCCCCCCCCCCCCCCCCCCCCCCCCCCC" 
-                                               placeholderSymbol="_" 
-                                               change="onInputChange" placeholder="{{i18n>placeholder.Receiver}">
-										<rules>
-											<MaskInputRule maskFormatSymbol="C" regex="[a-zA-ZäöüÄÖÜ ]"/>
-										</rules>
-                               			<layoutData>
-											<layout:GridData span="L8 M8" />
-										</layoutData>										
-									</MaskInput>   
+                                               liveChange="onInputChange"
+                                               placeholder="{{i18n>placeholder.Receiver}">
+									</Input>
 									
 								<Label text="{i18n>lbl.Signature2}" labelFor="signature-pad2">
                                 		<layoutData>

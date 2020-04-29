@@ -175,17 +175,17 @@ sap.ui.define([
 
 			if (oSource === oReleaserBtn) {
 				oSignSource = {
-					//field: this.byId("sName"),
-					pad: this.byId("signature-pad"), // Lager
 					step: this.byId("signReleaserStep"),
+					pad: this.byId("signature-pad"), // Lager
+					field: this.byId("sName"),
 					property: "/Releaser>Url"
 				};
 			} else
 			if (oSource === oReceiverBtn) {
 				oSignSource = {
-					// field: this.byId("sRecvName"),					
-					pad: this.byId("signature-pad2"), // Empfänger
 					step: this.byId("signReceiverStep"),
+					pad: this.byId("signature-pad2"), // Empfänger
+					field: this.byId("sRecvName"),
 					property: "/Receiver>Url"
 				};
 			} else {
@@ -203,18 +203,18 @@ sap.ui.define([
 
 			if (oSource === oReleaserSignPad) {
 				oSignSource = {
-					field: this.byId("sName"),
 					step: this.byId("signReleaserStep"),
-					property: "/Releaser>Url",
-					pad: oSource
+					pad: oSource,
+					field: this.byId("sName"),
+					property: "/Releaser>Url"
 				};
 			} else
 			if (oSource === oReceiverSignPad) {
 				oSignSource = {
-					field: this.byId("sRecvName"),
 					step: this.byId("signReceiverStep"),
-					property: "/Receiver>Url",
-					pad: oSource
+					pad: oSource,
+					field: this.byId("sRecvName"),
+					property: "/Receiver>Url"
 				};
 			} else {
 				oSignSource = undefined;
@@ -232,17 +232,17 @@ sap.ui.define([
 			if (oSource === oReleaserName) {
 				oSignSource = {
 					step: this.byId("signReleaserStep"),
-					property: "/Releaser>Name",
-					field: oSource,
-					pad: this.byId("signature-pad") // Lage
+					field: oSource,					
+					pad: this.byId("signature-pad"), // Lager
+					property: "/Releaser>Name"
 				};
 			} else
 			if (oSource === oReceiverName) {
 				oSignSource = {
 					step: this.byId("signReceiverStep"),
-					property: "/Receiver>Name",
-					field: oSource,
+					field: oSource,					
 					pad: this.byId("signature-pad2"), // Empfänger
+					property: "/Receiver>Name"
 				};
 			} else {
 				oSignSource = undefined;
@@ -282,11 +282,9 @@ sap.ui.define([
 			var oSource = this._getSignPadSource(oEvent);
 
 			if (oSource !== undefined) {
-
-				this._validateStep(oSource.field, oSource.pad, oSource.step);
-
-				var sUrl = oEvent.getParameter("value");
-				this._updateViewModel(oSource.property, sUrl);
+				
+				this._validateStep(oSource);
+				this._updateViewModel(oSource.property, oEvent.getParameter("value"));
 
 				setTimeout(function () {
 					this._fieldChange(oSource.field);
@@ -315,6 +313,13 @@ sap.ui.define([
 			);
 		},
 
+		_popoverInvalidField: function (oInput, sText, sTarget) {
+			this._popoverMessage(this._oResourceBundle.getText(sText),
+				oInput.getLabels()[0].getText(),
+				sap.ui.core.MessageType.Error,
+				sTarget);
+		},
+		
 		_validateField: function (oInput, oStep) {
 			var sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
 			this.removeMessageFromTarget(sTarget);
@@ -322,46 +327,36 @@ sap.ui.define([
             
 			if (!sCurrentValue) {
 				oStep.setValidated(false);
-
-				this._popoverMessage(this._oResourceBundle.getText("mandatory.field"),
-					oInput.getLabels()[0].getText(),
-					sap.ui.core.MessageType.Error,
-					sTarget);
+				this._popoverInvalidField(oInput, "mandatory.field", sTarget);
 			}
 			else 
-			{ var isOK = /^[a-zA-ZäöüÄÖÜ ]+$/.test(oInput.getValue()); //test for valid entry and return true or false
+			{   // Valid entry according to RegEx: Letters, no number, Umlaut, space, .
+				var isOK = /^[a-zA-ZäöüÄÖÜ ]+$/.test(oInput.getValue()); 
 
 				if (!isOK) {
 					oStep.setValidated(false);
-
-					this._popoverMessage(this._oResourceBundle.getText("invalid.Chars"),
-						oInput.getLabels()[0].getText(),
-						sap.ui.core.MessageType.Error,
-						sTarget);
+				    this._popoverInvalidField(oInput, "invalid.Chars", sTarget);
 				}
 			}
 		},
 
-		_validateStep: function (oField, oSignPad, oStep) {
+		_validateStep: function (oSignSource) {  
+			oSignSource.step.setValidated(false);
 			
-			oStep.setValidated(false);
-			
-			if (oField.getValue() !== "" && !oSignPad.isEmpty()) {
-				oStep.setValidated(true);
+			if (oSignSource.field.getValue() !== "" && !oSignSource.pad.isEmpty()) {
+				oSignSource.step.setValidated(true);
 			}
 		},
 
 		onInputChange: function (oEvent) {
-			// Whenever the value of an input field is changed, the system must
-			// update the product draft. For most of the fields, no specific
-			// processing is required on the update of the product draft. onInputChange is the
-			// change event defined in the XML view for such fields.
+			// Whenever the clear text name is changed in the input field, update the draft model and validate
+			// onInputChange is the change event defined in the XML view.
 
 			var oSource = this._getSignInputSource(oEvent);
 
 			if (oSource !== undefined) {
 
-				this._validateStep(oSource.field, oSource.pad, oSource.step);
+				this._validateStep(oSource);
 				this._updateViewModel(oSource.property, oSource.field.value);
 				this._validateField(oSource.field, oSource.step);
 
