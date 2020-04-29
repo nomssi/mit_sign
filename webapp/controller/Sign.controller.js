@@ -122,8 +122,8 @@ sap.ui.define([
 					step.setValidated(true);
 				}
 			}.bind(this);
-			// var oModel = {}; // this._oViewModel -  this.getView().getModel();
-			this._oHelper.saveSignature(this.sVbeln, fnAfterSave);
+			var oViewModel = this.getView().getModel("pdfView");
+			this._oHelper.saveSignature(this.sVbeln, fnAfterSave, oViewModel);
 		},
 
 		oCompleteContent: function (oEvent) {
@@ -397,8 +397,8 @@ sap.ui.define([
 				"Unterschriften speichern",
 				sap.ui.core.MessageType.Information,
 				this._oLink);
-		    var oModel = {}; // this._oViewModel
-			this._oHelper.saveSignature(this.sVbeln, fnAfterSave);
+		    var oViewModel = this.getView().getModel("pdfView");
+			this._oHelper.saveSignature(this.sVbeln, fnAfterSave, oViewModel);
 		},
 
 		_fieldChange: function (oControl) {

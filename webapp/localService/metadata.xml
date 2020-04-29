@@ -98,6 +98,10 @@
 				</FunctionImport>
 				<FunctionImport Name="SaveSignature" ReturnType="MAK.SIGNATURE_SRV.Event" EntitySet="Events" m:HttpMethod="POST">
 					<Parameter Name="Vbeln" Type="Edm.String" Mode="In"/>
+					<Parameter Name="Lager" Type="Edm.String" Mode="In"/>
+					<Parameter Name="Abholer" Type="Edm.String" Mode="In"/>
+					<Parameter Name="Sign_Lager" Type="Edm.String" Mode="In"/>
+					<Parameter Name="Sign_Abholer" Type="Edm.String" Mode="In"/>
 				</FunctionImport>
 			</EntityContainer>
 			<atom:link rel="self" href="http://OBELIX3.1net.dom:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>

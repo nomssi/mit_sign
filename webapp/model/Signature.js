@@ -104,15 +104,14 @@ sap.ui.define([
 		},
 
 		// Saves ProductDraft each time a user edits a field
-		saveSignature: function (sVbeln, fnAfterSaved) {
+		saveSignature: function (sVbeln, fnAfterSaved, oModel) {
 			this._submitChanges(null, null);
 			
-			var oModel = {};
 			//var sVbeln = Model sVbeln;
-            var sLager = oModel.read("/Releaser>Name"); 
-            var sAbholer = oModel.read("/Receiver>Name");  
-            var sSignLager = oModel.read("/Releaser>Url"); 
-            var sSignAbholer = oModel.read("/Receiver>Url"); 
+            var sLager = oModel.getProperty("/Releaser>Name"); 
+            var sAbholer = oModel.getProperty("/Receiver>Name");  
+            var sSignLager = oModel.getProperty("/Releaser>Url"); 
+            var sSignAbholer = oModel.getProperty("/Receiver>Url"); 
             
 			var data = {
 				Vbeln: sVbeln,
