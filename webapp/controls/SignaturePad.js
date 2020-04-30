@@ -104,7 +104,7 @@ sap.ui.define([
 				oCroppedCanvas.height = h;
 				croppedCtx.putImageData(cut, 0, 0);
 
-				return oCroppedCanvas.toDataURL("image/jpeg", 1.0);
+				return oCroppedCanvas.toDataURL("image/png", 1.0);
 			},
 
 			_raiseEndEvent: function (oEvent) {
@@ -231,7 +231,7 @@ sap.ui.define([
 					var oOptions = { 
 					// It's Necessary to use an opaque color when saving image as JPEG;
 					// this option can be omitted if only saving as PNG or SVG
-						backgroundColor: "rgb(255, 255, 255)",
+						//backgroundColor: "rgb(255, 255, 255)",
 						// onBegin: ??,
 						onEnd: this._raiseEndEvent.bind(this)
 					};
