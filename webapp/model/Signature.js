@@ -139,7 +139,7 @@ sap.ui.define([
 
 		updateSignature: function (fnAfterSaved, oModel) {
 			var oData = this._getSignData(oModel);
-			if (this._isValid(oData)) {
+			if (this._ValidData(oData)) {
 				this.saveSignature(oData.Vbeln, fnAfterSaved, oModel);
 			};
 			this._submitChanges(null, null);
