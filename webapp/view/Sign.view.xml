@@ -9,7 +9,7 @@
 					<Button id="homeButton" type="Emphasized" text="{i18n&gt;homeButtonText}" press=".onBack"/>
 				</headerContent>
 				<content>
-					<Wizard id="signWizard" complete="onBack" finishButtonText="{i18n&gt;checkoutWizardReviewbtn}" >
+					<Wizard id="signWizard" complete="onWizardCompleted" finishButtonText="{i18n&gt;checkoutWizardReviewbtn}" >
 						<steps>
 							<WizardStep id="contentStep" nextStep="signReleaserStep" icon="sap-icon://detail-view" complete="onCompleteContent" validated="true" title="{i18n&gt;contentTitle} {VBELN}">
 								<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Review}" showIcon="true"/>
@@ -69,7 +69,7 @@
 									</f:content>
 								</f:SimpleForm>
 							</WizardStep>
-							<WizardStep id="signReceiverStep" nextStep="showPDFStep" title="{i18n&gt;SignPad2Title}" icon="sap-icon://signature" validated="false" complete="onCompleteSignReceiverStep">
+							<WizardStep id="signReceiverStep" nextStep="showPDFStep" title="{i18n&gt;SignPad2Title}" icon="sap-icon://signature" validated="false">
 								<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.ReleaseReceiver}" showIcon="true"/>
 								<f:SimpleForm id="FormSignReceiver" editable="true" layout="ResponsiveGridLayout" title="{i18n&gt;SignPad2Title}" labelSpanL="2" labelSpanM="4" columnsL="1" columnsM="1" adjustLabelSpan="true">
 									<f:content>

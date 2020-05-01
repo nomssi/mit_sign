@@ -89,41 +89,6 @@ sap.ui.define([
 			this._wizard.setCurrentStep(this.byId("contentStep"));
 		},
 
-		onSaveButton: function () {
-			//var oHelper = this._oHelper;
-
-			/*var fnSave = function(oBlob){
-				console.log(oBlob);
-		    	var r = new Response(oBlob);
-		    	console.log(r.text());&nbsp;
-		    	var u = URL.createObjectURL(oBlob);
-		    	console.log(u);
-		    	
-		    	var fnSubmitDraftSuccess = function(sMessage) {
-					if (sMessage && oControl) {
-						oControl.setValueState("Error");
-						oControl.setValueStateText(sMessage);
-					}
-				};
-				var data = {
-						
-				}
-				oHelper.saveSignature(fnSubmitDraftSuccess);
-		    	
-			}.bind(this);
-			
-			var oCtrl = this.byId("signature-pad");
-			oCtrl.getSignature(fnSave);*/
-
-			var fnAfterSave = function (oData) {
-				if (oData.PDFUrl !== "") {
-					var step = this.byId("signReceiverStep");
-					step.setValidated(true);
-				}
-			}.bind(this);
-			var oViewModel = this.getView().getModel("pdfView");
-			this._oHelper.saveSignature(this.sVbeln, fnAfterSave, oViewModel);
-		},
 
 		oCompleteContent: function (oEvent) {
 
@@ -253,26 +218,6 @@ sap.ui.define([
 			}
 		},
 		
-		onWizardCompleted: function (oEvent) {
-			var oViewModel = this.getView().getModel();
-			var oReceiverName = this.byId("sRecvName");
-
-			if ( oReceiverName.getValue().includes("RAC")) {
-			// Button icon="sap-icon://accept"  press="onCorrectPathClick"
-			// Add message - sVeln signed - OK ?
-			// Initiate/Inform about send Mail
-				this.getRouter().navTo("complete");
-			} else {
-				// Add message - sVeln signed - Error ?
-				this._popoverMessage(this.sVbeln,
-					"Fehler bei der PDF Anzeige.",
-					sap.ui.core.MessageType.Error,
-					this._oLink);
-
-				this.getRouter().navTo("error");
-			}
-		},
-
 		removeMessageFromTarget: function (sTarget) {
 			// clear potential server-side messages to allow saving the item again			
 			this._oMessageManager.getMessageModel().getData().forEach(function (oMessage) {
@@ -362,22 +307,54 @@ sap.ui.define([
 			};
 		},		
 
-		onCompleteSignReceiverStep: function (oEvent) {
-
-			// this._wizard.validateStep(this.byId("signReceiverStep"));	
-			var fnAfterSave = function (oData) {
-				if (oData.PDFUrl !== "") {
-					this._popoverMessage(this.sVbeln,
-						"PDF created.",
-						sap.ui.core.MessageType.Success,
-						this._oLink);
-				}
-			};
+		optionalStepActivation: function () {
 			this._popoverMessage(this.sVbeln,
-				"Unterschriften speichern",
+			    this._oResourceBundle.getText("step3.active"),
 				sap.ui.core.MessageType.Information,
 				this._oLink);
-		    var oViewModel = this.getView().getModel("pdfView");
+		},
+
+		optionalStepCompletion: function () {
+			this._popoverMessage(this.sVbeln,
+				this._oResourceBundle.getText("step3.completed"),
+				sap.ui.core.MessageType.Information,
+				this._oLink);
+		},
+
+		onWizardCompleted: function (oEvent) {
+			var sMessageText = this._oResourceBundle.getText("step.save");
+			var sMessageType = sap.ui.core.MessageType.Information;
+			var sTarget = "home";
+			
+			var fnAfterSave = function (oData) {
+				if (oData.PDFUrl !== "") {
+					sMessageType = sap.ui.core.MessageType.Success;
+	                sMessageText = "PDF created.";
+					sTarget = "complete";
+				}
+				else {
+					sMessageType = sap.ui.core.MessageType.Error;
+	                sMessageText = "Fehler bei der Ausgabe.";
+					sTarget = "error";
+				};
+				this._popoverMessage(this.sVbeln,
+					sMessageText,
+					sap.ui.core.MessageType.Information,
+					this._oLink);
+
+				this.getRouter().navTo(sTarget);
+				
+			}.bind(this);
+
+			var oStep = this.byId("signReceiverStep");
+			this._wizard.validateStep(oStep);	
+			
+			this._popoverMessage(this.sVbeln,
+				sMessageText,
+				sMessageType,
+				this._oLink);
+
+			var oViewModel = this.getView().getModel("pdfView");		    
 			this._oHelper.saveSignature(this.sVbeln, fnAfterSave, oViewModel);
 		},
 
@@ -397,20 +374,6 @@ sap.ui.define([
 			};
 			var oViewModel = this.getView().getModel("pdfView");
 			this._oHelper.updateSignature(fnSubmitDraftSuccess, oViewModel);
-		},
-
-		optionalStepActivation: function () {
-			this._popoverMessage(this.sVbeln,
-			    this._oResourceBundle.getText("step3.active"),
-				sap.ui.core.MessageType.Information,
-				this._oLink);
-		},
-
-		optionalStepCompletion: function () {
-			this._popoverMessage(this.sVbeln,
-				this._oResourceBundle.getText("step3.completed"),
-				sap.ui.core.MessageType.Information,
-				this._oLink);
 		},
 
 		/**
