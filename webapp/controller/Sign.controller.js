@@ -408,7 +408,7 @@ sap.ui.define([
 
 		optionalStepCompletion: function () {
 			this._popoverMessage(this.sVbeln,
-				"Unterschrift Step3 completed.",
+				this._oResourceBundle.getText("step3.completed"),
 				sap.ui.core.MessageType.Information,
 				this._oLink);
 		},
