@@ -38,7 +38,8 @@ sap.ui.define([
 			this._router = oComponent.getRouter();
 
 			this._router.getRoute("sign").attachPatternMatched(this._routePatternMatched, this);
-			this._router.getRoute("signcompleted").attachMatched(this._routePatternMatched, this);
+			this._router.getRoute("complete").attachMatched(this._routePatternMatched, this);
+			this._router.getRoute("error").attachMatched(this._routePatternMatched, this);
 
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this._oHelper = new Signature(oComponent, this._oView);
@@ -85,8 +86,6 @@ sap.ui.define([
 		onBack: function () {
 			this.getRouter().navTo("home");
 
-			// var oWizard = this.byId("signWizard");
-			//oWizard.setCurrentStep(this.byId("contentStep"));
 			this._wizard.setCurrentStep(this.byId("contentStep"));
 		},
 
@@ -133,31 +132,6 @@ sap.ui.define([
 
 		oSignCommit: function (oEvent) {
 			// Initiate COMMIT, PDF generation
-			return false;
-		},
-
-		onSigningCompleted: function (oEvent) {
-
-			// Button icon="sap-icon://accept"  press="onCorrectPathClick"
-			// Add message - sVeln signed - OK ?
-			// Initiate/Inform about send Mail
-			var oViewModel = this.getView().getModel();
-			oViewModel.setProperty("/Status", "1");
-
-			this.getRouter().navTo("home");
-			this._wizard.setCurrentStep(this.byId("contentStep"));
-		},
-
-		onSigningFailed: function (oEvent) {
-			// Initiate Error procedure  
-			var oViewModel = this.getView().getModel();
-			oViewModel.setProperty("/Status", "2");
-
-			// Add message - sVeln signed - Error ?
-			this._popoverMessage(this.sVbeln,
-				"Fehler bei der PDF Anzeige.",
-				sap.ui.core.MessageType.Error,
-				this._oLink);
 			return false;
 		},
 
@@ -279,17 +253,24 @@ sap.ui.define([
 			}
 		},
 		
-		onCompleteButton: function (oEvent) {
+		onWizardCompleted: function (oEvent) {
+			var oViewModel = this.getView().getModel();
 			var oReceiverName = this.byId("sRecvName");
-			
-			if ( oReceiverName.getValue().includes("RAC")) {
-				this.getRouter().navTo("complete");
-				this._wizard.setCurrentStep(this.byId("contentStep"));
-			} else {
-				this.getRouter().navTo("error");
-				this._wizard.setCurrentStep(this.byId("contentStep"));
-			}
 
+			if ( oReceiverName.getValue().includes("RAC")) {
+			// Button icon="sap-icon://accept"  press="onCorrectPathClick"
+			// Add message - sVeln signed - OK ?
+			// Initiate/Inform about send Mail
+				this.getRouter().navTo("complete");
+			} else {
+				// Add message - sVeln signed - Error ?
+				this._popoverMessage(this.sVbeln,
+					"Fehler bei der PDF Anzeige.",
+					sap.ui.core.MessageType.Error,
+					this._oLink);
+
+				this.getRouter().navTo("error");
+			}
 		},
 
 		removeMessageFromTarget: function (sTarget) {
