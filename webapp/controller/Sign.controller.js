@@ -312,7 +312,7 @@ sap.ui.define([
 			}
 			else 
 			{   // Valid entry according to RegEx: Letters, no number, Umlaut, space, .
-				var isOK = /^[a-zA-ZäöüÄÖÜ ]+$/.test(oInput.getValue()); 
+				var isOK = /^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\- ]+$/.test(oInput.getValue()); 
 
 				if (!isOK) {
 					oStep.setValidated(false);
