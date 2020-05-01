@@ -121,7 +121,7 @@ sap.ui.define([
         },
 
         _ValidData: function (oData) {
-        	if (oData.sLager !== null && oData.sAbholer !== null && oData.sSign_Lager !== null && oData.sSign_Abholer !== null) {
+        	if (oData.sLager !== undefined && oData.sAbholer !== undefined && oData.sSign_Lager !== undefined && oData.sSign_Abholer !== undefined ) {
         		return true;
         	}
         	else {
