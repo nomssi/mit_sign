@@ -18,6 +18,11 @@ sap.ui.define([
 
 		formatter: formatter,
 
+		exit: function () {
+			this._oHelper.destroy();
+			this._oViewModel.destroy();
+		},
+
 		onInit: function () {
 
 			this._oLink = Messages.createDefaultLink();
@@ -46,16 +51,16 @@ sap.ui.define([
 
 			// View register Model for Draft handling
 			this._oViewModel = new sap.ui.model.json.JSONModel({
-				Vbeln: "",
 				PDFurl: "",
+				Receiver: {
+					Name: "",
+					Url: ""
+				},
 				Releaser: {
 					Name: "",
 					Url: ""
 				},
-				Receiver: {
-					Name: "",
-					Url: ""
-				}
+				Vbeln: ""
 				// Set binding 2 ways
 			});
 			this.setModel(this._oViewModel, "pdfView");
@@ -63,11 +68,6 @@ sap.ui.define([
 			//Binding für die Signatur erstellen, am besten die Kopfdaten der Lieferung mit den zwei Feldern für die Signatur verknüpfen
 			//so kann die Signatur als base64 an SAP gesendet werden und im nächsten schritt angezeigt werden
 
-		},
-
-		exit: function () {
-			this._oHelper.destroy();
-			this._oViewModel.destroy();
 		},
 
 		_routePatternMatched: function (oEvent) {
@@ -78,6 +78,7 @@ sap.ui.define([
 
 			this._oMessageManager.removeAllMessages(); // reset potential server-side messages
 		},
+
 
 		/**
 		 * Always navigates back to home
@@ -101,13 +102,11 @@ sap.ui.define([
 		},
 
 		_updateViewModel: function (sProperty, vValue) {
-			var oViewModel = this.getView().getModel("pdfView");
-			// oViewModel.getProperty(ssProperty);
-			oViewModel.setProperty(sProperty, vValue);
+			this.getView().getModel("pdfView").setProperty(sProperty, vValue);
 		},
 
 		_getSignButtonSource: function (oEvent) {
-			var oSignSource = {};
+			var oSignSource;							// undefined
 
 			var oReleaserBtn = this.byId("btnClear");
 			var oReceiverBtn = this.byId("btnClear2");
@@ -128,14 +127,12 @@ sap.ui.define([
 					field: this.byId("sRecvName"),
 					property: "/Receiver>Url"
 				};
-			} else {
-				oSignSource = undefined;
 			};
 			return oSignSource;
 		},
 
 		_getSignPadSource: function (oEvent) {
-			var oSignSource = {};
+			var oSignSource;									// undefined
 
 			var oReleaserSignPad = this.byId("signature-pad"); // Ausgebender
 			var oReceiverSignPad = this.byId("signature-pad2"); // Empfänger
@@ -156,23 +153,21 @@ sap.ui.define([
 					field: this.byId("sRecvName"),
 					property: "/Receiver>Url"
 				};
-			} else {
-				oSignSource = undefined;
 			};
 			return oSignSource;
 		},
 
 		_getSignInputSource: function (oEvent) {
-			var oSignSource = {};
+			var oSignSource;							// undefined
 
-			var oReleaserName = this.byId("sName"); // Ausgebender
+			var oReleaserName = this.byId("sName"); 	// Ausgebender
 			var oReceiverName = this.byId("sRecvName"); // Empfänger
 			var oSource = oEvent.getSource();
 
 			if (oSource === oReleaserName) {
 				oSignSource = {
 					step: this.byId("signReleaserStep"),
-					field: oSource,					
+					field: oSource,
 					pad: this.byId("signature-pad"), // Lager
 					property: "/Releaser>Name"
 				};
@@ -180,12 +175,10 @@ sap.ui.define([
 			if (oSource === oReceiverName) {
 				oSignSource = {
 					step: this.byId("signReceiverStep"),
-					field: oSource,					
+					field: oSource,
 					pad: this.byId("signature-pad2"), // Empfänger
 					property: "/Receiver>Name"
 				};
-			} else {
-				oSignSource = undefined;
 			};
 			return oSignSource;
 		},
@@ -193,7 +186,7 @@ sap.ui.define([
 		onClearButton: function (oEvent) {
 			var oSource = this._getSignButtonSource(oEvent);
 
-			if (oSource !== undefined) {
+			if (typeof oSource !== "undefined") {
 				this._updateViewModel(oSource.property, "");
 
 				oSource.pad.clear();
@@ -206,7 +199,7 @@ sap.ui.define([
 		onUndoButton: function (oEvent) {
 			var oSource = this._getSignButtonSource(oEvent);
 
-			if (oSource !== undefined) {
+			if (typeof oSource !== "undefined") {
 				this._updateViewModel(oSource.property, "");
 
 				oSource.pad.undo();
@@ -217,7 +210,7 @@ sap.ui.define([
 				}
 			}
 		},
-		
+
 		removeMessageFromTarget: function (sTarget) {
 			// clear potential server-side messages to allow saving the item again			
 			this._oMessageManager.getMessageModel().getData().forEach(function (oMessage) {
@@ -279,7 +272,7 @@ sap.ui.define([
 			// onInputChange is the change event defined in the XML view.
 			var oSource = this._getSignInputSource(oEvent);
 
-			if (oSource !== undefined) {
+			if (typeof oSource !== "undefined") {
 
 				this._validateStep(oSource);
 				this._updateViewModel(oSource.property, oSource.field.getValue());
@@ -292,12 +285,12 @@ sap.ui.define([
 				}.bind(this), 0);
 			}
 		},
-		
+
 		onSignChange: function (oEvent) {
 			var oSource = this._getSignPadSource(oEvent);
 
-			if (oSource !== undefined) {
-				
+			if (typeof oSource !== "undefined") {
+
 				this._validateStep(oSource);
 				this._updateViewModel(oSource.property, oEvent.getParameter("value"));
 
@@ -306,13 +299,6 @@ sap.ui.define([
 				}.bind(this), 0);
 			};
 		},		
-
-		optionalStepActivation: function () {
-			this._popoverMessage(this.sVbeln,
-			    this._oResourceBundle.getText("step3.active"),
-				sap.ui.core.MessageType.Information,
-				this._oLink);
-		},
 
 		optionalStepCompletion: function () {
 			this._popoverMessage(this.sVbeln,
@@ -334,7 +320,7 @@ sap.ui.define([
 				}
 				else {
 					sMessageType = sap.ui.core.MessageType.Error;
-	                sMessageText = "Fehler bei der Ausgabe.";
+					sMessageText = "Fehler bei der Ausgabe.";
 					sTarget = "error";
 				};
 				this._popoverMessage(this.sVbeln,
@@ -343,12 +329,12 @@ sap.ui.define([
 					this._oLink);
 
 				this.getRouter().navTo(sTarget);
-				
+
 			}.bind(this);
 
 			var oStep = this.byId("signReceiverStep");
 			this._wizard.validateStep(oStep);	
-			
+
 			this._popoverMessage(this.sVbeln,
 				sMessageText,
 				sMessageType,

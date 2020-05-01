@@ -1,5 +1,81 @@
 {
 	"rulesExt": {
+		"App.controller": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"BaseController": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"Complete.controller": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"Error.controller": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"ErrorHandler": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"Home.controller": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"NotFound.controller": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"SignaturePad": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"MockRequest": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"Signature": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"formatter": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"models": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"Sign.controller": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"AllTests": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"controls": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"messages": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"Boot": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"Component": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
+		"Gruntfile": {
+			"severity": "warning",
+			"category": "Best Practice"
+		},
 		"space-before-blocks": {
 			"severity": "warning",
 			"category": "Stylistic Issue",
