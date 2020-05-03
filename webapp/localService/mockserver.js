@@ -39,12 +39,12 @@ sap.ui.define([
 						sMockServerUrl = sMockServerUrl && new URI(sMockServerUrl).absoluteTo(sap.ui.require.toUrl(_sAppPath)).toString();
 
 					// create a mock server instance or stop the existing one to reinitialize
-					if (!oMockServer) {
+					if (oMockServer) {
+						oMockServer.stop();
+					} else {
 						oMockServer = new MockServer({
 							rootUri: sMockServerUrl
 						});
-					} else {
-						oMockServer.stop();
 					}
 
 					// configure mock server with the given options or a default delay of 0.5s

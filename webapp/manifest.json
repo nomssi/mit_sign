@@ -126,12 +126,12 @@
 				},
 				{
 					"name": "complete",
-					"pattern": "",
+					"pattern": "sign/{id}",
 					"target": "complete"
 				},
 				{
 					"name": "error",
-					"pattern": "",
+					"pattern": "sign/{id}",
 					"target": "error"
 				}
 			],

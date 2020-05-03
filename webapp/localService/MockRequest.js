@@ -40,7 +40,10 @@ sap.ui.define(["sap/ui/base/Object"],
                         const sType = this._highestSeverityMessage(aMessages);
                         let oLeadingMessage = aMessages.find(oMessage => oMessage.severity === sType);
 
-                        if (!oEntity.ThrowException) {
+                        if (oEntity.ThrowException) {
+                            // serialize the exception to response body
+                            oBody = this._serializeBody(aMessages, oLeadingMessage);
+                        } else {
                             iResponse = 204;
                             // serialize the messages to the http header "sap-messages"
                             oHeaders = this._serializeHeader(aMessages, oLeadingMessage);
@@ -54,10 +57,7 @@ sap.ui.define(["sap/ui/base/Object"],
                             if (iIndex > -1) {
                                 Object.assign(oMockdata[iIndex], oEntity);
                             }
-                        } else {
-                            // serialize the exception to response body
-                            oBody = this._serializeBody(aMessages, oLeadingMessage);
-                        }
+                        };
                         oXhr.respondJSON(iResponse, oHeaders, oBody);
                         return true; //stop further processing
                     }.bind(this)
@@ -140,7 +140,10 @@ sap.ui.define(["sap/ui/base/Object"],
                 const fnMapMessageTypes = sType => {
                     let sTarget = aShowTarget.indexOf(sType) > -1 ? sTargetField : undefined;
                     let sMessage = sOrigin + " : " + sType.charAt(0).toUpperCase() + sType.slice(1) + " from Mockserver - " + oEntity[sField];
-                    return { "code": "00/003", "severity": sType, "target": sTarget, "message": sMessage };
+                    return { "code": "00/003",
+                             "severity": sType,
+                             "target": sTarget,
+                             "message": sMessage};
                 };
 
                 // return an array of messages

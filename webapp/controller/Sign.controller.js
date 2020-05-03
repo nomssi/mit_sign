@@ -38,13 +38,11 @@ sap.ui.define([
 			this._oMessageManager.registerObject(this._oView, true);
 			this._oView.setModel(this._oMessageManager.getMessageModel(), "message");
 
-			//this._initViewPropertiesModel();
+			// this._initViewPropertiesModel();
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
 
 			this._router.getRoute("sign").attachPatternMatched(this._routePatternMatched, this);
-			this._router.getRoute("complete").attachMatched(this._routePatternMatched, this);
-			this._router.getRoute("error").attachMatched(this._routePatternMatched, this);
 
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this._oHelper = new Signature(oComponent, this._oView);
@@ -65,20 +63,30 @@ sap.ui.define([
 			});
 			this.setModel(this._oViewModel, "pdfView");
 
-			//Binding für die Signatur erstellen, am besten die Kopfdaten der Lieferung mit den zwei Feldern für die Signatur verknüpfen
-			//so kann die Signatur als base64 an SAP gesendet werden und im nächsten schritt angezeigt werden
-
+			this._oSourceReleaser = {
+					step: this.byId("signReleaserStep"),
+					pad: this.byId("signature-pad"), // Lager
+					field: this.byId("sName"),
+					button: this.byId("btnClear"),
+					property: "/Releaser>Url"
+			};
+			this._oSourceReceiver = {
+					step: this.byId("signReceiverStep"),
+					pad: this.byId("signature-pad2"), // Empfänger
+					field: this.byId("sRecvName"),
+					button: this.byId("btnClear2"),
+					property: "/Receiver>Url"
+			};
 		},
 
 		_routePatternMatched: function (oEvent) {
 
 			var sVbeln = oEvent.getParameter("arguments").id;
-			this._oHelper.bindVbelnTo(this.getView().getModel(), sVbeln, this);
+			this._oHelper.bindVbelnTo(this.getModel(), sVbeln, this);
 			this._updateViewModel("/Vbeln", sVbeln);
 
 			this._oMessageManager.removeAllMessages(); // reset potential server-side messages
 		},
-
 
 		/**
 		 * Always navigates back to home
@@ -90,125 +98,30 @@ sap.ui.define([
 			this._wizard.setCurrentStep(this.byId("contentStep"));
 		},
 
-
-		oCompleteContent: function (oEvent) {
-
-			return false;
-		},
-
-		oSignCommit: function (oEvent) {
-			// Initiate COMMIT, PDF generation
-			return false;
-		},
-
 		_updateViewModel: function (sProperty, vValue) {
-			this.getView().getModel("pdfView").setProperty(sProperty, vValue);
-		},
-
-		_getSignButtonSource: function (oEvent) {
-			var oSignSource;							// undefined
-
-			var oReleaserBtn = this.byId("btnClear");
-			var oReceiverBtn = this.byId("btnClear2");
-			var oSource = oEvent.getSource();
-
-			if (oSource === oReleaserBtn) {
-				oSignSource = {
-					step: this.byId("signReleaserStep"),
-					pad: this.byId("signature-pad"), // Lager
-					field: this.byId("sName"),
-					property: "/Releaser>Url"
-				};
-			} else
-			if (oSource === oReceiverBtn) {
-				oSignSource = {
-					step: this.byId("signReceiverStep"),
-					pad: this.byId("signature-pad2"), // Empfänger
-					field: this.byId("sRecvName"),
-					property: "/Receiver>Url"
-				};
-			};
-			return oSignSource;
-		},
-
-		_getSignPadSource: function (oEvent) {
-			var oSignSource;									// undefined
-
-			var oReleaserSignPad = this.byId("signature-pad"); // Ausgebender
-			var oReceiverSignPad = this.byId("signature-pad2"); // Empfänger
-			var oSource = oEvent.getSource();
-
-			if (oSource === oReleaserSignPad) {
-				oSignSource = {
-					step: this.byId("signReleaserStep"),
-					pad: oSource,
-					field: this.byId("sName"),
-					property: "/Releaser>Url"
-				};
-			} else
-			if (oSource === oReceiverSignPad) {
-				oSignSource = {
-					step: this.byId("signReceiverStep"),
-					pad: oSource,
-					field: this.byId("sRecvName"),
-					property: "/Receiver>Url"
-				};
-			};
-			return oSignSource;
-		},
-
-		_getSignInputSource: function (oEvent) {
-			var oSignSource;							// undefined
-
-			var oReleaserName = this.byId("sName"); 	// Ausgebender
-			var oReceiverName = this.byId("sRecvName"); // Empfänger
-			var oSource = oEvent.getSource();
-
-			if (oSource === oReleaserName) {
-				oSignSource = {
-					step: this.byId("signReleaserStep"),
-					field: oSource,
-					pad: this.byId("signature-pad"), // Lager
-					property: "/Releaser>Name"
-				};
-			} else
-			if (oSource === oReceiverName) {
-				oSignSource = {
-					step: this.byId("signReceiverStep"),
-					field: oSource,
-					pad: this.byId("signature-pad2"), // Empfänger
-					property: "/Receiver>Name"
-				};
-			};
-			return oSignSource;
+			this.getModel("pdfView").setProperty(sProperty, vValue);
 		},
 
 		onClearButton: function (oEvent) {
-			var oSource = this._getSignButtonSource(oEvent);
+			var oSource;										// undefined
 
-			if (typeof oSource !== "undefined") {
-				this._updateViewModel(oSource.property, "");
+			switch(oEvent.getSource()) {
+			  case this._oSourceReleaser.button:
+			  	oSource = this._oSourceReleaser;				// Lager
+			    break;
+			  case this._oSourceReceiver.button:
+				oSource = this._oSourceReceiver;				// Empfänger
+			    break;
+			  default:
+				return;
+			};
 
-				oSource.pad.clear();
-				this._wizard.invalidateStep(oSource.step);
-				this._wizard.setCurrentStep(oSource.step);
-				// this._oHelper.clearSignature(this.sVbeln);
-			}
-		},
+			this._updateViewModel(oSource.property, "");
 
-		onUndoButton: function (oEvent) {
-			var oSource = this._getSignButtonSource(oEvent);
-
-			if (typeof oSource !== "undefined") {
-				this._updateViewModel(oSource.property, "");
-
-				oSource.pad.undo();
-				if (oSource.pad.isEmpty()) {
-					// this._oHelper.clearSignature(this.sVbeln);
-					this._wizard.invalidateStep(oSource.step);
-					this._wizard.setCurrentStep(oSource.step);
-				}
-			}
+			oSource.pad.clear();
+			this._wizard.invalidateStep(oSource.step);
+			this._wizard.setCurrentStep(oSource.step);
+			// this._oHelper.clearSignature(this.sVbeln);
 		},
 
 		removeMessageFromTarget: function (sTarget) {
@@ -238,67 +151,86 @@ sap.ui.define([
 				sap.ui.core.MessageType.Error,
 				sTarget);
 		},
-		
+
 		_validateField: function (oInput, oStep) {
 			var sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
 			this.removeMessageFromTarget(sTarget);
 			var sCurrentValue = oInput.getValue();
-            
-			if (!sCurrentValue) {
+
+			if (sCurrentValue) {
+				var isValidEntry = (/^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\- ]+$/).test(oInput.getValue());	// RegEx: Letters, no number, Umlaut, space, .
+
+				if (!isValidEntry) {
+					oStep.setValidated(false);
+					this._popoverInvalidField(oInput, "invalid.Chars", sTarget);
+				}
+			}
+			else {
 				oStep.setValidated(false);
 				this._popoverInvalidField(oInput, "mandatory.field", sTarget);
 			}
-			else 
-			{   // Valid entry according to RegEx: Letters, no number, Umlaut, space, .
-				var isOK = /^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\- ]+$/.test(oInput.getValue()); 
-
-				if (!isOK) {
-					oStep.setValidated(false);
-				    this._popoverInvalidField(oInput, "invalid.Chars", sTarget);
-				}
-			}
 		},
 
-		_validateStep: function (oSignSource) {  
-			oSignSource.step.setValidated(false);
-			
+		_validateStep: function (oSignSource) {
+			var bValidStep = false;
+
 			if (oSignSource.field.getValue() !== "" && !oSignSource.pad.isEmpty()) {
-				oSignSource.step.setValidated(true);
-			}
+				bValidStep = true;
+			};
+			oSignSource.step.setValidated(bValidStep);
 		},
 
 		onInputChange: function (oEvent) {
 			// Whenever the clear text name is changed in the input field, update the draft model and validate
 			// onInputChange is the change event defined in the XML view.
-			var oSource = this._getSignInputSource(oEvent);
+			var oSource;									// undefined
 
-			if (typeof oSource !== "undefined") {
+			switch(oEvent.getSource()) {
+				case this._oSourceReleaser.field:
+					oSource = this._oSourceReleaser;			// Lager
+					oSource.property = "/Releaser>Name";
+					break;
+				case this._oSourceReceiver.field:
+					oSource = this._oSourceReceiver;			// Empfänger
+					oSource.property = "/Receiver>Name";
+					break;
+				default:
+					return;
+			};
 
-				this._validateStep(oSource);
-				this._updateViewModel(oSource.property, oSource.field.getValue());
-				this._validateField(oSource.field, oSource.step);
+			this._validateStep(oSource);
+			this._updateViewModel(oSource.property, oSource.field.getValue());
+			this._validateField(oSource.field, oSource.step);
 
-				// Workaround to ensure that both the supplier Id and Name are updated in the model before the
-				// draft is updated, otherwise only the Supplier Name is saved to the draft and Supplier Id is lost
-				setTimeout(function () {
-					this._fieldChange(oSource.field);
-				}.bind(this), 0);
-			}
+			// Workaround to ensure that both the supplier Id and Name are updated in the model before the
+			// draft is updated, otherwise only the Supplier Name is saved to the draft and Supplier Id is lost
+			setTimeout(function () {
+				this._fieldChange(oSource.field);
+			}.bind(this), 0);
 		},
 
+
 		onSignChange: function (oEvent) {
-			var oSource = this._getSignPadSource(oEvent);
+			var oSource;										// undefined
 
-			if (typeof oSource !== "undefined") {
-
-				this._validateStep(oSource);
-				this._updateViewModel(oSource.property, oEvent.getParameter("value"));
-
-				setTimeout(function () {
-					this._fieldChange(oSource.pad);
-				}.bind(this), 0);
+			switch(oEvent.getSource()) {
+			  case this._oSourceReleaser.pad:
+			  	oSource = this._oSourceReleaser;				// Lager
+			    break;
+			  case this._oSourceReceiver.pad:
+				oSource = this._oSourceReceiver;				// Empfänger
+			    break;
+			  default:
+				return;
 			};
-		},		
+
+			this._validateStep(oSource);
+			this._updateViewModel(oSource.property, oEvent.getParameter("value"));
+
+			setTimeout(function () {
+				this._fieldChange(oSource.pad);
+			}.bind(this), 0);
+		},
 
 		optionalStepCompletion: function () {
 			this._popoverMessage(this.sVbeln,
@@ -311,17 +243,17 @@ sap.ui.define([
 			var sMessageText = this._oResourceBundle.getText("step.save");
 			var sMessageType = sap.ui.core.MessageType.Information;
 			var sTarget = "home";
-			
+
 			var fnAfterSave = function (oData) {
-				if (oData.PDFUrl !== "") {
-					sMessageType = sap.ui.core.MessageType.Success;
-	                sMessageText = "PDF created.";
-					sTarget = "complete";
-				}
-				else {
+				if (oData.PDFUrl === "") {
 					sMessageType = sap.ui.core.MessageType.Error;
 					sMessageText = "Fehler bei der Ausgabe.";
 					sTarget = "error";
+				}
+				else {
+					sMessageType = sap.ui.core.MessageType.Success;
+					sMessageText = "PDF created.";
+					sTarget = "complete";
 				};
 				this._popoverMessage(this.sVbeln,
 					sMessageText,
@@ -333,14 +265,14 @@ sap.ui.define([
 			}.bind(this);
 
 			var oStep = this.byId("signReceiverStep");
-			this._wizard.validateStep(oStep);	
+			this._wizard.validateStep(oStep);
 
 			this._popoverMessage(this.sVbeln,
 				sMessageText,
 				sMessageType,
 				this._oLink);
 
-			var oViewModel = this.getView().getModel("pdfView");		    
+			var oViewModel = this.getView().getModel("pdfView");
 			this._oHelper.saveSignature(this.sVbeln, fnAfterSave, oViewModel);
 		},
 
@@ -348,18 +280,24 @@ sap.ui.define([
 			// Handler for a changed field that needs to be written to the draft.  This allows
 			// specific processing for the "Change" event on the input fields, such as for numbers
 			// to set empty to "0".
-			//this._setDirty();
+			// this._setDirty();
 			// Removes previous error state
-			//oControl.setValueState(ValueState.None);
+			// oControl.setValueState(ValueState.None);
 			// Callback function in the event that saving draft is unsuccessful
 			var fnSubmitDraftSuccess = function (sMessage) {
 				if (sMessage && oControl) {
-					oControl.setValueState("Error");
 					oControl.setValueStateText(sMessage);
-				}
+				};
+				this.getRouter().navTo("complete");
 			};
+			var fnSubmitDraftError = function (sMessage) {
+				if (sMessage && oControl) {
+					oControl.setValueStateText(sMessage);
+				};
+				this.getRouter().navTo("error");
+			};	
 			var oViewModel = this.getView().getModel("pdfView");
-			this._oHelper.updateSignature(fnSubmitDraftSuccess, oViewModel);
+			this._oHelper.updateSignature(fnSubmitDraftSuccess, fnSubmitDraftError, oViewModel);
 		},
 
 		/**
@@ -398,7 +336,7 @@ sap.ui.define([
 			oMessagePopover.openBy(oButton);
 		},
 
-		//To be able to stub the addDependent function in unit test, we added it in a separate function
+		// To be able to stub the addDependent function in unit test, we added it in a separate function
 		_addDependent: function (oMessagePopover) {
 			this.getView().addDependent(oMessagePopover);
 		}

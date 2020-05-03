@@ -47,15 +47,6 @@ sap.ui.define([
 		},
 
 		/**
-		 * Handler for the Avatar button press event
-		 * @public
-		 */
-		onAvatarPress: function () {
-			var sMessage = this.getResourceBundle().getText("avatarButtonMessageToastText");
-			MessageToast.show(sMessage);
-		},
-
-		/**
 		 * React to FlexibleColumnLayout resize events
 		 * Hides navigation buttons and switches the layout as needed
 		 * @param {sap.ui.base.Event} oEvent the change event
@@ -104,10 +95,10 @@ sap.ui.define([
 			this._unhideMiddlePage();
 			var oHistory = History.getInstance();
 			var oPrevHash = oHistory.getPreviousHash();
-			if (oPrevHash !== undefined) {
-				window.history.go(-1);
-			} else {
+			if (typeof oPrevHash === "undefined") {
 				this.getRouter().navTo("home");
+			} else {
+				window.history.go(-1);
 			}
 		}
 	});

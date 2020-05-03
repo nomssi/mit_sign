@@ -104,18 +104,12 @@ sap.ui.define([
 		},
 
         _getSignData: function (oModel) {
-        	var sVbeln = oModel.getProperty("/Vbeln"); 
-            var sLager = oModel.getProperty("/Releaser>Name"); 
-            var sAbholer = oModel.getProperty("/Receiver>Name");  
-            var sSignLager = oModel.getProperty("/Releaser>Url"); 
-            var sSignAbholer = oModel.getProperty("/Receiver>Url"); 
-            
 			var data = {
-				Vbeln: sVbeln,
-				Lager: sLager,               // Klartext Name Lager
-				Abholer: sAbholer,           // Klartext Name Abholer
-				Sign_Lager: sSignLager,      // Signatur Lager
-				Sign_Abholer: sSignAbholer   // Signatur Lager
+				Vbeln: oModel.getProperty("/Vbeln"),
+				Lager: oModel.getProperty("/Releaser>Name"),			// Klartext Name Lager
+				Abholer: oModel.getProperty("/Receiver>Name"),			// Klartext Name Abholer
+				Sign_Lager: oModel.getProperty("/Releaser>Url"),		// Signatur Lager
+				Sign_Abholer: oModel.getProperty("/Receiver>Url")		// Signatur Lager
 			};
         	return data;
         },
@@ -134,15 +128,15 @@ sap.ui.define([
 			this._submitChanges(null, null);
 			//var sVbeln = Model sVbeln;
 			this._callFunctionImport("/SaveSignature", this._getSignData(oModel), fnAfterSaved, "isBusySaving");
-			this._submitChanges(null, null);
+			this._submitChanges(fnAfterSaved, oModel);
 		},
 
-		updateSignature: function (fnAfterSaved, oModel) {
+		updateSignature: function (fnAfterSaved, fnError, oModel) {
 			var oData = this._getSignData(oModel);
 			if (this._ValidData(oData)) {
 				this.saveSignature(oData.Vbeln, fnAfterSaved, oModel);
 			};
-			this._submitChanges(null, null);
+			this._submitChanges(fnError, fnAfterSaved);
 		},
 
 		_submitChanges: function (fnSaveFailed, fnAfterSaved) {
@@ -247,7 +241,7 @@ sap.ui.define([
 					oView.getElementBinding().attachEventOnce("dataReceived", function () {
 						// reset to default
 						oView.setBusyIndicatorDelay(null);
-						//this._checkIfProductAvailable(sPath);
+						// this._checkIfProductAvailable(sPath);
 					});
 				}
 			});

@@ -111,7 +111,7 @@ sap.ui.define([
 				
 				// var aDetails = JSON.parse(sDetails.responseText);
 				// MessageToast.show(this._sErrorText + " " + aDetails.error.message.value);
-				this._popoverMessage("TEST", // this.sVbeln, 
+				this._popoverMessage("Error", // this.sVbeln,  // TEST
 				    		         this._sErrorText + " " + sDetails.responseText, 
 				                	 sap.ui.core.MessageType.Error, 
 				                	 this._oLink);

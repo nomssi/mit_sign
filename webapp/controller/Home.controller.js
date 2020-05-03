@@ -47,7 +47,7 @@ sap.ui.define([
 			this._oViewProperties = new JSONModel({
 				updateTime: date.toLocaleTimeString("de-DE")
 			});
-			this.getView().setModel(this._oViewProperties, "viewProperties");
+			this.setModel(this._oViewProperties, "viewProperties");
 		},
 		
 		onRefresh: function () {

@@ -3,7 +3,7 @@ sap.ui.define([
 	"./model/models",
 	"sap/ui/Device",
 	"./controller/ErrorHandler",
-	"./util/controls"	
+	"./util/controls"
 ], function(UIComponent, models, Device, ErrorHandler, controls) {
 	"use strict";
 
@@ -64,7 +64,7 @@ sap.ui.define([
 			UIComponent.prototype.init.apply(this, arguments);
 
 			this._oErrorHandler = new ErrorHandler(this);
-			
+
 			// enable routing
 			var oRouter = this.getRouter();
 			if (oRouter) {
@@ -85,7 +85,7 @@ sap.ui.define([
 			// call the base component's destroy function
 			UIComponent.prototype.destroy.apply(this, arguments);
 		},
-		
+
 		/**
 		 * This method can be called to determine whether the sapUiSizeCompact or sapUiSizeCozy
 		 * design mode class should be set, which influences the size appearance of some controls.
@@ -94,7 +94,7 @@ sap.ui.define([
 		 */
 		getContentDensityClass : function() {
 			// check whether FLP has already set the content density class; do nothing in this case
-			if (this._sContentDensityClass === undefined) {
+			if (typeof this._sContentDensityClass === "undefined") {
 				this._sContentDensityClass = controls.getContentDensityClass();
 			}
 			return this._sContentDensityClass;
