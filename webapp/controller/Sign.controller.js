@@ -274,12 +274,9 @@ sap.ui.define([
 		onWizardCompleted: function (oEvent) {
 			var sMessageText = this._oResourceBundle.getText("step.save");
 			var sMessageType = sap.ui.core.MessageType.Information;
-			var oViewModel = this.getView().getModel("pdfView");
 
 			var fnSaveError = function (oError) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
-				sMessageType = sap.ui.core.MessageType.Error;
-				sMessageText = "Fehler bei der Ausgabe.";
 
 				this._popoverMessage(this.sVbeln,
 					JSON.stringify(oError),
@@ -289,13 +286,25 @@ sap.ui.define([
 				this.getRouter().navTo("error", {id: this.sVbeln});
 			};
 
-			var fnAfterSave = function (oData) {
+			var fnAfterSave = function (oData, oResponse) {
+				// this._oApplicationProperties.setProperty("/isBusySaving", false);
 				sMessageText = "PDF created.";
 
 				this._popoverMessage(this.sVbeln,
 					sMessageText,
 					sap.ui.core.MessageType.Success,
 					this._oLink);
+
+				var oViewModel = this.getModel("pdfView");
+
+				if (oData) {
+					oViewModel.update("/PDFUrl", oData);
+				};
+				
+				// if (oResponse.results !== 0) {
+				// 	oViewModel.setProperty("/PDFUrl", oResponse.results[0]);
+				// };
+
 
 				this.getRouter().navTo("complete", {id: this.sVbeln});
 			};
@@ -306,7 +315,7 @@ sap.ui.define([
 				sMessageType,
 				this._oLink);
 
-			this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), oViewModel);
+			this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), this.getView().getModel("pdfView"));
 		},
 
 		/**

@@ -104,7 +104,7 @@ sap.ui.define([
 				oCroppedCanvas.height = h;
 				croppedCtx.putImageData(cut, 0, 0);
 
-				return oCroppedCanvas.toDataURL("image/svg+xml", 1.0);
+				return oCroppedCanvas.toDataURL("image/svg+xml");
 			},
 
 			_raiseEndEvent: function (oEvent) {

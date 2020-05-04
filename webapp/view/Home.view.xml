@@ -36,14 +36,6 @@
 						<attributes>
 							<ObjectAttribute text="{VBELN}"/>
 						</attributes>
-						<firstStatus>
-							<ObjectStatus
-								text="{
-									path : 'Status',
-									formatter : '.formatter.statusText'
-								}"/>
-						</firstStatus>
-						
 					</ObjectListItem>
 				</items>
 			</List>
