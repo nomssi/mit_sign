@@ -9,7 +9,7 @@
 					<Button id="homeButton" type="Emphasized" text="{i18n&gt;homeButtonText}" press=".onBack"/>
 				</headerContent>
 				<content>
-					<Wizard id="signWizard" complete="onBack" finishButtonText="{i18n&gt;checkoutWizardReviewbtn}" >
+					<Wizard id="signWizard" complete="onWizardCompleted" finishButtonText="{i18n&gt;checkoutWizardReviewbtn}" >
 						<steps>
 							<WizardStep id="contentStep" nextStep="signReleaserStep" icon="sap-icon://detail-view" validated="true" title="{i18n&gt;contentTitle} {VBELN}">
 								<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Review}" showIcon="true"/>
@@ -50,7 +50,11 @@
 												<layout:GridData span="L2 M2"/>
 											</layoutData>
 										</Label>
-										<Input id="sName" value="{ path: 'SignerName', type: 'sap.ui.model.type.String' }" liveChange="onInputChange" placeholder="{{i18n&gt;placeholder.Signer}">
+										<Input id="sName"
+										       value="{ path: 'SignerName', 
+										                type: 'sap.ui.model.type.String' }" 
+										       liveChange="onInputChange" 
+										       placeholder="{i18n>placeholder.Signer}">
 											<layoutData>
 												<layout:GridData span="L8 M8"/>
 											</layoutData>
@@ -69,7 +73,7 @@
 									</f:content>
 								</f:SimpleForm>
 							</WizardStep>
-							<WizardStep id="signReceiverStep" complete="onWizardCompleted" title="{i18n&gt;SignPad2Title}" icon="sap-icon://signature" validated="false">
+							<WizardStep id="signReceiverStep" complete="onTriggerOutput" title="{i18n&gt;SignPad2Title}" icon="sap-icon://signature" validated="false">
 								<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.ReleaseReceiver}" showIcon="true"/>
 								<f:SimpleForm id="FormSignReceiver" editable="true" layout="ResponsiveGridLayout" title="{i18n&gt;SignPad2Title}" labelSpanL="2" labelSpanM="4" columnsL="1" columnsM="1" adjustLabelSpan="true">
 									<f:content>
@@ -78,7 +82,9 @@
 												<layout:GridData span="L2 M2"/>
 											</layoutData>
 										</Label>
-										<Input id="sRecvName" value="{ path: 'ReceiverName', type: 'sap.ui.model.type.String' }" liveChange="onInputChange" placeholder="{{i18n&gt;placeholder.Receiver}"/>
+										<Input id="sRecvName" value="{ path: 'ReceiverName', type: 'sap.ui.model.type.String' }"
+										       liveChange="onInputChange" 
+										       placeholder="{i18n>placeholder.Receiver}"/>
 										<Label text="{i18n&gt;lbl.Signature2}" labelFor="signature-pad2">
 											<layoutData>
 												<layout:GridData span="L2 M2" linebreak="true"/>

@@ -3,8 +3,9 @@ sap.ui.define([
 	"./model/models",
 	"sap/ui/Device",
 	"./controller/ErrorHandler",
-	"./util/controls"
-], function(UIComponent, models, Device, ErrorHandler, controls) {
+	"./util/controls",
+	"sap/m/MessageBox",	
+], function (UIComponent, models, Device, ErrorHandler, controls, MessageBox) {
 	"use strict";
 
 	return UIComponent.extend("Signature.Component", {
@@ -21,20 +22,20 @@ sap.ui.define([
 		 */
 		init: function () {
 
-			//aus der manifest.json unter models
+			// aus der manifest.json unter models
 			/*	"": {
 				"dataSource": "mainService",
 				"preload": true,
 				...
 				
 			}*/
-			
+
 			var oModel = models.createODataModel({
 				urlParametersForEveryRequest: [
-						"sap-server",
-						"sap-client",
-						"sap-language"
-					],
+					"sap-server",
+					"sap-client",
+					"sap-language"
+				],
 				url: this.getManifestEntry("/sap.app/dataSources/mainService/uri"),
 				config: {
 					metadataUrlParams: {
@@ -47,16 +48,16 @@ sap.ui.define([
 					loadMetadataAsync: true
 				}
 			});
-			
+
 			oModel.setDeferredBatchGroups(["editsignature", "BatchDelete"]);
 			oModel.setChangeBatchGroups({
 				"Signature": {
 					batchGroupId: "editsignature"
 				}
 			});
-			
+
 			this.setModel(oModel);
-			
+
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
 
@@ -69,10 +70,11 @@ sap.ui.define([
 			var oRouter = this.getRouter();
 			if (oRouter) {
 				oRouter.initialize();
+				oRouter.getTargetHandler().setCloseDialogs(false);	// Add. Features: Error Handling
 			}
 
 			// update browser title
-			/*this.getRouter().attachTitleChanged(function(oEvent) {
+			/* this.getRouter().attachTitleChanged(function(oEvent) {
 				var sTitle = oEvent.getParameter("title");
 				document.addEventListener('DOMContentLoaded', function(){
 					document.title = sTitle;
@@ -80,10 +82,25 @@ sap.ui.define([
 			});*/
 		},
 
-		destroy: function() {
+		destroy: function () {
 			this._oErrorHandler.destroy();
 			// call the base component's destroy function
 			UIComponent.prototype.destroy.apply(this, arguments);
+		},
+
+		_showServiceError: function (sDetails) {
+			if (this._bMessageOpen) {
+				return;
+			};
+			this._bMessageOpen = true;
+			MessageBox.error("Fehler / An Error occured",
+			{
+				details: sDetails,
+				actions: [MessageBox.Action.CLOSE],
+				onClose: function () {
+					this._bMessageOpen = false;
+				}.bind(this)
+			});
 		},
 
 		/**
@@ -92,7 +109,7 @@ sap.ui.define([
 		 * @public
 		 * @return {string} css class, either 'sapUiSizeCompact' or 'sapUiSizeCozy' - or an empty string if no css class should be set
 		 */
-		getContentDensityClass : function() {
+		getContentDensityClass: function () {
 			// check whether FLP has already set the content density class; do nothing in this case
 			if (typeof this._sContentDensityClass === "undefined") {
 				this._sContentDensityClass = controls.getContentDensityClass();

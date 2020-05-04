@@ -102,15 +102,14 @@
 				"controlId": "app",
 				"bypassed": {
 					"target": [
-						"notFound",
-						"home"
+						"notFound"
 					]
 				}
 			},
 			"routes": [
 				{
+					"name": "home",					
 					"pattern": "",
-					"name": "home",
 					"target": "home"
 				},
 				{
@@ -118,11 +117,6 @@
 					"name": "sign",
 					"target": "sign",
 					"subroutes": []
-				},
-				{
-					"name": "notFound",
-					"pattern": "",
-					"target": "home"
 				},
 				{
 					"name": "complete",
@@ -156,6 +150,11 @@
 					"viewName": "Error",
 					"viewLevel": 2,
 					"viewId": "signError"
+				},
+				"notFound": {
+					"viewName": "NotFound",
+					"viewId": "notFound",
+					"transition": "show"
 				}
 			}
 		}

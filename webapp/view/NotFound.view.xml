@@ -2,12 +2,18 @@
 xmlns:l="sap.ui.layout" height="100%"
 xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
 <MessagePage 
-   id="signEmptyPage" showHeader="false"  showNavButton="true" 
+   id="signEmptyPage" showHeader="false"
    icon="sap-icon://doctor"
    navButtonPress="onBack"
+   showNavButton="true"
    text="{i18n>ymsg.pageNotFoundTitle}"
    description="{i18n>ymsg.pageNotFoundIntro}"
-   title="Fehler" />
+   title="{i18n>ymsg.pageNotFoundIntro}">
+	<customDescription>
+		<Link text="{i18n>ymsg.Back}"
+		press="onBack"/>
+	</customDescription>
+</MessagePage>
 </mvc:View>
 
 

@@ -47,10 +47,10 @@ sap.ui.define([
 					MessageToast.show("Signatur geladen");
 					fnHandleDraft(oSig);
 				}
-			}.bind(this);
+			};
 			this._oODataModel.read("/LiefSIG", {
 				Id: sVbeln,
-				success: fnSuccess,
+				success: fnSuccess.bind(this),
 				error: fnError
 			});
 		},
@@ -114,29 +114,20 @@ sap.ui.define([
         	return data;
         },
 
-        _ValidData: function (oData) {
-        	if (oData.sLager !== undefined && oData.sAbholer !== undefined && oData.sSign_Lager !== undefined && oData.sSign_Abholer !== undefined ) {
-        		return true;
-        	}
-        	else {
-        	  return false;	
-        	};
+        _isValidData: function (oData) {
+			return (typeof oData.Lager !== "undefined" && typeof oData.Abholer !== "undefined" &&
+				typeof oData.Sign_Lager !== "undefined" && typeof oData.Sign_Abholer !== "undefined");
         },
         
 		// Saves ProductDraft each time a user edits a field
-		saveSignature: function (sVbeln, fnAfterSaved, oModel) {
+		saveSignature: function (fnAfterSaved, fnSaveFailed, oModel) {
 			this._submitChanges(null, null);
-			//var sVbeln = Model sVbeln;
-			this._callFunctionImport("/SaveSignature", this._getSignData(oModel), fnAfterSaved, "isBusySaving");
-			this._submitChanges(fnAfterSaved, oModel);
-		},
-
-		updateSignature: function (fnAfterSaved, fnError, oModel) {
-			var oData = this._getSignData(oModel);
-			if (this._ValidData(oData)) {
-				this.saveSignature(oData.Vbeln, fnAfterSaved, oModel);
+			
+			var oSignData = this._getSignData(oModel);
+			if (this._isValidData(oSignData)) {
+				this._callFunctionImport("/SaveSignature", oSignData, fnAfterSaved, fnSaveFailed);
+				this._submitChanges(fnSaveFailed, fnAfterSaved);
 			};
-			this._submitChanges(fnError, fnAfterSaved);
 		},
 
 		_submitChanges: function (fnSaveFailed, fnAfterSaved) {
@@ -150,7 +141,7 @@ sap.ui.define([
 
 					if (!this._oODataModel.hasPendingChanges() || !this._sMessage) {
 
-						if (oResponseData.__batchResponses === undefined) {
+						if (typeof oResponseData.__batchResponses === "undefined") {
                            return; 
 						} else {
 							for (var i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i += 1) {
@@ -167,49 +158,36 @@ sap.ui.define([
 					} else {
 						this._submitChanges(fnSaveFailed, fnAfterSaved); // Loop
 					}
-				}.bind(this);
+				};
 				this._bIsChanging = true;
 				var oParameters = {
-					success: fnSuccess,
+					success: fnSuccess.bind(this),
 					error: fnSaveFailed,
 					batchGroupId: "editsignature"
 				};
 				this._oODataModel.submitChanges(oParameters);
 			}
-			/* else if (this.oDraftToActivate) {
-							if (this._sMessage) {
-								this._oApplicationProperties.setProperty("/isBusySaving", false);
-							} else {
-								this._callFunctionImport("/ActivateDraft", {
-									UNAME: ""
-								}, this.oDraftToActivate.fnAfterActivation, "isBusySaving");
-							}
-							this.oDraftToActivate = null;
-						}*/
 		},
 
 
-		_callFunctionImport: function (sFunctionName, oURLParameters, fnAfterFunctionExecuted, sProcessingProperty) {
+		_callFunctionImport: function (sFunctionName, oURLParameters, fnAfterFunctionExecuted, fnExecutionError) {
 			this._oODataModel.callFunction(sFunctionName, {
 				method: "POST",
 				urlParameters: oURLParameters,
 				success: fnAfterFunctionExecuted,
-				error: this._getErrorForProcessing(sProcessingProperty)
+				error: fnExecutionError
 			});
-		},
-		_getErrorForProcessing: function (sProcessingProperty) {
-			return function (oError) {
-				//this._oApplicationProperties.setProperty("/" + sProcessingProperty, false);
-				// MessageToast.show(oError);
-				MessageToast.show(sProcessingProperty + oError);
-			};
 		},
 
 		clearSignature: function (sVbeln) {
 			var data = {
 				Vbeln: sVbeln
 			};
-			this._callFunctionImport("/ClearSignature", data, null, "isBusySaving");
+			var fnError = function (oError) {
+				// this._oApplicationProperties.setProperty("/isBusySaving", false);
+				MessageToast.show(oError);
+			};
+			this._callFunctionImport("/ClearSignature", data, null, fnError);
 		},
 
 		bindVbelnTo: function (oModel, sVbeln, target) {
