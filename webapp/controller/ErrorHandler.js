@@ -96,25 +96,25 @@ sap.ui.define([
 				// to suppress all message boxes, just make the ErrorHandler believe there's a message box open already
 				this._bMessageOpen = true;
 				
-				// MessageBox.error(
-				// 	this._sErrorText,
-				// 	{
-				// 		id : "serviceErrorMessageBox",
-				// 		details : sDetails,
-				// 		styleClass : this._oComponent.getContentDensityClass(),
-				// 		actions : [MessageBox.Action.CLOSE],
-				// 		onClose : function () {
-				// 			this._bMessageOpen = false;
-				// 		}.bind(this)
-				// 	}
-				// );
+				MessageBox.error(
+					this._sErrorText,
+					{
+						id : "serviceErrorMessageBox",
+						details : sDetails,
+						styleClass : this._oComponent.getContentDensityClass(),
+						actions : [MessageBox.Action.CLOSE],
+						onClose : function () {
+							this._bMessageOpen = false;
+						}.bind(this)
+					}
+				);
 				
 				// var aDetails = JSON.parse(sDetails.responseText);
 				// MessageToast.show(this._sErrorText + " " + aDetails.error.message.value);
-				this._popoverMessage("Error", // this.sVbeln,  // TEST
-				    		         this._sErrorText + " " + sDetails.responseText, 
-				                	 sap.ui.core.MessageType.Error, 
-				                	 this._oLink);
+				// this._popoverMessage("Error", // this.sVbeln,  // TEST
+				//     		         this._sErrorText + " " + sDetails.responseText, 
+				//                 	 sap.ui.core.MessageType.Error, 
+				//                 	 this._oLink);
 				
 				// done with the special service and custom handler,  fall back on the default ErrorHandler
 				this._bMessageOpen = false;				

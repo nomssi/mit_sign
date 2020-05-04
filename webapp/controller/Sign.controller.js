@@ -286,7 +286,7 @@ sap.ui.define([
 					sap.ui.core.MessageType.Error,
 					this._oLink);
 
-				this.getRouter().navTo("error", {"?id": { id: this.SVbeln } }, false);
+				this.getRouter().navTo("error", {id: this.sVbeln});
 			};
 
 			var fnAfterSave = function (oData) {
@@ -297,7 +297,7 @@ sap.ui.define([
 					sap.ui.core.MessageType.Success,
 					this._oLink);
 
-				this.getRouter().navTo("complete", {"?id": { id: this.SVbeln } }, false);
+				this.getRouter().navTo("complete", {id: this.sVbeln});
 			};
 
 
@@ -330,7 +330,7 @@ sap.ui.define([
 			});
 
 			if (!this.byId("errorMessagePopover")) {
-				var oMessagePopover = new MessagePopover(this.createId("messagePopover"), {
+				var oMessagePopover = new MessagePopover(this.createId("errorMessagePopover"), {
 					items: {
 						path: "message>/",
 						template: oMessageTemplate
