@@ -283,6 +283,7 @@ sap.ui.define([
 					sap.ui.core.MessageType.Error,
 					this._oLink);
 
+				this._wizard.setCurrentStep(this.byId("contentStep"));
 				this.getRouter().navTo("error", {id: this.sVbeln});
 			};
 
@@ -309,7 +310,7 @@ sap.ui.define([
 				this.getRouter().navTo("complete", {id: this.sVbeln});
 			};
 
-
+			this._wizard.setCurrentStep(this.byId("contentStep"));
 			this._popoverMessage(this.sVbeln,
 				sMessageText,
 				sMessageType,
