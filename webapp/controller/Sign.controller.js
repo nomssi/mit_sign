@@ -51,7 +51,7 @@ sap.ui.define([
 
 			// View register Model for Draft handling
 			this._oViewModel = new sap.ui.model.json.JSONModel({
-				PDFurl: "",
+				PDFUrl: "",
 				Receiver: {
 					Name: "",
 					Url: ""
@@ -299,7 +299,7 @@ sap.ui.define([
 				var oViewModel = this.getModel("pdfView");
 
 				if (oData) {
-					oViewModel.update("/PDFUrl", oData);
+					oViewModel.setProperty("/PDFUrl", oData.PDFUrl);
 				};
 				
 				// if (oResponse.results !== 0) {
