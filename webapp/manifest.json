@@ -125,7 +125,7 @@
 				},
 				{
 					"name": "error",
-					"pattern": "error/{id}",
+					"pattern": "error/:id:",
 					"target": "error"
 				}
 			],
@@ -143,12 +143,12 @@
 				},
 				"complete": {
 					"viewName": "Complete",
-					"viewLevel": 2,
+					"viewLevel": 3,
 					"viewId": "signComplete"
 				},
 				"error": {
 					"viewName": "Error",
-					"viewLevel": 2,
+					"viewLevel": 3,
 					"viewId": "signError"
 				},
 				"notFound": {

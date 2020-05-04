@@ -100,6 +100,14 @@ sap.ui.define([
 			} else {
 				window.history.go(-1);
 			}
+		},
+		
+		/**
+		 * Always navigates back to home
+		 * @override
+		 */
+		onHome: function () {
+			this.getRouter().navTo("home");
 		}
 	});
 });

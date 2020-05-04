@@ -6,7 +6,7 @@
 			<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 				<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
 					<FlexBox>
-						<Button id="homeButtonCompl" type="Emphasized" text="{i18n>homeButtonText}" press=".onBack"/>
+						<Button id="homeButtonCompl" type="Emphasized" text="{i18n>homeButtonText}" press=".onHome"/>
 					</FlexBox>
 					<Text text="Auslieferung {Vbeln} wurde erfoglreich verarbeitet."/>
 					<PDFViewer source="{PDFUrl}" title="{/Title}" height="800px" id="PDF" displayType="Embedded">

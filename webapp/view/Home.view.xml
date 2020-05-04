@@ -10,7 +10,6 @@
 			    selectionChange=".onEventListSelect" 
 			    noDataText="{i18n>homeNoData}" 
 			    busyIndicatorDelay="0"
-				updateFinished="onUpdateFinished" 
 				items="{ path : '/Events', 
 				         sorter : { path : 'VBELN', 
 				                    descending : false },
