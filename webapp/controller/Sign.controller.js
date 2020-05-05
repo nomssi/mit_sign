@@ -5,6 +5,7 @@ sap.ui.define([
 	"sap/m/MessagePopover",
 	"sap/m/MessagePopoverItem",
 	"../util/messages",
+	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter"
 ], function (
 	BaseController,
@@ -13,6 +14,7 @@ sap.ui.define([
 	MessagePopover,
 	MessagePopoverItem,
 	Messages,
+	Fragment,
 	Filter) {
 	"use strict";
 
@@ -64,6 +66,17 @@ sap.ui.define([
 			});
 			this.setModel(this._oViewModel, "pdfView");
 
+			// set InputAssisted model
+			this._oInputAssistedModel = new sap.ui.model.json.JSONModel({
+					 "UserCollection": [
+					 	{ "Name": "Jacques Nomssi Nzali" },
+					 	{ "Name": "Christopher Hermann" },
+					 	{ "Name": "Conny Richter" },
+					 	{ "Name": "Felix Lemke" }
+					 ]
+				});
+			this.setModel(this._oInputAssistedModel, "helpView");
+			
 			this._oSourceReleaser = {
 				step: this.byId("signReleaserStep"),
 				pad: this.byId("signature-pad"), // Lager
@@ -242,29 +255,49 @@ sap.ui.define([
 			this._updateViewModel(oSource.property, oEvent.getParameter("value"));
 		},
 
-		// onSignerNameValueHelp: function(oEvent) {
-		// 	var sInputValue = oEvent.getSource().getValue();
+		sInputId: "",
+		
+		onSignerNameValueHelp: function(oEvent) {
+		 	var sInputValue = oEvent.getSource().getValue();
 
-		// 	this.inputId = oEvent.getSource().getId();
-		// 	// create value help dialog
-		// 	if (!this._valueHelpDialog) {
-		// 		this._valueHelpDialog = sap.ui.xmlfragment(
-		// 			"sap.m.sample.InputAssisted.Dialog",
-		// 			this
-		// 		);
-		// 		this.getView().addDependent(this._valueHelpDialog);
-		// 	}
+		 	this.sInputId = oEvent.getSource().getId();
+			// create value help dialog
+			if (!this._valueHelpDialog) {
+				this._valueHelpDialog = sap.ui.xmlfragment(
+					"Signature.view.InputAssisted",
+					this
+				);
+				this.getView().addDependent(this._valueHelpDialog);
+			}
 
-		// 	// create a filter for the binding
-		// 	this._valueHelpDialog.getBinding("items").filter([new Filter(
-		// 		"Name",
-		// 		sap.ui.model.FilterOperator.Contains, sInputValue
-		// 	)]);
+			// create a filter for the binding
+			this._valueHelpDialog.getBinding("items").filter([new Filter(
+				"Name",
+				sap.ui.model.FilterOperator.Contains, sInputValue
+			)]);
 
-		// 	// open value help dialog filtered by the input value
-		// 	this._valueHelpDialog.open(sInputValue);
-		// },
+			// open value help dialog filtered by the input value
+			this._valueHelpDialog.open(sInputValue);
+		},
 
+		_handleValueHelpSearch : function (oEvent) {
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new Filter(
+				"Name",
+				sap.ui.model.FilterOperator.Contains, sValue
+			);
+			oEvent.getSource().getBinding("items").filter([oFilter]);
+		},
+
+		_handleValueHelpClose : function (oEvent) {
+			var oSelectedItem = oEvent.getParameter("selectedItem");
+			if (oSelectedItem) {
+				var userInput = this.byId(this.sInputId);
+				userInput.setValue(oSelectedItem.getTitle());
+			}
+			oEvent.getSource().getBinding("items").filter([]);
+		},
+		
 		onTriggerOutput: function () {
 			var oStep = this.byId("signReceiverStep");
 			this._wizard.validateStep(oStep);

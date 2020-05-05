@@ -64,8 +64,16 @@
 												<layout:GridData span="L2 M2"/>
 											</layoutData>
 										</Label>
-										<Input id="sName" value="{ path: 'SignerName', type: 'sap.ui.model.type.String' }" liveChange="onInputChange"
-											placeholder="{i18n>placeholder.Signer}">
+										<Input id="sName" value="{ path: 'SignerName', type: 'sap.ui.model.type.String' }"
+										       liveChange="onInputChange"
+										       showSuggestion="true"
+										       showValueHelp="true"
+										       valueHelpRequest="onSignerNameValueHelp"
+										       suggestionItems="{helpView>/UserCollection}"
+											   placeholder="{i18n>placeholder.Signer}">
+												<suggestionItems>
+													<core:Item text="{helpView>Name}" />
+												</suggestionItems>											   
 											<layoutData>
 												<layout:GridData span="L8 M8"/>
 											</layoutData>
