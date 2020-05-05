@@ -255,12 +255,9 @@ sap.ui.define([
 			this._updateViewModel(oSource.property, oEvent.getParameter("value"));
 		},
 
-		sInputId: "",
-		
 		onSignerNameValueHelp: function(oEvent) {
 		 	var sInputValue = oEvent.getSource().getValue();
 
-		 	this.sInputId = oEvent.getSource().getId();
 			// create value help dialog
 			if (!this._valueHelpDialog) {
 				this._valueHelpDialog = sap.ui.xmlfragment(
@@ -292,8 +289,7 @@ sap.ui.define([
 		_handleValueHelpClose : function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem");
 			if (oSelectedItem) {
-				var userInput = this.byId(this.sInputId);
-				userInput.setValue(oSelectedItem.getTitle());
+				this._oSourceReleaser.field.setValue(oSelectedItem.getTitle());
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		},

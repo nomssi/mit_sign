@@ -66,6 +66,7 @@
 										</Label>
 										<Input id="sName" value="{ path: 'SignerName', type: 'sap.ui.model.type.String' }"
 										       liveChange="onInputChange"
+										       valueLiveUpdate="true"
 										       showSuggestion="true"
 										       showValueHelp="true"
 										       valueHelpRequest="onSignerNameValueHelp"
