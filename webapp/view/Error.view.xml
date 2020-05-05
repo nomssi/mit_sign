@@ -8,6 +8,7 @@
 					<FlexBox>
 						<Button id="homeButtonErr" type="Emphasized" text="{i18n>homeButtonText}" press=".onBack"/>
 					</FlexBox>
+					<Text text="Verarbeitung der Auslieferung {VBELN} wurde mit Fehlern abgebrochen."/>
 					<form:SimpleForm editable="false" layout="ResponsiveGridLayout">
 						<Label text="Fehlermeldungen"/>
 						<TextArea value="rhjjjjjjjjjjjjjjjjjjjjjjjjjat." growing="true" width="100%"/>
@@ -16,4 +17,3 @@
 			</ScrollContainer>
 		</content>
 	</Page>
-</core:View>

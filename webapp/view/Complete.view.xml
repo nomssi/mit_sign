@@ -8,8 +8,8 @@
 					<FlexBox>
 						<Button id="homeButtonCompl" type="Emphasized" text="{i18n>homeButtonText}" press=".onHome"/>
 					</FlexBox>
-					<Text text="Auslieferung {Vbeln} wurde erfoglreich verarbeitet."/>
-					<PDFViewer source="{PDFUrl}" title="{/Title}" height="800px" id="PDF" displayType="Embedded">
+					<Text text="Auslieferung {/Vbeln}{VBELN} wurde erfoglreich verarbeitet.{ path: 'ReceiverName', type: 'sap.ui.model.type.String' }"/>
+					<PDFViewer source="{/PDFUrl}" title="{/Title}" height="800px" id="PDF" displayType="Embedded">
 						<layoutData>
 							<FlexItemData growFactor="1"/>
 						</layoutData>

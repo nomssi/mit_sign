@@ -117,7 +117,7 @@ sap.ui.define([
 				//                 	 this._oLink);
 				
 				// done with the special service and custom handler,  fall back on the default ErrorHandler
-				this._bMessageOpen = false;				
+				// this._bMessageOpen = false;				
 			}
 
 		});
