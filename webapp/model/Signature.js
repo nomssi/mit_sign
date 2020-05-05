@@ -118,12 +118,13 @@ sap.ui.define([
         
 		// Saves ProductDraft each time a user edits a field
 		saveSignature: function (fnAfterSaved, fnSaveFailed, oModel) {
-			this._submitChanges(null, null);
-			
 			var oSignData = this._getSignData(oModel);
 			if (this._isValidData(oSignData)) {
 				this._callFunctionImport("/SaveSignature", oSignData, fnAfterSaved, fnSaveFailed);
 				this._submitChanges(fnSaveFailed, fnAfterSaved);
+			}
+			else {
+				this._submitChanges(null, null);
 			};
 		},
 

@@ -51,7 +51,6 @@ sap.ui.define([
 
 			// View register Model for Draft handling
 			this._oViewModel = new sap.ui.model.json.JSONModel({
-				PDFUrl: "",
 				Receiver: {
 					Name: "",
 					Url: ""
@@ -296,27 +295,23 @@ sap.ui.define([
 					sap.ui.core.MessageType.Success,
 					this._oLink);
 
-				var oViewModel = this.getModel("pdfView");
+				var oViewModel = this.getModel();
 
 				if (oData) {
 					oViewModel.setProperty("/PDFUrl", oData.PDFUrl);
+					oViewModel.setProperty("/FloeId", oData.FloeId);
 				};
-				
-				// if (oResponse.results !== 0) {
-				// 	oViewModel.setProperty("/PDFUrl", oResponse.results[0]);
-				// };
 
 
 				this.getRouter().navTo("complete", {id: this.sVbeln});
 			};
 
-			this._wizard.setCurrentStep(this.byId("contentStep"));
 			this._popoverMessage(this.sVbeln,
 				sMessageText,
 				sMessageType,
 				this._oLink);
-
 			this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), this.getView().getModel("pdfView"));
+			this._wizard.setCurrentStep(this.byId("contentStep"));
 		},
 
 		/**

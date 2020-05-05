@@ -6,7 +6,7 @@
 			<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 				<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
 					<FlexBox>
-						<Button id="homeButtonErr" type="Emphasized" text="{i18n>homeButtonText}" press=".onBack"/>
+						<Button id="homeButtonErr" type="Emphasized" text="{i18n>homeButtonText}" press="onHome"/>
 					</FlexBox>
 					<Text text="Verarbeitung der Auslieferung {VBELN} wurde mit Fehlern abgebrochen."/>
 					<form:SimpleForm editable="false" layout="ResponsiveGridLayout">
