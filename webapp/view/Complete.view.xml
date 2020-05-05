@@ -8,9 +8,9 @@
 					<FlexBox>
 						<Button id="homeButtonCompl" type="Emphasized" text="{i18n>homeButtonText}" press=".onHome"/>
 					</FlexBox>
-					<Text text="Auslieferung {VBELN} wurde verarbeitet. Eine PDF-Datei {PDFUrl} wurde erzeugt und an { path: 'ReceiverName',
+					<Text text="Auslieferung {VBELN} wurde verarbeitet. Eine PDF-Datei { path: 'PDFUrl' } wurde erzeugt und an { path: 'ReceiverName',
 					            type: 'sap.ui.model.type.String' } per Mail mit Id {/FloeId} versandt."/>
-					<PDFViewer source="{/PDFUrl}" title="{/PDFUrl}" height="800px" id="PDF" displayType="Embedded">
+					<PDFViewer source="{ path: 'PDFUrl' }" title="{/PDFUrl}" height="800px" id="PDF" displayType="Embedded">
 						<layoutData>
 							<FlexItemData growFactor="1"/>
 						</layoutData>

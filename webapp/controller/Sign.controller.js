@@ -288,21 +288,14 @@ sap.ui.define([
 
 			var fnAfterSave = function (oData, oResponse) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
-				sMessageText = "PDF created.";
+				sMessageText = this._oResourceBundle.getText("pdf.Created");
 
 				this._popoverMessage(this.sVbeln,
 					sMessageText,
 					sap.ui.core.MessageType.Success,
 					this._oLink);
 
-				var oViewModel = this.getModel();
-
-				if (oData) {
-					oViewModel.setProperty("/PDFUrl", oData.PDFUrl);
-					oViewModel.setProperty("/FloeId", oData.FloeId);
-				};
-
-
+				this._wizard.setCurrentStep(this.byId("contentStep"));
 				this.getRouter().navTo("complete", {id: this.sVbeln});
 			};
 
@@ -311,7 +304,6 @@ sap.ui.define([
 				sMessageType,
 				this._oLink);
 			this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), this.getView().getModel("pdfView"));
-			this._wizard.setCurrentStep(this.byId("contentStep"));
 		},
 
 		/**
