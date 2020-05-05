@@ -28,9 +28,9 @@
 					</Toolbar>
 				</headerToolbar>
 				<items>
-					<ObjectListItem type="Navigation" title="{Head/Kunnr} {ReceiverName}" 
+					<ObjectListItem type="Navigation" title="{Head/Kunnr} {ReceiverPartner}" 
 					                press="onEventListItemPress" 
-					                intro="{SignerName}"
+					                intro="{CreatedBy}"
 						iconDensityAware="false">
 						<attributes>
 							<ObjectAttribute text="{VBELN}"/>

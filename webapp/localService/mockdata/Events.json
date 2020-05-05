@@ -18,7 +18,9 @@
 		"__deferred": {
 			"uri": "Events('VBELN%201')/EventHead"
 		}
-	}
+	},
+	"ReceiverPartner": "Service Chemnitz",
+	"CreatedBy": "Herbert Grönemeyer"
 }, {
 	"VBELN": "0080054160",
 	"SignatureReleaser": "SignatureReleaser2",
@@ -39,7 +41,9 @@
 		"__deferred": {
 			"uri": "Events('VBELN%202')/EventHead"
 		}
-	}
+	},
+	"ReceiverPartner": "Service Annaberg",
+	"CreatedBy": "Lena"
 }, {
 	"VBELN": "0080055880",
 	"SignatureReleaser": "SignatureReleaser3",
