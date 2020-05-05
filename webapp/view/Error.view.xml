@@ -11,7 +11,8 @@
 					<Text text="Verarbeitung der Auslieferung {VBELN} wurde mit Fehlern abgebrochen."/>
 					<form:SimpleForm editable="false" layout="ResponsiveGridLayout">
 						<Label text="Fehlermeldungen"/>
-						<TextArea value="rhjjjjjjjjjjjjjjjjjjjjjjjjjat." growing="true" width="100%"/>
+						<TextArea value="Beschreibung der Fehler bei der PDF Erzeugung oder im EMail-Versand." 
+						 growing="true" width="100%"/>
 					</form:SimpleForm>
 				</FlexBox>
 			</ScrollContainer>
