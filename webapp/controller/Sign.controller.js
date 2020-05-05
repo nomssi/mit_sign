@@ -83,7 +83,7 @@ sap.ui.define([
 		_routePatternMatched: function (oEvent) {
 
 			var sVbeln = oEvent.getParameter("arguments").id;
-			this._oHelper.bindVbelnTo(this.getModel(), sVbeln, this);
+			this.bindVbelnTo(this.getModel(), sVbeln, this);
 			this._updateViewModel("/Vbeln", sVbeln);
 
 			this._oMessageManager.removeAllMessages(); // reset potential server-side messages

@@ -10,14 +10,8 @@ sap.ui.define([
 		},
 		
 		_routePatternMatched: function (oEvent) {
-			var that = this;
 			var sVbeln = oEvent.getParameter("arguments").id;
-
-			// var sObjectPath = "/id/" + sVbeln;
-			var sObjectPath = "/" + that.getModel().createKey("Events", {
-					VBELN: sVbeln
-				});			
-			this.getView().bindElement(sObjectPath);
-		}	
+			this.bindVbelnTo(this.getModel(), sVbeln, this);
+		}
 	});
 });

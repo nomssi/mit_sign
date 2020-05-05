@@ -88,6 +88,41 @@ sap.ui.define([
 			}.bind(this), 0);
 		},
 
+		bindVbelnTo: function (oModel, sVbeln, target) {
+			// the binding should be done after insuring that the metadata is loaded successfully
+			var oView = target.getView();
+			target.sVbeln = sVbeln;
+
+			oModel.metadataLoaded().then(function () {
+
+				var sPath = "/" + target.getModel().createKey("Events", {
+					VBELN: sVbeln
+				});
+				oView.bindElement({
+					path: sPath,
+					events: {
+						dataRequested: function () {
+							oView.setBusy(true);
+						},
+						dataReceived: function () {
+							oView.setBusy(false);
+						}
+					}
+				});
+
+				var oData = oModel.getData(sPath);
+				//if there is no data the model has to request new data
+				if (!oData) {
+					oView.setBusyIndicatorDelay(0);
+					oView.getElementBinding().attachEventOnce("dataReceived", function () {
+						// reset to default
+						oView.setBusyIndicatorDelay(null);
+						// this._checkIfProductAvailable(sPath);
+					});
+				}
+			});
+		},
+		
 		/**
 		 * Navigates back in browser history or to the home screen
 		 */

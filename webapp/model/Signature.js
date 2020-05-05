@@ -140,7 +140,7 @@ sap.ui.define([
 					if (!this._oODataModel.hasPendingChanges() || !this._sMessage) {
 
 						if (typeof oResponseData.__batchResponses === "undefined") {
-                           return; 
+                           return;
 						} else {
 							for (var i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i += 1) {
 								var oEntry = oResponseData.__batchResponses[i];
@@ -186,41 +186,6 @@ sap.ui.define([
 				MessageToast.show(oError);
 			};
 			this._callFunctionImport("/ClearSignature", data, null, fnError);
-		},
-
-		bindVbelnTo: function (oModel, sVbeln, target) {
-			// the binding should be done after insuring that the metadata is loaded successfully
-			var oView = target.getView();
-			target.sVbeln = sVbeln;
-
-			oModel.metadataLoaded().then(function () {
-
-				var sPath = "/" + target.getModel().createKey("Events", {
-					VBELN: sVbeln
-				});
-				oView.bindElement({
-					path: sPath,
-					events: {
-						dataRequested: function () {
-							oView.setBusy(true);
-						},
-						dataReceived: function () {
-							oView.setBusy(false);
-						}
-					}
-				});
-
-				var oData = oModel.getData(sPath);
-				//if there is no data the model has to request new data
-				if (!oData) {
-					oView.setBusyIndicatorDelay(0);
-					oView.getElementBinding().attachEventOnce("dataReceived", function () {
-						// reset to default
-						oView.setBusyIndicatorDelay(null);
-						// this._checkIfProductAvailable(sPath);
-					});
-				}
-			});
 		}
 
 	});
