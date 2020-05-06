@@ -71,8 +71,6 @@ sap.ui.define([
 			var oModel = oBindContext.getModel();
 			var sId = oModel.getData(sPath).VBELN.trim();
 			this._router.navTo("sign", {id: sId});
-//			sPath = sPath.substr(1);
-//			this._router.navTo("sign", {path: sPath});
 		},
 
         onFilterEvents: function(oEvent) {

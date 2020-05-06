@@ -212,6 +212,16 @@ sap.ui.define([
 			oSignSource.step.setValidated(oState.valid);
 		},
 
+        _cloneSource: function (oOriginalSource, sProperty) {
+			return {
+				step: oOriginalSource.step,
+				pad: oOriginalSource.pad,
+				field: oOriginalSource.field,
+				button: oOriginalSource.button,
+				property: sProperty
+			};
+        },
+        
 		onInputChange: function (oEvent) {
 			// Whenever the clear text name is changed in the input field, update the draft model and validate
 			// onInputChange is the change event defined in the XML view.
@@ -219,12 +229,10 @@ sap.ui.define([
 
 			switch (oEvent.getSource()) {
 			case this._oSourceReleaser.field:
-				oSource = this._oSourceReleaser; // Lager
-				oSource.property = "/Releaser>Name";
+				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser>Name");
 				break;
 			case this._oSourceReceiver.field:
-				oSource = this._oSourceReceiver; // Empfänger
-				oSource.property = "/Receiver>Name";
+				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver>Name");
 				break;
 			default:
 				return;
@@ -240,12 +248,10 @@ sap.ui.define([
 
 			switch (oEvent.getSource()) {
 			case this._oSourceReleaser.pad:
-				oSource = this._oSourceReleaser; // Lager
-				oSource.property = "/Releaser>Url";
+				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser>Url");
 				break;
 			case this._oSourceReceiver.pad:
-				oSource = this._oSourceReceiver; // Empfänger
-				oSource.property = "/Receiver>Url";
+				oSource = this._cloneSource(this._oSourceReleaser, "/Receiver>Url");
 				break;
 			default:
 				return;
