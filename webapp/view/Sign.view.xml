@@ -64,11 +64,20 @@
 												<layout:GridData span="L2 M2"/>
 											</layoutData>
 										</Label>
-										<Input id="sName" value="{ path: 'SignerName', type: 'sap.ui.model.type.String' }" 
+										<Input id="sName" value="{ path: 'SignerName', 
+										                           type: 'sap.ui.model.type.String' }" 
 										    liveChange="onInputChange"
+										    maxLength="80"
+										    type="Text"
+										    valueLiveUpdate="true"
 										    showValueHelp="true"
+										    showSuggestion="true"
 	 										placeholder="{i18n>placeholder.Signer}"
+	 										suggestionItems="{helpView>/UserCollection}"
 	 								        valueHelpRequest="onSignerNameValueHelp">
+											<suggestionItems>
+												<core:Item text="{helpView>Name}" />
+											</suggestionItems>												
 											<layoutData>
 												<layout:GridData span="L8 M8"/>
 											</layoutData>
