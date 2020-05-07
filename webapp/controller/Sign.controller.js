@@ -33,8 +33,7 @@ sap.ui.define([
 			this._oNavContainer = this.byId("wizardNavContainer");
 			this._oWizardContentPage = this.byId("wizardContentPage");
 
-			this._oView = this.getView();
-			this.initMessageManager(this._oView, this);
+			this.initMessageManager(this);
 
 			// this._initViewPropertiesModel();
 			var oComponent = this.getOwnerComponent();

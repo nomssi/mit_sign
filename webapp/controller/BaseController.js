@@ -9,17 +9,6 @@ sap.ui.define([
 
 	return Controller.extend("Signature.controller.BaseController", {
 		
-		initMessageManager: function(oView, that) {
-			that._oLink = Messages.createDefaultLink();
-			that._oView = oView;
-
-			// create a message manager and register the message model
-			that._oMessageManager = sap.ui.getCore().getMessageManager();
-			that._oMessageManager.registerObject(oView, true);
-			that._oProcessor = that._oMessageManager.getMessageModel();	
-			oView.setModel(that._oProcessor, "message");
-		},
-		
 		/**
 		 * Convenience method for accessing the router.
 		 * @public
@@ -135,7 +124,18 @@ sap.ui.define([
 				}
 			});
 		},
-		
+
+		initMessageManager: function(that) {
+			that._oView = that.getView();
+			that._oLink = Messages.createDefaultLink();
+
+			// create a message manager and register the message model
+			that._oMessageManager = sap.ui.getCore().getMessageManager();
+			that._oMessageManager.registerObject(that._oView, true);
+			that._oProcessor = that._oMessageManager.getMessageModel();	
+			that._oView.setModel(that._oProcessor, "message");
+		},
+				
 		/**
 		 * Navigates back in browser history or to the home screen
 		 */

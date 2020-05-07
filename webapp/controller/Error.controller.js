@@ -13,8 +13,7 @@ sap.ui.define([
 		onInit: function () {
 			this.getRouter().getRoute("error").attachPatternMatched(this._routePatternMatched, this);
 
-			this._oView = this.getView();
-			this.initMessageManager(this._oView.byId("signError"), this);
+			this.initMessageManager(this);
 			
 			this._addMockMessages();
 		},
