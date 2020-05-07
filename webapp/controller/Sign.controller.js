@@ -4,18 +4,18 @@ sap.ui.define([
 	"../model/formatter",
 	"sap/m/MessagePopover",
 	"sap/m/MessagePopoverItem",
-	"../util/messages",
 	"sap/ui/core/Fragment",
-	"sap/ui/model/Filter"
+	"sap/ui/model/Filter",
+	"../util/messages"
 ], function (
 	BaseController,
 	Signature,
 	formatter,
 	MessagePopover,
 	MessagePopoverItem,
-	Messages,
 	Fragment,
-	Filter) {
+	Filter,
+	Messsages) {
 	"use strict";
 
 	return BaseController.extend("Signature.controller.Sign", {
@@ -29,18 +29,12 @@ sap.ui.define([
 
 		onInit: function () {
 
-			this._oLink = Messages.createDefaultLink();
-
 			this._wizard = this.byId("signWizard");
 			this._oNavContainer = this.byId("wizardNavContainer");
 			this._oWizardContentPage = this.byId("wizardContentPage");
 
 			this._oView = this.getView();
-
-			// create a message manager and register the message model
-			this._oMessageManager = sap.ui.getCore().getMessageManager();
-			this._oMessageManager.registerObject(this._oView, true);
-			this._oView.setModel(this._oMessageManager.getMessageModel(), "message");
+			this.initMessageManager(this._oView, this);
 
 			// this._initViewPropertiesModel();
 			var oComponent = this.getOwnerComponent();
@@ -65,17 +59,6 @@ sap.ui.define([
 					// Set binding 2 ways
 			});
 			this.setModel(this._oViewModel, "pdfView");
-
-			// set InputAssisted model
-			this._oInputAssistedModel = new sap.ui.model.json.JSONModel({
-					 "UserCollection": [
-					 	{ "Name": "Jacques Nomssi Nzali" },
-					 	{ "Name": "Christopher Hermann" },
-					 	{ "Name": "Conny Richter" },
-					 	{ "Name": "Felix Lemke" }
-					 ]
-				});
-			this.setModel(this._oInputAssistedModel, "helpView");
 			
 			this._oSourceReleaser = {
 				step: this.byId("signReleaserStep"),
@@ -161,9 +144,9 @@ sap.ui.define([
 					type: sType,
 					additionalText: sText,
 					target: sTarget,
-					processor: this._oView.getModel()
+					processor: this._oMessageProcessor
 				})
-			);
+			);			
 		},
 
 		_popoverInvalidField: function (oInput, sText, sTarget) {

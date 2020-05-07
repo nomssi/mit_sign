@@ -2,11 +2,24 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/m/MessageToast",
 	"sap/ui/core/UIComponent",
-	"sap/ui/core/routing/History"
-], function(Controller, MessageToast, UIComponent, History) {
+	"sap/ui/core/routing/History",
+	"../util/messages"
+], function(Controller, MessageToast, UIComponent, History, Messages) {
 	"use strict";
 
 	return Controller.extend("Signature.controller.BaseController", {
+		
+		initMessageManager: function(oView, that) {
+			that._oLink = Messages.createDefaultLink();
+			that._oView = oView;
+
+			// create a message manager and register the message model
+			that._oMessageManager = sap.ui.getCore().getMessageManager();
+			that._oMessageManager.registerObject(oView, true);
+			that._oProcessor = that._oMessageManager.getMessageModel();	
+			oView.setModel(that._oProcessor, "message");
+		},
+		
 		/**
 		 * Convenience method for accessing the router.
 		 * @public

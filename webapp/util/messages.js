@@ -69,6 +69,18 @@ sap.ui.define([
 					href: generalInfoUrl,
 					target: "_blank"
 				});	
-		}
+		},
+		
+		popoverMessage: function (sMessage, sText, sType, sTarget, that) {
+			that._oMessageManager.addMessages(
+				new sap.ui.core.message.Message({
+					message: sMessage,
+					type: sType,
+					additionalText: sText,
+					target: sTarget,
+					processor: that._oProcessor
+				})
+			);
+		}		
 	};
 });

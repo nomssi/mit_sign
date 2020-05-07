@@ -17,18 +17,17 @@ sap.ui.define([
 			 */
 			constructor : function (oComponent) {
 
-				this._oLink = Messages.createDefaultLink();
-				
 				this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 				this._oComponent = oComponent;
 				this._oModel = oComponent.getModel();
 				this._bMessageOpen = false;
 				this._sErrorText = this._oResourceBundle.getText("errorText");
 
+				this._oLink = Messages.createDefaultLink();
+
 				// create a message manager and register the message model
 				this._oMessageManager = sap.ui.getCore().getMessageManager();
 				this._oProcessor = this._oMessageManager.getMessageModel();	
-				
 
 				this._oModel.attachMetadataFailed(function (oEvent) {
 					var oParams = oEvent.getParameters();
@@ -71,17 +70,9 @@ sap.ui.define([
 				);
 			},
 
-			_popoverMessage: function(sMessage, sText, sType, sTarget) {
-				this._oMessageManager.addMessages(
-					new sap.ui.core.message.Message({
-						message: sMessage,
-						type: sType,
-						additionalText: sText,
-						target: sTarget,
-						processor: this._oProcessor
-					})
-				);	
-			},
+			_popoverMessage: function (sMessage, sText, sType, sTarget) {
+				Messages.popoverMessage(sMessage, sText, sType, sTarget, this);
+			},				
 			
 			/**
 			 * Shows a {@link sap.m.MessageBox} when a service call has failed.
@@ -96,28 +87,28 @@ sap.ui.define([
 				// to suppress all message boxes, just make the ErrorHandler believe there's a message box open already
 				this._bMessageOpen = true;
 				
-				MessageBox.error(
-					this._sErrorText,
-					{
-						id : "serviceErrorMessageBox",
-						details : sDetails,
-						styleClass : this._oComponent.getContentDensityClass(),
-						actions : [MessageBox.Action.CLOSE],
-						onClose : function () {
-							this._bMessageOpen = false;
-						}.bind(this)
-					}
-				);
-				
+				// MessageBox.error(
+				// 	this._sErrorText,
+				// 	{
+				// 		id : "serviceErrorMessageBox",
+				// 		details : sDetails,
+				// 		styleClass : this._oComponent.getContentDensityClass(),
+				// 		actions : [MessageBox.Action.CLOSE],
+				// 		onClose : function () {
+				// 			this._bMessageOpen = false;
+				// 		}.bind(this)
+				// 	}
+				// );
+
 				// var aDetails = JSON.parse(sDetails.responseText);
 				// MessageToast.show(this._sErrorText + " " + aDetails.error.message.value);
-				// this._popoverMessage("Error", // this.sVbeln,  // TEST
-				//     		         this._sErrorText + " " + sDetails.responseText, 
-				//                 	 sap.ui.core.MessageType.Error, 
-				//                 	 this._oLink);
+				this._popoverMessage("Error", // this.sVbeln,  // TEST
+				    		         this._sErrorText + " " + sDetails.responseText, 
+				                	 sap.ui.core.MessageType.Error, 
+				                	 this._oLink);
 				
 				// done with the special service and custom handler,  fall back on the default ErrorHandler
-				// this._bMessageOpen = false;				
+				this._bMessageOpen = false;				
 			}
 
 		});

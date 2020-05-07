@@ -98,8 +98,8 @@
 					sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="Positions" EntityType="MAK.SIGNATURE_SRV.Position" sap:creatable="false" sap:updatable="false" sap:deletable="false"
 					sap:pageable="false" sap:content-version="1"/>
-				<EntitySet Name="User" EntityType="MAK.SIGNATURE_SRV.User" sap:creatable="false" sap:updatable="false" sap:deletable="false"
-					sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+				<EntitySet Name="Users" EntityType="MAK.SIGNATURE_SRV.User" sap:label="Lager Mitarbeiter" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
 				<AssociationSet Name="EventHeadSet" Association="MAK.SIGNATURE_SRV.EventHead" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:content-version="1">
 					<End EntitySet="Events" Role="FromRole_EventHead"/>

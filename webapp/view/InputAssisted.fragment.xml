@@ -4,10 +4,10 @@
 	<SelectDialog
 		title="{i18n>searchHelp.Title}"
 		class="sapUiPopupWithPadding"
-		items="{helpView>/UserCollection}"
+		items="{/Users}"
 		search="_handleValueHelpSearch"
 		confirm="_handleValueHelpClose"
 		cancel="_handleValueHelpClose">
-		<StandardListItem title="{helpView>Name}" />
+		<StandardListItem title="{Name}" />
 	</SelectDialog>
 </core:FragmentDefinition>

@@ -73,10 +73,10 @@
 										    showValueHelp="true"
 										    showSuggestion="true"
 	 										placeholder="{i18n>placeholder.Signer}"
-	 										suggestionItems="{helpView>/UserCollection}"
+	 										suggestionItems="{/Users}"
 	 								        valueHelpRequest="onSignerNameValueHelp">
 											<suggestionItems>
-												<core:Item text="{helpView>Name}" />
+												<core:Item text="{Name}" />
 											</suggestionItems>												
 											<layoutData>
 												<layout:GridData span="L8 M8"/>

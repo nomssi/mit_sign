@@ -9,6 +9,14 @@
 						<Button id="homeButtonCompl" type="Emphasized" text="{i18n>homeButtonText}" press=".onHome"/>
 					</FlexBox>
 					<Text text="Auslieferung {VBELN} wurde verarbeitet. Datei {PDFUrl} wurde erzeugt und an {ReceiverName} per Mail mit Id {FloeId} versandt."/>
+					<MessageView items="{message>/}">
+						<MessageItem
+							type="{message>type}"
+							title="{message>message}"
+							subtitle="{message>additionalText}"
+							description="{message>description}">
+						</MessageItem>
+					</MessageView>					
 					<PDFViewer source="{ path: 'PDFUrl' }" title="{/PDFUrl}" height="800px" id="PDF" displayType="Embedded">
 						<layoutData>
 							<FlexItemData growFactor="1"/>

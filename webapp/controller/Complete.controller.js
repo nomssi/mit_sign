@@ -7,6 +7,9 @@ sap.ui.define([
 
 		onInit: function () {
 			this.getRouter().getRoute("complete").attachPatternMatched(this._routePatternMatched, this);
+
+			this._oView = this.getView();
+			this.initMessageManager(this._oView.byId("signComplete"), this);
 		},
 
 		_routePatternMatched: function (oEvent) {
