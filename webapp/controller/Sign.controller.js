@@ -91,6 +91,11 @@ sap.ui.define([
 				button: this.byId("btnClear2"),
 				property: "/Receiver>Url"
 			};
+		
+			this._oSourceReleaser.field.bindValue({
+				path: "{SignerName}",
+				mode: sap.ui.model.BindingMode.OneWay
+			});
 		},
 
 		_routePatternMatched: function (oEvent) {
