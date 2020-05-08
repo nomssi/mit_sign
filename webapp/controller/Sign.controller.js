@@ -84,7 +84,7 @@ sap.ui.define([
 
 			var sVbeln = oEvent.getParameter("arguments").id;
 			this.bindVbelnTo(this.getModel(), sVbeln, this);
-			this._updateViewModel("/Vbeln", sVbeln);
+			this._setViewModelProperty("/Vbeln", sVbeln);
 
 			this._oMessageManager.removeAllMessages(); // reset potential server-side messages
 		},
@@ -99,7 +99,7 @@ sap.ui.define([
 			this._wizard.setCurrentStep(this.byId("contentStep"));
 		},
 
-		_updateViewModel: function (sProperty, vValue) {
+		_setViewModelProperty: function (sProperty, vValue) {
 			this.getModel("pdfView").setProperty(sProperty, vValue);
 		},
 
@@ -166,7 +166,7 @@ sap.ui.define([
 				oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
 				oInput.setValueState("Error");
 			} else {
-				this._updateViewModel(oSource.property, oSource.field.getValue());
+				this._setViewModelProperty(oSource.property, oSource.field.getValue());
 				// Then check SignPad
 				if (oSource.pad.isEmpty()) {
 					oState = {
@@ -184,7 +184,7 @@ sap.ui.define([
 		},
 
 		_validateSign: function (oSource, oEvent) {
-			this._updateViewModel(oSource.property, oEvent.getParameter("value"));
+			this._setViewModelProperty(oSource.property, oEvent.getParameter("value"));
 			this._validateField(oSource);
 		},
 		
@@ -291,7 +291,7 @@ sap.ui.define([
 			if (oSelectedItem) {
 				var sReleaserName = oSelectedItem.getTitle();
 				this._oSourceReleaser.field.setValue(sReleaserName);
-				this._updateViewModel("/Releaser>Name", sReleaserName);
+				this._setViewModelProperty("/Releaser>Name", sReleaserName);
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		},
