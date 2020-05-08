@@ -208,16 +208,10 @@ sap.ui.define([
 		},
 
 		_validateSign: function (oSource, oEvent) {
-			// First check Input field			
-			var oState = this._isValidInput(oSource.field);
-
-			if (oSource.pad.isEmpty()) {
-				oState.valid = false;
-			} else {
+			if (!oSource.pad.isEmpty()) {
 				this._updateViewModel(oSource.property, oEvent.getParameter("value"));
-			}
-
-			oSource.step.setValidated(oState.valid);
+			};
+			this._validateField(oSource);
 		},
 		
 		_cloneSource: function (oOriginalSource, sProperty) {
