@@ -282,7 +282,9 @@ sap.ui.define([
 		_handleValueHelpClose : function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem");
 			if (oSelectedItem) {
-				this._oSourceReleaser.field.setValue(oSelectedItem.getTitle());
+				var sReleaserName = oSelectedItem.getTitle();
+				this._oSourceReleaser.field.setValue(sReleaserName);
+				this._updateViewModel("/Releaser>Name", sReleaserName);				
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		},
@@ -293,37 +295,38 @@ sap.ui.define([
 		},
 
 		onWizardCompleted: function (oEvent) {
+			var sMessageText = this._oResourceBundle.getText("step.save");
+			var sMessageType = sap.ui.core.MessageType.Information;
 
 			var fnSaveError = function (oError) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
 
-				this.getRouter().navTo("error", {id: this.sVbeln});
-				
-				this._popoverMessage(this.sVbeln,
-					this._oResourceBundle.getText("step.save"),
-					sap.ui.core.MessageType.Information,
-					this._oLink);
-				
 				this._popoverMessage(this.sVbeln,
 					JSON.stringify(oError),
 					sap.ui.core.MessageType.Error,
 					this._oLink);
 
-				this.getRouter().navTo("error", {id: this.sVbeln});
 				this._wizard.setCurrentStep(this.byId("contentStep"));
+				this.getRouter().navTo("error", {id: this.sVbeln});
 			};
 
 			var fnAfterSave = function (oData, oResponse) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
+				sMessageText = this._oResourceBundle.getText("pdf.Created");
 
 				this._popoverMessage(this.sVbeln,
-					this._oResourceBundle.getText("pdf.Created"),
+					sMessageText,
 					sap.ui.core.MessageType.Success,
 					this._oLink);
+
+				this._wizard.setCurrentStep(this.byId("contentStep"));
+				this.getRouter().navTo("complete", {id: this.sVbeln});
 			};
 
-			this.getRouter().navTo("complete", {id: this.sVbeln});
-			// this._oApplicationProperties.setProperty("/isBusySaving", true);				
+			this._popoverMessage(this.sVbeln,
+				sMessageText,
+				sMessageType,
+				this._oLink);
 			this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), this.getView().getModel("pdfView"));
 		},
 
