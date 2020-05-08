@@ -58,7 +58,7 @@ sap.ui.define([
 					// Set binding 2 ways
 			});
 			this.setModel(this._oViewModel, "pdfView");
-			
+
 			this._oSourceReleaser = {
 				step: this.byId("signReleaserStep"),
 				pad: this.byId("signature-pad"), // Lager
@@ -73,7 +73,7 @@ sap.ui.define([
 				button: this.byId("btnClear2"),
 				property: "/Receiver>Url"
 			};
-		
+
 			this._oSourceReleaser.field.bindValue({
 				path: "{SignerName}",
 				mode: sap.ui.model.BindingMode.OneWay
@@ -145,7 +145,7 @@ sap.ui.define([
 					target: sTarget,
 					processor: this._oMessageProcessor
 				})
-			);			
+			);
 		},
 
 		_popoverInvalidField: function (oInput, sText, sTarget) {
@@ -158,8 +158,10 @@ sap.ui.define([
 		},
 
 		_isValidInput: function (oInput) {
-			var oState = {valid : false,
-						errorId : ""};
+			var oState = {
+				valid: false,
+				errorId: ""
+			};
 			var sCurrentValue = oInput.getValue();
 
 			if (sCurrentValue) {
@@ -176,30 +178,49 @@ sap.ui.define([
 			return oState;
 		},
 
-		_validateField: function (oInput, oStep) {
+		_validateField: function (oSource) {
+			// First check Input field			
+			var oInput = oSource.field;
+			var oState = this._isValidInput(oInput);
 			var sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
 
 			this.removeMessageFromTarget(sTarget);
 
-			var oState = this._isValidInput(oInput);
 			if (oState.valid === false) {
 				oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
 				oInput.setValueState("Error");
-				oStep.setValidated(false);
+			} else {
+				this._updateViewModel(oSource.property, oSource.field.getValue());
+				// Then check SignPad
+				if (oSource.pad.isEmpty()) {
+					oState = {
+						valid: false,
+						errorId: "missing.signature"
+					};
+					oInput.setValueState("Warning");
+					oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
+				} else {
+					oInput.setValueState("None");
+				};
 			};
-			return oState.valid;
+
+			oSource.step.setValidated(oState.valid);
 		},
 
-		_validateStep: function (oSignSource) {
-			var oState = this._isValidInput(oSignSource.field);
+		_validateSign: function (oSource, oEvent) {
+			// First check Input field			
+			var oState = this._isValidInput(oSource.field);
 
-			if (oState.valid === true && oSignSource.pad.isEmpty()) {
+			if (oSource.pad.isEmpty()) {
 				oState.valid = false;
-			};
-			oSignSource.step.setValidated(oState.valid);
-		},
+			} else {
+				this._updateViewModel(oSource.property, oEvent.getParameter("value"));
+			}
 
-        _cloneSource: function (oOriginalSource, sProperty) {
+			oSource.step.setValidated(oState.valid);
+		},
+		
+		_cloneSource: function (oOriginalSource, sProperty) {
 			return {
 				step: oOriginalSource.step,
 				pad: oOriginalSource.pad,
@@ -207,8 +228,8 @@ sap.ui.define([
 				button: oOriginalSource.button,
 				property: sProperty
 			};
-        },
-        
+		},
+
 		onInputChange: function (oEvent) {
 			// Whenever the clear text name is changed in the input field, update the draft model and validate
 			// onInputChange is the change event defined in the XML view.
@@ -225,9 +246,7 @@ sap.ui.define([
 				return;
 			};
 
-			this._validateStep(oSource);
-			this._updateViewModel(oSource.property, oSource.field.getValue());
-			this._validateField(oSource.field, oSource.step);
+			this._validateField(oSource);
 		},
 
 		onSignChange: function (oEvent) {
@@ -244,12 +263,11 @@ sap.ui.define([
 				return;
 			};
 
-			this._validateStep(oSource);
-			this._updateViewModel(oSource.property, oEvent.getParameter("value"));
+			this._validateSign(oSource, oEvent);
 		},
 
-		onSignerNameValueHelp: function(oEvent) {
-		 	var sInputValue = oEvent.getSource().getValue();
+		onSignerNameValueHelp: function (oEvent) {
+			var sInputValue = oEvent.getSource().getValue();
 
 			// create value help dialog
 			if (!this._valueHelpDialog) {
@@ -270,7 +288,7 @@ sap.ui.define([
 			this._valueHelpDialog.open(sInputValue);
 		},
 
-		_handleValueHelpSearch : function (oEvent) {
+		_handleValueHelpSearch: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new Filter(
 				"Name",
@@ -279,16 +297,16 @@ sap.ui.define([
 			oEvent.getSource().getBinding("items").filter([oFilter]);
 		},
 
-		_handleValueHelpClose : function (oEvent) {
+		_handleValueHelpClose: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem");
 			if (oSelectedItem) {
 				var sReleaserName = oSelectedItem.getTitle();
 				this._oSourceReleaser.field.setValue(sReleaserName);
-				this._updateViewModel("/Releaser>Name", sReleaserName);				
+				this._updateViewModel("/Releaser>Name", sReleaserName);
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		},
-		
+
 		onTriggerOutput: function () {
 			var oStep = this.byId("signReceiverStep");
 			this._wizard.validateStep(oStep);
@@ -307,7 +325,9 @@ sap.ui.define([
 					this._oLink);
 
 				this._wizard.setCurrentStep(this.byId("contentStep"));
-				this.getRouter().navTo("error", {id: this.sVbeln});
+				this.getRouter().navTo("error", {
+					id: this.sVbeln
+				});
 			};
 
 			var fnAfterSave = function (oData, oResponse) {
@@ -320,7 +340,9 @@ sap.ui.define([
 					this._oLink);
 
 				this._wizard.setCurrentStep(this.byId("contentStep"));
-				this.getRouter().navTo("complete", {id: this.sVbeln});
+				this.getRouter().navTo("complete", {
+					id: this.sVbeln
+				});
 			};
 
 			this._popoverMessage(this.sVbeln,
