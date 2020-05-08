@@ -103,30 +103,6 @@ sap.ui.define([
 			this.getModel("pdfView").setProperty(sProperty, vValue);
 		},
 
-		onClearButton: function (oEvent) {
-			var oSource; // undefined
-
-			switch (oEvent.getSource()) {
-			case this._oSourceReleaser.button:
-				oSource = this._oSourceReleaser; // Lager
-				oSource.property = "/Releaser>Url";
-				break;
-			case this._oSourceReceiver.button:
-				oSource = this._oSourceReceiver; // Empfänger
-				oSource.property = "/Receiver>Url";
-				break;
-			default:
-				return;
-			};
-
-			this._updateViewModel(oSource.property, "");
-
-			oSource.pad.clear();
-			this._wizard.invalidateStep(oSource.step);
-			this._wizard.setCurrentStep(oSource.step);
-			// this._oHelper.clearSignature(this.sVbeln);
-		},
-
 		removeMessageFromTarget: function (sTarget) {
 			// clear potential server-side messages to allow saving the item again			
 			this._oMessageManager.getMessageModel().getData().forEach(function (oMessage) {
@@ -208,9 +184,7 @@ sap.ui.define([
 		},
 
 		_validateSign: function (oSource, oEvent) {
-			if (!oSource.pad.isEmpty()) {
-				this._updateViewModel(oSource.property, oEvent.getParameter("value"));
-			};
+			this._updateViewModel(oSource.property, oEvent.getParameter("value"));
 			this._validateField(oSource);
 		},
 		
@@ -241,6 +215,27 @@ sap.ui.define([
 			};
 
 			this._validateField(oSource);
+		},
+
+		onClearButton: function (oEvent) {
+			var oSource; // undefined
+
+			switch (oEvent.getSource()) {
+			case this._oSourceReleaser.button:
+				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser>Url");
+				break;
+			case this._oSourceReceiver.button:
+				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver>Url");
+				break;
+			default:
+				return;
+			};
+
+			oSource.pad.clear();
+			// this._oHelper.clearSignature(this.sVbeln);
+
+			this._validateSign(oSource, oEvent);
+			this._wizard.setCurrentStep(oSource.step);
 		},
 
 		onSignChange: function (oEvent) {
