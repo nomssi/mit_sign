@@ -17,9 +17,9 @@ sap.ui.define([
 	return BaseController.extend("Signature.controller.Home", {
 		formatter: formatter,
 
-		onExit: function () {
-			// stop the interval on exit; 
-		},
+		// onExit: function () {
+		// 	// stop the interval on exit; 
+		// },
 
 		onInit: function () {
 			var oComponent = this.getOwnerComponent();
@@ -77,16 +77,14 @@ sap.ui.define([
 
 			var oModel = oBindContext.getModel();
 			var sId = oModel.getData(sPath).VBELN.trim();
-			this._router.navTo("sign", {
-				id: sId
-			});
+			this._router.navTo("sign", {id: sId});
 		},
 
 		onFilterEvents: function (oEvent) {
 			var aTabFilters = []; // reset current filters
 			var sQuery = oEvent.getParameter("query");
 			if (sQuery) {
-				aTabFilters.push(new Filter("ReceiverName", FilterOperator.Contains, sQuery));
+				aTabFilters.push(new Filter("ReceiverPartner", FilterOperator.Contains, sQuery));
 			}
 			this._applyListFilters(aTabFilters);
 		},

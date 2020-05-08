@@ -293,38 +293,37 @@ sap.ui.define([
 		},
 
 		onWizardCompleted: function (oEvent) {
-			var sMessageText = this._oResourceBundle.getText("step.save");
-			var sMessageType = sap.ui.core.MessageType.Information;
 
 			var fnSaveError = function (oError) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
 
+				this.getRouter().navTo("error", {id: this.sVbeln});
+				
+				this._popoverMessage(this.sVbeln,
+					this._oResourceBundle.getText("step.save"),
+					sap.ui.core.MessageType.Information,
+					this._oLink);
+				
 				this._popoverMessage(this.sVbeln,
 					JSON.stringify(oError),
 					sap.ui.core.MessageType.Error,
 					this._oLink);
 
-				this._wizard.setCurrentStep(this.byId("contentStep"));
 				this.getRouter().navTo("error", {id: this.sVbeln});
+				this._wizard.setCurrentStep(this.byId("contentStep"));
 			};
 
 			var fnAfterSave = function (oData, oResponse) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
-				sMessageText = this._oResourceBundle.getText("pdf.Created");
 
 				this._popoverMessage(this.sVbeln,
-					sMessageText,
+					this._oResourceBundle.getText("pdf.Created"),
 					sap.ui.core.MessageType.Success,
 					this._oLink);
-
-				this._wizard.setCurrentStep(this.byId("contentStep"));
-				this.getRouter().navTo("complete", {id: this.sVbeln});
 			};
 
-			this._popoverMessage(this.sVbeln,
-				sMessageText,
-				sMessageType,
-				this._oLink);
+			this.getRouter().navTo("complete", {id: this.sVbeln});
+			// this._oApplicationProperties.setProperty("/isBusySaving", true);				
 			this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), this.getView().getModel("pdfView"));
 		},
 
