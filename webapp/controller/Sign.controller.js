@@ -238,7 +238,7 @@ sap.ui.define([
 				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser>Url");
 				break;
 			case this._oSourceReceiver.pad:
-				oSource = this._cloneSource(this._oSourceReleaser, "/Receiver>Url");
+				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver>Url");
 				break;
 			default:
 				return;
