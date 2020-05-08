@@ -4,11 +4,11 @@ sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/core/routing/History",
 	"../util/messages"
-], function(Controller, MessageToast, UIComponent, History, Messages) {
+], function (Controller, MessageToast, UIComponent, History, Messages) {
 	"use strict";
 
 	return Controller.extend("Signature.controller.BaseController", {
-		
+
 		/**
 		 * Convenience method for accessing the router.
 		 * @public
@@ -113,29 +113,27 @@ sap.ui.define([
 				});
 
 				var oData = oModel.getData(sPath);
-				//if there is no data the model has to request new data
+				// if there is no data the model has to request new data
 				if (!oData) {
 					oView.setBusyIndicatorDelay(0);
 					oView.getElementBinding().attachEventOnce("dataReceived", function () {
-						// reset to default
-						oView.setBusyIndicatorDelay(null);
-						// this._checkIfProductAvailable(sPath);
+						oView.setBusyIndicatorDelay(null); // reset to default
 					});
 				}
 			});
 		},
 
-		initMessageManager: function(that) {
+		initMessageManager: function (that) {
 			that._oView = that.getView();
 			that._oLink = Messages.createDefaultLink();
 
 			// create a message manager and register the message model
 			that._oMessageManager = sap.ui.getCore().getMessageManager();
 			that._oMessageManager.registerObject(that._oView, true);
-			that._oProcessor = that._oMessageManager.getMessageModel();	
+			that._oProcessor = that._oMessageManager.getMessageModel();
 			that._oView.setModel(that._oProcessor, "message");
 		},
-				
+
 		/**
 		 * Navigates back in browser history or to the home screen
 		 */
@@ -149,7 +147,7 @@ sap.ui.define([
 				window.history.go(-1);
 			}
 		},
-		
+
 		/**
 		 * Always navigates back to home
 		 * @override

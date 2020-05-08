@@ -1,0 +1,9 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<BusyDialog id="BusyDialog" 	
+		title="{i18n>step.save}"
+		text="{i18n>step.saving}"
+		showCancelButton="true"
+		close="onBusyDialogClosed" />
+</core:FragmentDefinition>

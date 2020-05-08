@@ -6,7 +6,10 @@ sap.ui.define([
 	"sap/m/MessagePopoverItem",
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
-	"../util/messages"
+	"../util/messages",
+	"sap/m/MessageToast",
+	"sap/ui/model/json/JSONModel",
+	"sap/ui/core/syncStyleClass"
 ], function (
 	BaseController,
 	Signature,
@@ -15,7 +18,10 @@ sap.ui.define([
 	MessagePopoverItem,
 	Fragment,
 	Filter,
-	Messsages) {
+	Messsages,
+	MessageToast,
+	JSONModel,
+	syncStyleClass) {
 	"use strict";
 
 	return BaseController.extend("Signature.controller.Sign", {
@@ -45,7 +51,7 @@ sap.ui.define([
 			this._oHelper = new Signature(oComponent, this._oView);
 
 			// View register Model for Draft handling
-			this._oViewModel = new sap.ui.model.json.JSONModel({
+			this._oViewModel = new JSONModel({
 				Receiver: {
 					Name: "",
 					Url: ""
@@ -74,10 +80,10 @@ sap.ui.define([
 				property: "/Receiver>Url"
 			};
 
-			this._oSourceReleaser.field.bindValue({
-				path: "{SignerName}",
-				mode: sap.ui.model.BindingMode.OneWay
-			});
+			// this._oSourceReleaser.field.bindValue({
+			// 	path: "{SignerName}",
+			// 	mode: sap.ui.model.BindingMode.OneWay
+			// });
 		},
 
 		_routePatternMatched: function (oEvent) {
@@ -187,7 +193,7 @@ sap.ui.define([
 			this._setViewModelProperty(oSource.property, oEvent.getParameter("value"));
 			this._validateField(oSource);
 		},
-		
+
 		_cloneSource: function (oOriginalSource, sProperty) {
 			return {
 				step: oOriginalSource.step,
@@ -302,18 +308,21 @@ sap.ui.define([
 		},
 
 		onWizardCompleted: function (oEvent) {
-			var sMessageText = this._oResourceBundle.getText("step.save");
-			var sMessageType = sap.ui.core.MessageType.Information;
 
 			var fnSaveError = function (oError) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
+				this._popoverMessage(this.sVbeln,
+					this._oResourceBundle.getText("step.save"),
+					sap.ui.core.MessageType.Information,
+					this._oLink);
 
 				this._popoverMessage(this.sVbeln,
 					JSON.stringify(oError),
 					sap.ui.core.MessageType.Error,
 					this._oLink);
 
-				this._wizard.setCurrentStep(this.byId("contentStep"));
+				this._oBusyDialog.close();
+
 				this.getRouter().navTo("error", {
 					id: this.sVbeln
 				});
@@ -321,24 +330,53 @@ sap.ui.define([
 
 			var fnAfterSave = function (oData, oResponse) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
-				sMessageText = this._oResourceBundle.getText("pdf.Created");
 
 				this._popoverMessage(this.sVbeln,
-					sMessageText,
+					this._oResourceBundle.getText("step.save"),
+					sap.ui.core.MessageType.Information,
+					this._oLink);
+
+				this._popoverMessage(this.sVbeln,
+					this._oResourceBundle.getText("pdf.Created") + " Datei {PDFUrl}",
 					sap.ui.core.MessageType.Success,
 					this._oLink);
 
-				this._wizard.setCurrentStep(this.byId("contentStep"));
+				this._popoverMessage(this.sVbeln,
+					"EMail an {ReceiverName} per Mail mit Id {FloeId} versandt",
+					sap.ui.core.MessageType.Information,
+					this._oLink);
+
+				// this._wizard.setCurrentStep(this.byId("contentStep"));
+				this._oBusyDialog.close();
+
 				this.getRouter().navTo("complete", {
 					id: this.sVbeln
 				});
 			};
 
-			this._popoverMessage(this.sVbeln,
-				sMessageText,
-				sMessageType,
-				this._oLink);
-			this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), this.getView().getModel("pdfView"));
+			// load BusyDialog fragment asynchronously
+			var that = this;
+			if (this._oBusyDialog) {
+				this._oBusyDialog.open();
+				that._oHelper.saveSignature(fnAfterSave.bind(that), fnSaveError.bind(that), that.getView().getModel("pdfView"));
+			} else {
+				Fragment.load({
+					name: "Signature.view.BusyDialog",
+					controller: this
+				}).then(function (oFragment) {
+					this._oBusyDialog = oFragment;
+					this.getView().addDependent(this._oBusyDialog);
+					syncStyleClass("sapUiSizeCompact", this.getView(), this._oBusyDialog);
+					this._oBusyDialog.open();
+					that._oHelper.saveSignature(fnAfterSave.bind(that), fnSaveError.bind(that), that.getView().getModel("pdfView"));
+				}.bind(this));
+			};
+		},
+
+		onBusyDialogClosed: function (oEvent) {
+			if (oEvent.getParameter("cancelPressed")) {
+				MessageToast.show("Operation abgebrochen");
+			};
 		},
 
 		/**
