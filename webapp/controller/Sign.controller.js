@@ -280,11 +280,16 @@ sap.ui.define([
 		},
 
 		_handleValueHelpClose : function (oEvent) {
+			var oSource; // undefined
+			
 			var oSelectedItem = oEvent.getParameter("selectedItem");
 			if (oSelectedItem) {
 				this._oSourceReleaser.field.setValue(oSelectedItem.getTitle());
 			}
 			oEvent.getSource().getBinding("items").filter([]);
+			
+			oSource = this._cloneSource(this._oSourceReleaser, "/Releaser>Name");
+			this._updateViewModel(oSource.property, oSource.field.getValue());
 		},
 		
 		onTriggerOutput: function () {
