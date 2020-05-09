@@ -1,6 +1,6 @@
 <core:View xmlns:layout="sap.ui.layout" xmlns:form="sap.ui.layout.form" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:core="sap.ui.core"
 	xmlns:pad="Signature.controls" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml"
-	controllerName="Signature.controller.Sign" busy="{pdfView&gt;/busy}" busyIndicatorDelay="{pdfView&gt;/delay}">
+	controllerName="Signature.controller.Sign" busy="{draf>/busy}" busyIndicatorDelay="{draft>/delay}">
 	<NavContainer id="wizardNavContainer">
 		<pages>
 			<Page id="wizardContentPage" showHeader="true" title="{i18n&gt;signTitle} {Vbeln}">

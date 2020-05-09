@@ -63,7 +63,7 @@ sap.ui.define([
 				Vbeln: ""
 					// Set binding 2 ways
 			});
-			this.setModel(this._oViewModel, "pdfView");
+			this.setModel(this._oViewModel, "draft");
 
 			this._oSourceReleaser = {
 				step: this.byId("signReleaserStep"),
@@ -90,7 +90,7 @@ sap.ui.define([
 
 			var sVbeln = oEvent.getParameter("arguments").id;
 			this.bindVbelnTo(this.getModel(), sVbeln, this);
-			this._setViewModelProperty("/Vbeln", sVbeln);
+			this._setDraftProperty("/Vbeln", sVbeln);
 
 			this._oMessageManager.removeAllMessages(); // reset potential server-side messages
 		},
@@ -105,8 +105,8 @@ sap.ui.define([
 			this._wizard.setCurrentStep(this.byId("contentStep"));
 		},
 
-		_setViewModelProperty: function (sProperty, vValue) {
-			this.getModel("pdfView").setProperty(sProperty, vValue);
+		_setDraftProperty: function (sProperty, vValue) {
+			this.getModel("draft").setProperty(sProperty, vValue);
 		},
 
 		removeMessageFromTarget: function (sTarget) {
@@ -172,7 +172,7 @@ sap.ui.define([
 				oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
 				oInput.setValueState("Error");
 			} else {
-				this._setViewModelProperty(oSource.property, oSource.field.getValue());
+				this._setDraftProperty(oSource.property, oSource.field.getValue());
 				// Then check SignPad
 				if (oSource.pad.isEmpty()) {
 					oState = {
@@ -190,7 +190,7 @@ sap.ui.define([
 		},
 
 		_validateSign: function (oSource, oEvent) {
-			this._setViewModelProperty(oSource.property, oEvent.getParameter("value"));
+			this._setDraftProperty(oSource.property, oEvent.getParameter("value"));
 			this._validateField(oSource);
 		},
 
@@ -297,7 +297,7 @@ sap.ui.define([
 			if (oSelectedItem) {
 				var sReleaserName = oSelectedItem.getTitle();
 				this._oSourceReleaser.field.setValue(sReleaserName);
-				this._setViewModelProperty("/Releaser>Name", sReleaserName);
+				this._setDraftProperty("/Releaser>Name", sReleaserName);
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		},
@@ -354,11 +354,11 @@ sap.ui.define([
 				});
 			};
 
-			// load BusyDialog fragment asynchronously
+			// Save draft: load BusyDialog fragment asynchronously
 			var that = this;
 			if (this._oBusyDialog) {
 				this._oBusyDialog.open();
-				that._oHelper.saveSignature(fnAfterSave.bind(that), fnSaveError.bind(that), that.getView().getModel("pdfView"));
+				that._oHelper.saveSignature(fnAfterSave.bind(that), fnSaveError.bind(that), that.getView().getModel("draft"));
 			} else {
 				Fragment.load({
 					name: "Signature.view.BusyDialog",
@@ -368,7 +368,7 @@ sap.ui.define([
 					this.getView().addDependent(this._oBusyDialog);
 					syncStyleClass("sapUiSizeCompact", this.getView(), this._oBusyDialog);
 					this._oBusyDialog.open();
-					that._oHelper.saveSignature(fnAfterSave.bind(that), fnSaveError.bind(that), that.getView().getModel("pdfView"));
+					that._oHelper.saveSignature(fnAfterSave.bind(that), fnSaveError.bind(that), that.getView().getModel("draft"));
 				}.bind(this));
 			};
 		},
