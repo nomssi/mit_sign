@@ -1,17 +1,8 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="Signature.controller.Complete"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page id="signComplete" title="{i18n>Complete.Title}" showNavButton="true" 
-	      navButtonTooltip="{i18n>homeButtonText}" navButtonPress="onHome">
+	<Page id="signComplete" title="{i18n>Complete.Title}" showNavButton="true" navButtonTooltip="{i18n>homeButtonText}" navButtonPress="onHome">
 		<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Finish}" type="Success" showIcon="true"/>
 		<content>
-				<MessageView items="{message>/}">
-					<MessageItem
-						type="{message>type}"
-						title="{message>message}"
-						subtitle="{message>additionalText}"
-						description="{message>description}">
-					</MessageItem>
-				</MessageView>				
 			<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 				<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
 					<Text text="Auslieferung {VBELN} wurde verarbeitet. Datei {PDFUrl} wurde erzeugt und an {ReceiverName} per Mail mit Id {FloeId} versandt."/>
@@ -23,5 +14,13 @@
 				</FlexBox>
 			</ScrollContainer>
 		</content>
+		<footer>
+			<Bar id="wizardFooterBar" visible="true">
+				<contentLeft>
+					<Button id="showPopoverButton" icon="sap-icon://message-popup" type="Emphasized" text="{= ${message&gt;/}.length }"
+						press=".handleMessagePopoverPress"/>
+				</contentLeft>
+			</Bar>
+		</footer>
 	</Page>
 </core:View>

@@ -1,10 +1,13 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/m/MessageToast",
+	"sap/m/MessagePopover",
+	"sap/m/MessagePopoverItem",
 	"sap/ui/core/UIComponent",
 	"sap/ui/core/routing/History",
-	"../util/messages"
-], function (Controller, MessageToast, UIComponent, History, Messages) {
+	"../util/messages",
+	"sap/ui/model/json/JSONModel"
+], function (Controller, MessageToast, MessagePopover, MessagePopoverItem, UIComponent, History, Messages, JSONModel) {
 	"use strict";
 
 	return Controller.extend("Signature.controller.BaseController", {
@@ -90,11 +93,18 @@ sap.ui.define([
 			}.bind(this), 0);
 		},
 
+		setDraftProperty: function (sProperty, vValue) {
+			this.getModel("draft").setProperty(sProperty, vValue);
+		},
+		
 		bindVbelnTo: function (oModel, sVbeln, target) {
 			// the binding should be done after insuring that the metadata is loaded successfully
 			var oView = target.getView();
 			target.sVbeln = sVbeln;
 
+			this.initDraftModel();
+			this.setDraftProperty("/Vbeln", sVbeln);
+			
 			oModel.metadataLoaded().then(function () {
 
 				var sPath = "/" + target.getModel().createKey("Events", {
@@ -123,6 +133,23 @@ sap.ui.define([
 			});
 		},
 
+		initDraftModel: function () {
+			//  Model for Draft handling
+			var oData = {
+				Receiver: {
+					Name: "",
+					Url: ""
+				},
+				Releaser: {
+					Name: "",
+					Url: ""
+				},
+				Vbeln: ""
+			};
+			this._oDraftModel = new JSONModel(oData);		// binding is 2 ways
+			this.setModel(this._oDraftModel, "draft");
+		},
+
 		initMessageManager: function (that) {
 			that._oView = that.getView();
 			that._oLink = Messages.createDefaultLink();
@@ -134,6 +161,47 @@ sap.ui.define([
 			that._oView.setModel(that._oProcessor, "message");
 		},
 
+		/**
+		 * Only validation on client side, does not involve a back-end server.
+		 * @param {sap.ui.base.Event} oEvent Press event of the button to display the MessagePopover
+		 * From: openui5/src/sap.m/test/sap/m/demokit/cart/webapp/
+		 */
+		handleMessagePopoverPress: function (oEvent) {
+			var oButton = oEvent.getSource();
+
+			/**
+			 * Gather information that will be visible on the MessagePopover
+			 */
+			var oMessageTemplate = new MessagePopoverItem({
+				type: "{message>type}",
+				title: "{message>message}",
+				subtitle: "{message>additionalText}",
+				// activeTitle: "{message>active}",
+				// description: '{message>description}',
+				link: this._oLink
+			});
+			
+			if (!this.byId("errorMessagePopover")) {
+				var oMessagePopover = new MessagePopover(this.createId("errorMessagePopover"), {
+					items: {
+						path: "message>/",
+						template: oMessageTemplate
+					},
+					afterClose: function () {
+						oMessagePopover.destroy();
+					}
+				});
+				this._addDependent(oMessagePopover);
+			}
+
+			oMessagePopover.openBy(oButton);
+		},
+
+		// To be able to stub the addDependent function in unit test, we added it in a separate function
+		_addDependent: function (oMessagePopover) {
+			this.getView().addDependent(oMessagePopover);
+		},
+		
 		/**
 		 * Navigates back in browser history or to the home screen
 		 */

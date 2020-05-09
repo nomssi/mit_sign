@@ -17,9 +17,9 @@ sap.ui.define([
 	return BaseController.extend("Signature.controller.Home", {
 		formatter: formatter,
 
-		// onExit: function () {
-		// 	// stop the interval on exit; 
-		// },
+		onExit: function () {
+			this._intervalID.clearInterval();	// stop the interval on exit; 
+		},
 
 		onInit: function () {
 			var oComponent = this.getOwnerComponent();
@@ -28,7 +28,7 @@ sap.ui.define([
 
 			// Create Trigger and register handler
 			var that = this; // save before calling setInterval
-			setInterval(function () {
+			this._intervalID = setInterval(function () {
 				that._reloadData();
 			}, 10000);
 

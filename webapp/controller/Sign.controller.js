@@ -2,8 +2,6 @@ sap.ui.define([
 	"./BaseController",
 	"../model/Signature",
 	"../model/formatter",
-	"sap/m/MessagePopover",
-	"sap/m/MessagePopoverItem",
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
 	"../util/messages",
@@ -14,8 +12,6 @@ sap.ui.define([
 	BaseController,
 	Signature,
 	formatter,
-	MessagePopover,
-	MessagePopoverItem,
 	Fragment,
 	Filter,
 	Messsages,
@@ -41,29 +37,14 @@ sap.ui.define([
 
 			this.initMessageManager(this);
 
-			// this._initViewPropertiesModel();
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
-
 			this._router.getRoute("sign").attachPatternMatched(this._routePatternMatched, this);
 
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
-			this._oHelper = new Signature(oComponent, this._oView);
+			this._oHelper = new Signature(oComponent);
 
-			// View register Model for Draft handling
-			this._oDraftModel = new JSONModel({
-				Receiver: {
-					Name: "",
-					Url: ""
-				},
-				Releaser: {
-					Name: "",
-					Url: ""
-				},
-				Vbeln: ""
-					// Set binding 2 ways
-			});
-			this.setModel(this._oDraftModel, "draft");
+			this.initDraftModel();
 
 			this._oSourceReleaser = {
 				step: this.byId("signReleaserStep"),
@@ -90,7 +71,6 @@ sap.ui.define([
 
 			var sVbeln = oEvent.getParameter("arguments").id;
 			this.bindVbelnTo(this.getModel(), sVbeln, this);
-			this._setDraftProperty("/Vbeln", sVbeln);
 
 			this._oMessageManager.removeAllMessages(); // reset potential server-side messages
 		},
@@ -103,10 +83,6 @@ sap.ui.define([
 			this.getRouter().navTo("home");
 
 			this._wizard.setCurrentStep(this.byId("contentStep"));
-		},
-
-		_setDraftProperty: function (sProperty, vValue) {
-			this.getModel("draft").setProperty(sProperty, vValue);
 		},
 
 		removeMessageFromTarget: function (sTarget) {
@@ -174,7 +150,7 @@ sap.ui.define([
 				oInput.setValueState("Error");
 			} else {
 				// unnecessary is field is assigned to draft JSON model (two way binding):
-				// this._setDraftProperty(oSource.property, oSource.field.getValue()); 
+				// this.setDraftProperty(oSource.property, oSource.field.getValue()); 
 				// Then check SignPad
 				if (oSource.pad.isEmpty()) {
 					oState = {
@@ -192,14 +168,7 @@ sap.ui.define([
 		},
 
 		_validateSign: function (oSource, oEvent) {
-			var sPropery = oSource.property;
-			if (oSource.pad.isEmpty()) {
-
-			} else {
-				var vValue = oEvent.getParameter("value");
-				this._setDraftProperty(oSource.property, vValue);
-			}
-			
+			this.setDraftProperty(oSource.property, oEvent.getParameter("value"));
 			this._validateField(oSource);
 		},
 
@@ -247,7 +216,6 @@ sap.ui.define([
 			};
 
 			oSource.pad.clear();
-			// this._oHelper.clearSignature(this.sVbeln);
 
 			this._validateSign(oSource, oEvent);
 			this._wizard.setCurrentStep(oSource.step);
@@ -307,7 +275,7 @@ sap.ui.define([
 				var sReleaserName = oSelectedItem.getTitle();
 				this._oSourceReleaser.field.setValue(sReleaserName);
 				// unnecessary if field is assigned to draft JSON model (two way binding)
-				// this._setDraftProperty("/Releaser/Name", sReleaserName);
+				// this.setDraftProperty("/Releaser/Name", sReleaserName);
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		},
@@ -404,47 +372,6 @@ sap.ui.define([
 			if (oEvent.getParameter("cancelPressed")) {
 				MessageToast.show("{i18n>save.cancelled}");
 			};
-		},
-
-		/**
-		 * Only validation on client side, does not involve a back-end server.
-		 * @param {sap.ui.base.Event} oEvent Press event of the button to display the MessagePopover
-		 * From: openui5/src/sap.m/test/sap/m/demokit/cart/webapp/
-		 */
-		handleMessagePopoverPress: function (oEvent) {
-			var oButton = oEvent.getSource();
-
-			/**
-			 * Gather information that will be visible on the MessagePopover
-			 */
-			var oMessageTemplate = new MessagePopoverItem({
-				type: "{message>type}",
-				title: "{message>message}",
-				subtitle: "{message>additionalText}",
-				// activeTitle: "{message>active}",
-				// description: '{message>description}',
-				link: this._oLink
-			});
-			
-			if (!this.byId("errorMessagePopover")) {
-				var oMessagePopover = new MessagePopover(this.createId("errorMessagePopover"), {
-					items: {
-						path: "message>/",
-						template: oMessageTemplate
-					},
-					afterClose: function () {
-						oMessagePopover.destroy();
-					}
-				});
-				this._addDependent(oMessagePopover);
-			}
-
-			oMessagePopover.openBy(oButton);
-		},
-
-		// To be able to stub the addDependent function in unit test, we added it in a separate function
-		_addDependent: function (oMessagePopover) {
-			this.getView().addDependent(oMessagePopover);
 		}
 
 	});

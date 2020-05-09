@@ -104,7 +104,7 @@ sap.ui.define([
 				oCroppedCanvas.height = h;
 				croppedCtx.putImageData(cut, 0, 0);
 
-				return oCroppedCanvas.toDataURL("image/png");
+				return oCroppedCanvas.toDataURL("image/svg+xml");
 			},
 
 			_raiseEndEvent: function (oEvent) {
@@ -133,7 +133,9 @@ sap.ui.define([
 					if (!bState) {
 						var aGroups = this.signaturePad.toData();
 						// check if there's at leat one group with more than 5 points
-						bState = !aGroups.some(function (group) { return group.points.length > 5; });
+						bState = !aGroups.some(function (group) {
+							return group.points.length > 5;
+						});
 					}
 				}
 				return bState;
@@ -179,6 +181,8 @@ sap.ui.define([
 					// var iThickness = parseInt(oSignPad.getProperty("thickness"), 10);
 
 					oRm.openStart("div", oSignPad)
+						.style("width", oSignPad.getWidth())
+						.style("height", oSignPad.getHeight())
 						.openEnd();
 
 					oRm.openStart("canvas", oSignPad)
@@ -199,9 +203,9 @@ sap.ui.define([
 				}
 			},
 
-// Adjust canvas coordinate space taking into account pixel ratio,
-// to make it look crisp on mobile devices.
-// This also causes canvas to be cleared.
+			// Adjust canvas coordinate space taking into account pixel ratio,
+			// to make it look crisp on mobile devices.
+			// This also causes canvas to be cleared.
 			_resizeCanvas: function (oControl) {
 				var that = this;
 				if (that.signaturePad) {
@@ -212,36 +216,48 @@ sap.ui.define([
 					oCanvas.height = oCanvas.offsetHeight * ratio;
 					oCanvas.getContext("2d").scale(ratio, ratio);
 
-  // This library does not listen for canvas changes, so after the canvas is automatically
-  // cleared by the browser, SignaturePad#isEmpty might still return false, even though the
-  // canvas looks empty, because the internal data of this library wasn't cleared. To make sure
-  // that the state of this library is consistent with visual state of the canvas, you
-  // have to clear it manually.
+					// This library does not listen for canvas changes, so after the canvas is automatically
+					// cleared by the browser, SignaturePad#isEmpty might still return false, even though the
+					// canvas looks empty, because the internal data of this library wasn't cleared. To make sure
+					// that the state of this library is consistent with visual state of the canvas, you
+					// have to clear it manually.
+
 					that.signaturePad.clear(); // otherwise isEmpty() might return incorrect value	
 				}
 			},
 
-			onAfterRendering: function () {
-
-				if (sap.ui.core.Control.prototype.onAfterRendering) {
-					sap.ui.core.Control.prototype.onAfterRendering.apply(this, arguments); //super class
-
-					this.signCanvas = document.querySelector("canvas[id=" + this.getId() + "]");  
-					var oOptions = { 
-					// It's Necessary to use an opaque color when saving image as JPEG;
-					// this option can be omitted if only saving as PNG or SVG
+			_activate: function (oControl, oCanvas) {
+				var that = oControl;
+				
+				if (oCanvas !== that.signCanvas) {
+					that.signCanvas = oCanvas;
+					var oOptions = {
+						// It's Necessary to use an opaque color when saving image as JPEG;
+						// this option can be omitted if only saving as PNG or SVG
 						//backgroundColor: "rgb(255, 255, 255)",
 						// onBegin: ??,
-						onEnd: this._raiseEndEvent.bind(this)
+						onEnd: that._raiseEndEvent.bind(that)
 					};
 
-					this.signaturePad = new SignaturePad(this.signCanvas, oOptions);
+					that.signaturePad = new SignaturePad(that.signCanvas, oOptions);
 
-					var that = this; // make the control resizable and redraw when something changed
-					sap.ui.core.ResizeHandler.register(that, that._resizeCanvas.bind(this));
+				};
+					// make the control resizable and redraw when something changed
+					sap.ui.core.ResizeHandler.register(that, that._resizeCanvas.bind(that));
 
 					// this.signaturePad.fromDataURL(sDataUrl, oOptions);
-					this._resizeCanvas(this);
+					that._resizeCanvas(that);					
+			},
+
+			onAfterRendering: function () {
+            	var that = this;
+            	
+				if (sap.ui.core.Control.prototype.onAfterRendering) {
+					sap.ui.core.Control.prototype.onAfterRendering.apply(this, arguments); // super class
+
+					var oCanvas = document.querySelector("canvas[id=" + that.getId() + "]");
+
+					that._activate(that, oCanvas);
 				}
 			},
 

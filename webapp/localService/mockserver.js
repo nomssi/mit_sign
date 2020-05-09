@@ -73,19 +73,7 @@ sap.ui.define([
 					        	return true;
 					        }
 					});
-					aRequests.push({
-					        method: "POST",
-					        path: new RegExp("ClearSignature(.*)"), 
-					        response: function(oXhr, sUrlParams) {
-					        	Log.debug("Incoming request for ClearSignature");
-					        	var today = new Date();
-					        	var oResponse = jQuery.sap.sjax({
-					               	url: "/Signatures?$filter=EventDate ge " + "/Date(" + today.getTime() + ")/"
-					        	});
-					        	oXhr.respondJSON(200, {}, JSON.stringify(oResponse.data));
-					        	return true;
-					        }
-					});
+
 					oMockServer.setRequests(aRequests);
 
 					// compose an error response for each request

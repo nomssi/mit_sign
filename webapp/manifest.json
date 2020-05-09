@@ -80,7 +80,7 @@
 				"dataSource": "mainService",
 				"settings": {
 					"useBatch": true,
-					"defaultBindingMode": "TwoWay"
+					"defaultBindingMode": "OneWay"
 				}
 			}
 		},
