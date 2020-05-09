@@ -18,7 +18,7 @@ sap.ui.define([
 		constructor: function (oComponent, oMainView) {
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this._oODataModel = oComponent.getModel();
-			
+
 			this._oMainView = oMainView;
 			this._oWhenNoDraft = new Promise(function (fnResolve) {
 				fnResolve(); // Since we are currently not in the process of deleting a draft, the Promise is resolved immediately
@@ -100,31 +100,13 @@ sap.ui.define([
 			});
 		},
 
-        _getSignData: function (oModel) {
-			var data = {
-				Vbeln: oModel.getProperty("/Vbeln"),
-				Lager: oModel.getProperty("/Releaser>Name"),			// Klartext Name Lager
-				Abholer: oModel.getProperty("/Receiver>Name"),			// Klartext Name Abholer
-				Sign_Lager: oModel.getProperty("/Releaser>Url"),		// Signatur Lager
-				Sign_Abholer: oModel.getProperty("/Receiver>Url")		// Signatur Lager
-			};
-        	return data;
-        },
-
-        _isValidData: function (oData) {
-			return (typeof oData.Lager !== "undefined" && typeof oData.Abholer !== "undefined" &&
-				typeof oData.Sign_Lager !== "undefined" && typeof oData.Sign_Abholer !== "undefined");
-        },
-        
-		// Saves ProductDraft each time a user edits a field
-		saveSignature: function (fnAfterSaved, fnSaveFailed, oModel) {
-			var oSignData = this._getSignData(oModel);
-			if (this._isValidData(oSignData)) {
+		// Saves Draft 
+		saveSignature: function (fnAfterSaved, fnSaveFailed, oSignData) {
+			if (typeof oSignData === "undefined") {
+				this._submitChanges(null, null);
+			} else {
 				this._callFunctionImport("/SaveSignature", oSignData, fnAfterSaved, fnSaveFailed);
 				this._submitChanges(fnSaveFailed, fnAfterSaved);
-			}
-			else {
-				this._submitChanges(null, null);
 			};
 		},
 
@@ -140,7 +122,7 @@ sap.ui.define([
 					if (!this._oODataModel.hasPendingChanges() || !this._sMessage) {
 
 						if (typeof oResponseData.__batchResponses === "undefined") {
-                           return;
+							return;
 						} else {
 							for (var i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i += 1) {
 								var oEntry = oResponseData.__batchResponses[i];
@@ -166,7 +148,6 @@ sap.ui.define([
 				this._oODataModel.submitChanges(oParameters);
 			}
 		},
-
 
 		_callFunctionImport: function (sFunctionName, oURLParameters, fnAfterFunctionExecuted, fnExecutionError) {
 			this._oODataModel.callFunction(sFunctionName, {

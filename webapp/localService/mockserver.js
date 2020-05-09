@@ -90,7 +90,7 @@ sap.ui.define([
 
 					// compose an error response for each request
 					var fnResponse = function (iErrCode, sMessage, aRequest) {
-						aRequest.response = function(oXhr){
+						aRequest.response = function(oXhr) {
 							oXhr.respond(iErrCode, {"Content-Type": "text/plain;charset=utf-8"}, sMessage);
 						};
 					};

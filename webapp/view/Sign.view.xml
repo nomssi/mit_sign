@@ -64,7 +64,7 @@
 												<layout:GridData span="L2 M2"/>
 											</layoutData>
 										</Label>
-										<Input id="sName" value="{ path: 'SignerName', 
+										<Input id="sName" value="{ path: 'draft>/Releaser/Name', 
 										                           type: 'sap.ui.model.type.String' }" 
 										    liveChange="onInputChange"
 										    maxLength="80"
@@ -82,12 +82,12 @@
 												<layout:GridData span="L8 M8"/>
 											</layoutData>
 										</Input>
-										<Label text="{i18n&gt;lbl.Signature}" labelFor="signature-pad">
+										<Label text="{i18n>lbl.Signature}" labelFor="signature-pad">
 											<layoutData>
 												<layout:GridData span="L2 M2" linebreak="true"/>
 											</layoutData>
 										</Label>
-										<pad:SignaturePad id="signature-pad" value="{SignatureReleaser}" onEndEvent="onSignChange" width="800px" height="200px"/>
+										<pad:SignaturePad id="signature-pad" value="{draft>/Releaser/Url}" onEndEvent="onSignChange" width="800px" height="200px"/>
 										<Button icon="sap-icon://undo" text="{i18n&gt;Clear}" press="onClearButton" type="Transparent" id="btnClear">
 											<layoutData>
 												<layout:GridData span="L2 M2"/>
@@ -106,7 +106,7 @@
 												<layout:GridData span="L2 M2"/>
 											</layoutData>
 										</Label>
-										<Input id="sRecvName" value="{ path: 'ReceiverName', type: 'sap.ui.model.type.String' }" 
+										<Input id="sRecvName" value="{ path: 'draft>/Receiver/Name', type: 'sap.ui.model.type.String' }" 
 											maxLength="80"
 											type="Text"
 											liveChange="onInputChange"
@@ -120,7 +120,7 @@
 												<layout:GridData span="L2 M2" linebreak="true"/>
 											</layoutData>
 										</Label>
-										<pad:SignaturePad id="signature-pad2" value="{SignatureReceiver}" onEndEvent="onSignChange" width="800px" height="200px"/>
+										<pad:SignaturePad id="signature-pad2" value="{draft>/Receiver/Url}" onEndEvent="onSignChange" width="800px" height="200px"/>
 										<Button icon="sap-icon://undo" text="{i18n&gt;Clear}" press="onClearButton" type="Transparent" id="btnClear2">
 											<layoutData>
 												<layout:GridData span="L2 M2"/>

@@ -104,13 +104,12 @@ sap.ui.define([
 				oCroppedCanvas.height = h;
 				croppedCtx.putImageData(cut, 0, 0);
 
-				return oCroppedCanvas.toDataURL("image/svg+xml");
+				return oCroppedCanvas.toDataURL("image/png");
 			},
 
 			_raiseEndEvent: function (oEvent) {
-				var that = this.signaturePad;
 				var _url = "";
-				if (that) {
+				if (this.signaturePad) {
 					_url = this._cropSignatureCanvas(this.signCanvas);
 				}
 				this.fireEvent("onEndEvent", {
@@ -238,10 +237,10 @@ sap.ui.define([
 
 					this.signaturePad = new SignaturePad(this.signCanvas, oOptions);
 
-					var that = this; //make the control resizable and redraw when something changed
+					var that = this; // make the control resizable and redraw when something changed
 					sap.ui.core.ResizeHandler.register(that, that._resizeCanvas.bind(this));
 
-					//this.signaturePad.fromDataURL(sDataUrl, oOptions);
+					// this.signaturePad.fromDataURL(sDataUrl, oOptions);
 					this._resizeCanvas(this);
 				}
 			},

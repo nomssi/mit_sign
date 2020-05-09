@@ -30,7 +30,7 @@ sap.ui.define([
 
 		exit: function () {
 			this._oHelper.destroy();
-			this._oViewModel.destroy();
+			this._oDraft.destroy();
 		},
 
 		onInit: function () {
@@ -51,7 +51,7 @@ sap.ui.define([
 			this._oHelper = new Signature(oComponent, this._oView);
 
 			// View register Model for Draft handling
-			this._oViewModel = new JSONModel({
+			this._oDraftModel = new JSONModel({
 				Receiver: {
 					Name: "",
 					Url: ""
@@ -63,21 +63,21 @@ sap.ui.define([
 				Vbeln: ""
 					// Set binding 2 ways
 			});
-			this.setModel(this._oViewModel, "draft");
+			this.setModel(this._oDraftModel, "draft");
 
 			this._oSourceReleaser = {
 				step: this.byId("signReleaserStep"),
 				pad: this.byId("signature-pad"), // Lager
 				field: this.byId("sName"),
 				button: this.byId("btnClear"),
-				property: "/Releaser>Url"
+				property: "/Releaser/Url"
 			};
 			this._oSourceReceiver = {
 				step: this.byId("signReceiverStep"),
 				pad: this.byId("signature-pad2"), // Empfänger
 				field: this.byId("sRecvName"),
 				button: this.byId("btnClear2"),
-				property: "/Receiver>Url"
+				property: "/Receiver/Url"
 			};
 
 			// this._oSourceReleaser.field.bindValue({
@@ -164,7 +164,8 @@ sap.ui.define([
 			// First check Input field			
 			var oInput = oSource.field;
 			var oState = this._isValidInput(oInput);
-			var sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
+			// var sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
+			var sTarget = "draft>" + oInput.getBindingPath("value");
 
 			this.removeMessageFromTarget(sTarget);
 
@@ -172,7 +173,8 @@ sap.ui.define([
 				oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
 				oInput.setValueState("Error");
 			} else {
-				this._setDraftProperty(oSource.property, oSource.field.getValue());
+				// unnecessary is field is assigned to draft JSON model (two way binding):
+				// this._setDraftProperty(oSource.property, oSource.field.getValue()); 
 				// Then check SignPad
 				if (oSource.pad.isEmpty()) {
 					oState = {
@@ -190,7 +192,14 @@ sap.ui.define([
 		},
 
 		_validateSign: function (oSource, oEvent) {
-			this._setDraftProperty(oSource.property, oEvent.getParameter("value"));
+			var sPropery = oSource.property;
+			if (oSource.pad.isEmpty()) {
+
+			} else {
+				var vValue = oEvent.getParameter("value");
+				this._setDraftProperty(oSource.property, vValue);
+			}
+			
 			this._validateField(oSource);
 		},
 
@@ -211,10 +220,10 @@ sap.ui.define([
 
 			switch (oEvent.getSource()) {
 			case this._oSourceReleaser.field:
-				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser>Name");
+				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser/Name");
 				break;
 			case this._oSourceReceiver.field:
-				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver>Name");
+				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver/Name");
 				break;
 			default:
 				return;
@@ -228,10 +237,10 @@ sap.ui.define([
 
 			switch (oEvent.getSource()) {
 			case this._oSourceReleaser.button:
-				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser>Url");
+				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser/Url");
 				break;
 			case this._oSourceReceiver.button:
-				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver>Url");
+				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver/Url");
 				break;
 			default:
 				return;
@@ -249,10 +258,10 @@ sap.ui.define([
 
 			switch (oEvent.getSource()) {
 			case this._oSourceReleaser.pad:
-				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser>Url");
+				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser/Url");
 				break;
 			case this._oSourceReceiver.pad:
-				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver>Url");
+				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver/Url");
 				break;
 			default:
 				return;
@@ -297,7 +306,8 @@ sap.ui.define([
 			if (oSelectedItem) {
 				var sReleaserName = oSelectedItem.getTitle();
 				this._oSourceReleaser.field.setValue(sReleaserName);
-				this._setDraftProperty("/Releaser>Name", sReleaserName);
+				// unnecessary if field is assigned to draft JSON model (two way binding)
+				// this._setDraftProperty("/Releaser/Name", sReleaserName);
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		},
@@ -305,6 +315,21 @@ sap.ui.define([
 		onTriggerOutput: function () {
 			var oStep = this.byId("signReceiverStep");
 			this._wizard.validateStep(oStep);
+		},
+
+		_getDraftData: function (oControl) {
+			var oModel = oControl.getView().getModel("draft");
+			var oData = {
+				Vbeln: oModel.getProperty("/Vbeln"),
+				Issuer: oModel.getProperty("/Releaser/Name"),			// Klartext Name Lager
+				Receiver: oModel.getProperty("/Receiver/Name"),			// Klartext Name Abholer
+				SignatureIssuer: oModel.getProperty("/Releaser/Url"),	// Signatur Lager
+				SignatureReceiver: oModel.getProperty("/Receiver/Url")	// Signatur Abholer
+			};
+			if (typeof oData.Issuer !== "undefined" && typeof oData.Receiver !== "undefined" &&
+				typeof oData.SignatureIssuer !== "undefined" && typeof oData.SignatureReceiver !== "undefined") {
+				return oData;
+			};
 		},
 
 		onWizardCompleted: function (oEvent) {
@@ -355,11 +380,13 @@ sap.ui.define([
 			};
 
 			// Save draft: load BusyDialog fragment asynchronously
-			var that = this;
+			var oSignData = this._getDraftData(this);
+			
 			if (this._oBusyDialog) {
 				this._oBusyDialog.open();
-				that._oHelper.saveSignature(fnAfterSave.bind(that), fnSaveError.bind(that), that.getView().getModel("draft"));
+				this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), oSignData);
 			} else {
+				var that = this;
 				Fragment.load({
 					name: "Signature.view.BusyDialog",
 					controller: this
@@ -368,14 +395,14 @@ sap.ui.define([
 					this.getView().addDependent(this._oBusyDialog);
 					syncStyleClass("sapUiSizeCompact", this.getView(), this._oBusyDialog);
 					this._oBusyDialog.open();
-					that._oHelper.saveSignature(fnAfterSave.bind(that), fnSaveError.bind(that), that.getView().getModel("draft"));
+					that._oHelper.saveSignature(fnAfterSave.bind(that), fnSaveError.bind(that), oSignData);
 				}.bind(this));
 			};
 		},
 
 		onBusyDialogClosed: function (oEvent) {
 			if (oEvent.getParameter("cancelPressed")) {
-				MessageToast.show("Operation abgebrochen");
+				MessageToast.show("{i18n>save.cancelled}");
 			};
 		},
 
@@ -398,7 +425,7 @@ sap.ui.define([
 				// description: '{message>description}',
 				link: this._oLink
 			});
-
+			
 			if (!this.byId("errorMessagePopover")) {
 				var oMessagePopover = new MessagePopover(this.createId("errorMessagePopover"), {
 					items: {

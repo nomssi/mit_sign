@@ -1,11 +1,10 @@
 sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"./model/models",
-	"sap/ui/Device",
 	"./controller/ErrorHandler",
 	"./util/controls",
-	"sap/m/MessageBox",	
-], function (UIComponent, models, Device, ErrorHandler, controls, MessageBox) {
+	"sap/m/MessageBox"
+], function (UIComponent, models, ErrorHandler, controls, MessageBox) {
 	"use strict";
 
 	return UIComponent.extend("Signature.Component", {
