@@ -3,15 +3,13 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"../model/formatter",
 	"sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator",
-	"sap/ui/Device"
+	"sap/ui/model/FilterOperator"
 ], function (
 	BaseController,
 	JSONModel,
 	formatter,
 	Filter,
-	FilterOperator,
-	Device) {
+	FilterOperator) {
 	"use strict";
 
 	return BaseController.extend("Signature.controller.Home", {
@@ -27,10 +25,9 @@ sap.ui.define([
 			this._router.getRoute("sign").attachMatched(this._onRouteMatched, this);
 
 			// Create Trigger and register handler
-			var that = this; // save before calling setInterval
 			this._intervalID = setInterval(function () {
-				that._reloadData();
-			}, 10000);
+				this._reloadData();
+			}.bind(this), 10000);
 
 			this._initViewPropertiesModel();
 		},

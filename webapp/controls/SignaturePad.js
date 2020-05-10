@@ -1,10 +1,9 @@
 /* global SignaturePad:true */
 sap.ui.define([
 		"./signature_pad",
-		"sap/ui/core/Control",
-		"sap/base/Log"
+		"sap/ui/core/Control"
 	],
-	function (Pad, Control, Log) {
+	function (Pad, Control) {
 		"use strict";
 
 		return Control.extend("Signature.controls.SignaturePad", {
@@ -110,8 +109,8 @@ sap.ui.define([
 			_raiseEndEvent: function (oEvent) {
 				var _url = "";
 				if (this.signaturePad) {
-					_url = this._cropSignatureCanvas(this.signCanvas);
-				}
+					// _url = this._cropSignatureCanvas(this.signCanvas);
+				};
 				this.fireEvent("onEndEvent", {
 					value: _url
 				});
@@ -206,11 +205,10 @@ sap.ui.define([
 			// Adjust canvas coordinate space taking into account pixel ratio,
 			// to make it look crisp on mobile devices.
 			// This also causes canvas to be cleared.
-			_resizeCanvas: function (oControl) {
-				var that = this;
-				if (that.signaturePad) {
+			_resizeCanvas: function () {
+				if (this.signaturePad) {
 					var ratio = Math.max(window.devicePixelRatio || 1, 1);
-					var oCanvas = that.signCanvas;
+					var oCanvas = this.signCanvas;
 
 					oCanvas.width = oCanvas.offsetWidth * ratio;
 					oCanvas.height = oCanvas.offsetHeight * ratio;
@@ -222,42 +220,40 @@ sap.ui.define([
 					// that the state of this library is consistent with visual state of the canvas, you
 					// have to clear it manually.
 
-					that.signaturePad.clear(); // otherwise isEmpty() might return incorrect value	
+					this.signaturePad.clear(); // otherwise isEmpty() might return incorrect value	
 				}
 			},
 
-			_activate: function (oControl, oCanvas) {
-				var that = oControl;
-				
+			_activate: function (oCanvas, that) {
+
 				if (oCanvas !== that.signCanvas) {
 					that.signCanvas = oCanvas;
 					var oOptions = {
 						// It's Necessary to use an opaque color when saving image as JPEG;
 						// this option can be omitted if only saving as PNG or SVG
-						//backgroundColor: "rgb(255, 255, 255)",
+						// backgroundColor: "rgb(255, 255, 255)",
 						// onBegin: ??,
 						onEnd: that._raiseEndEvent.bind(that)
 					};
 
 					that.signaturePad = new SignaturePad(that.signCanvas, oOptions);
 
+					// make the control resizable and redraw when something changed
+					sap.ui.core.ResizeHandler.register(that, that._resizeCanvas.bind(that));
+
+					that._resizeCanvas(that);
 				};
-				// make the control resizable and redraw when something changed
-				sap.ui.core.ResizeHandler.register(that, that._resizeCanvas.bind(this));
 			},
 
 			onAfterRendering: function () {
-            	var that = this;
-            	
+
 				if (sap.ui.core.Control.prototype.onAfterRendering) {
 					sap.ui.core.Control.prototype.onAfterRendering.apply(this, arguments); // super class
 
-					var oCanvas = document.querySelector("canvas[id=" + that.getId() + "]");
+					var oCanvas = document.querySelector("canvas[id=" + this.getId() + "]");
 
-					this._activate(that, oCanvas);
-					
-					// this.signaturePad.fromDataURL(sDataUrl, oOptions);
-					this._resizeCanvas(this);					
+					this._activate(oCanvas, this);
+
 				}
 			},
 

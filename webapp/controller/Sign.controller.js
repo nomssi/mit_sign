@@ -4,9 +4,7 @@ sap.ui.define([
 	"../model/formatter",
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
-	"../util/messages",
 	"sap/m/MessageToast",
-	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/syncStyleClass"
 ], function (
 	BaseController,
@@ -14,9 +12,7 @@ sap.ui.define([
 	formatter,
 	Fragment,
 	Filter,
-	Messsages,
 	MessageToast,
-	JSONModel,
 	syncStyleClass) {
 	"use strict";
 
@@ -86,7 +82,7 @@ sap.ui.define([
 		},
 
 		removeMessageFromTarget: function (sTarget) {
-			// clear potential server-side messages to allow saving the item again			
+			// clear potential server-side messages to allow saving the item again
 			this._oMessageManager.getMessageModel().getData().forEach(function (oMessage) {
 				if (oMessage.target === sTarget) {
 					this._oMessageManager.removeMessages(oMessage);
@@ -118,7 +114,8 @@ sap.ui.define([
 		_isValidInput: function (oInput) {
 			var oState = {
 				valid: false,
-				errorId: ""
+				errorId: "",
+				state: "Error"
 			};
 			var sCurrentValue = oInput.getValue();
 
@@ -127,6 +124,7 @@ sap.ui.define([
 
 				if (isValidEntry) {
 					oState.valid = true;
+					oState.state = "None";
 				} else {
 					oState.errorId = "invalid.Chars";
 				}
@@ -147,7 +145,7 @@ sap.ui.define([
 
 			if (oState.valid === false) {
 				oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
-				oInput.setValueState("Error");
+				oState.state = "Warning";
 			} else {
 				// unnecessary is field is assigned to draft JSON model (two way binding):
 				// this.setDraftProperty(oSource.property, oSource.field.getValue()); 
@@ -155,15 +153,16 @@ sap.ui.define([
 				if (oSource.pad.isEmpty()) {
 					oState = {
 						valid: false,
-						errorId: "missing.signature"
+						errorId: "missing.signature",
+						state: "Warning"
 					};
-					oInput.setValueState("Warning");
 					oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
 				} else {
-					oInput.setValueState("None");
+					oState.state = "None";
 				};
 			};
 
+			oInput.setValueState(oState.state);
 			oSource.step.setValidated(oState.valid);
 		},
 
@@ -173,13 +172,9 @@ sap.ui.define([
 		},
 
 		_cloneSource: function (oOriginalSource, sProperty) {
-			return {
-				step: oOriginalSource.step,
-				pad: oOriginalSource.pad,
-				field: oOriginalSource.field,
-				button: oOriginalSource.button,
-				property: sProperty
-			};
+			var oSource = Object.create(oOriginalSource); // clone step, pad, field, button, property
+			oSource.property = sProperty;
+			return oSource;
 		},
 
 		onInputChange: function (oEvent) {
@@ -289,11 +284,14 @@ sap.ui.define([
 			var oModel = oControl.getView().getModel("draft");
 			var oData = {
 				Vbeln: oModel.getProperty("/Vbeln"),
-				Issuer: oModel.getProperty("/Releaser/Name"),			// Klartext Name Lager
-				Receiver: oModel.getProperty("/Receiver/Name"),			// Klartext Name Abholer
-				SignatureIssuer: oModel.getProperty("/Releaser/Url"),	// Signatur Lager
-				SignatureReceiver: oModel.getProperty("/Receiver/Url")	// Signatur Abholer
+				Issuer: oModel.getProperty("/Releaser/Name"), // Klartext Name Lager
+				Receiver: oModel.getProperty("/Receiver/Name"), // Klartext Name Abholer
+				SignatureIssuer: oModel.getProperty("/Releaser/Url"), // Signatur Lager
+				SignatureReceiver: oModel.getProperty("/Receiver/Url") // Signatur Abholer
 			};
+			oData.signatureIssuer = this._oSourceReleaser.pad.signaturePad.toDataURL();
+			oData.signatureReceiver = this._oSourceReceiver.pad.signaturePad.toDataURL();
+
 			if (typeof oData.Issuer !== "undefined" && typeof oData.Receiver !== "undefined" &&
 				typeof oData.SignatureIssuer !== "undefined" && typeof oData.SignatureReceiver !== "undefined") {
 				return oData;
@@ -349,12 +347,11 @@ sap.ui.define([
 
 			// Save draft: load BusyDialog fragment asynchronously
 			var oSignData = this._getDraftData(this);
-			
+
 			if (this._oBusyDialog) {
 				this._oBusyDialog.open();
 				this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), oSignData);
 			} else {
-				var that = this;
 				Fragment.load({
 					name: "Signature.view.BusyDialog",
 					controller: this
@@ -363,7 +360,7 @@ sap.ui.define([
 					this.getView().addDependent(this._oBusyDialog);
 					syncStyleClass("sapUiSizeCompact", this.getView(), this._oBusyDialog);
 					this._oBusyDialog.open();
-					that._oHelper.saveSignature(fnAfterSave.bind(that), fnSaveError.bind(that), oSignData);
+					this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), oSignData);
 				}.bind(this));
 			};
 		},
