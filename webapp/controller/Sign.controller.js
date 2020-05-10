@@ -286,11 +286,11 @@ sap.ui.define([
 				Vbeln: oModel.getProperty("/Vbeln"),
 				Issuer: oModel.getProperty("/Releaser/Name"), // Klartext Name Lager
 				Receiver: oModel.getProperty("/Receiver/Name"), // Klartext Name Abholer
-				SignatureIssuer: oModel.getProperty("/Releaser/Url"), // Signatur Lager
-				SignatureReceiver: oModel.getProperty("/Receiver/Url") // Signatur Abholer
+				SignatureIssuer: this._oSourceReleaser.pad.signaturePad.toDataURL(), // Signatur Lager
+				SignatureReceiver: this._oSourceReceiver.pad.signaturePad.toDataURL() // Signatur Abholer
 			};
-			oData.signatureIssuer = this._oSourceReleaser.pad.signaturePad.toDataURL();
-			oData.signatureReceiver = this._oSourceReceiver.pad.signaturePad.toDataURL();
+			oModel.setProperty("/Releaser/Url", oData.SignatureIssuer);
+			oModel.setProperty("/Receiver/Url", oData.SignatureReceiver);
 
 			if (typeof oData.Issuer !== "undefined" && typeof oData.Receiver !== "undefined" &&
 				typeof oData.SignatureIssuer !== "undefined" && typeof oData.SignatureReceiver !== "undefined") {
