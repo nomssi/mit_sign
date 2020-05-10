@@ -242,11 +242,8 @@ sap.ui.define([
 					that.signaturePad = new SignaturePad(that.signCanvas, oOptions);
 
 				};
-					// make the control resizable and redraw when something changed
-					sap.ui.core.ResizeHandler.register(that, that._resizeCanvas.bind(that));
-
-					// this.signaturePad.fromDataURL(sDataUrl, oOptions);
-					that._resizeCanvas(that);					
+				// make the control resizable and redraw when something changed
+				sap.ui.core.ResizeHandler.register(that, that._resizeCanvas.bind(this));
 			},
 
 			onAfterRendering: function () {
@@ -257,7 +254,10 @@ sap.ui.define([
 
 					var oCanvas = document.querySelector("canvas[id=" + that.getId() + "]");
 
-					that._activate(that, oCanvas);
+					this._activate(that, oCanvas);
+					
+					// this.signaturePad.fromDataURL(sDataUrl, oOptions);
+					this._resizeCanvas(this);					
 				}
 			},
 
