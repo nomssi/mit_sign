@@ -284,10 +284,10 @@ sap.ui.define([
 			var oModel = oControl.getView().getModel("draft");
 			var oData = {
 				Vbeln: oModel.getProperty("/Vbeln"),
-				Issuer: oModel.getProperty("/Releaser/Name"), // Klartext Name Lager
-				Receiver: oModel.getProperty("/Receiver/Name"), // Klartext Name Abholer
-				SignatureIssuer: this._oSourceReleaser.pad.signaturePad.toDataURL(), // Signatur Lager
-				SignatureReceiver: this._oSourceReceiver.pad.signaturePad.toDataURL() // Signatur Abholer
+				Issuer: oModel.getProperty("/Releaser/Name"),			// Klartext Name Lager
+				Receiver: oModel.getProperty("/Receiver/Name"),			// Klartext Name Abholer
+				SignatureIssuer: this._oSourceReleaser.pad.export(),	// Signatur Lager
+				SignatureReceiver: this._oSourceReceiver.pad.export()	// Signatur Abholer
 			};
 			oModel.setProperty("/Releaser/Url", oData.SignatureIssuer);
 			oModel.setProperty("/Receiver/Url", oData.SignatureReceiver);

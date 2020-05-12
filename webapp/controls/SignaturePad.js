@@ -106,16 +106,6 @@ sap.ui.define([
 				return oCroppedCanvas.toDataURL("image/svg+xml");
 			},
 
-			_raiseEndEvent: function (oEvent) {
-				var _url = "";
-				if (this.signaturePad) {
-					// _url = this._cropSignatureCanvas(this.signCanvas);
-				};
-				this.fireEvent("onEndEvent", {
-					value: _url
-				});
-			},
-
 			clear: function () {
 				if (this.signaturePad) {
 					this.signaturePad.clear();
@@ -159,7 +149,8 @@ sap.ui.define([
 			export: function () {
 				var _url;
 				if (this.signaturePad) {
-					_url = this._cropSignatureCanvas(this.signCanvas);
+					//_url = this._cropSignatureCanvas(this.signCanvas);
+					_url = this.signaturePad.toDataURL();
 				}
 				return _url;
 			},
@@ -207,9 +198,17 @@ sap.ui.define([
 			// This also causes canvas to be cleared.
 			_resizeCanvas: function () {
 				if (this.signaturePad) {
-					var ratio = Math.max(window.devicePixelRatio || 1, 1);
 					var oCanvas = this.signCanvas;
+					var ratio = Math.max(window.devicePixelRatio || 1, 1);
 
+					/* set the size of the canvas
+					var scale = ratio;
+					oCanvas.width = oCanvas.width * scale;
+					oCanvas.height = oCanvas.height * scale;
+					oCanvas.getContext("2d").scale(scale, scale);
+					*/
+
+					// readjust the canvas's size to the device aspect ratio.
 					oCanvas.width = oCanvas.offsetWidth * ratio;
 					oCanvas.height = oCanvas.offsetHeight * ratio;
 					oCanvas.getContext("2d").scale(ratio, ratio);
@@ -233,7 +232,16 @@ sap.ui.define([
 						// this option can be omitted if only saving as PNG or SVG
 						// backgroundColor: "rgb(255, 255, 255)",
 						// onBegin: ??,
-						onEnd: that._raiseEndEvent.bind(that)
+						onEnd: function (oEvent) {
+							var _url = "";
+							if (this.signaturePad) {
+								// _url = this.export( );
+							};
+
+							this.fireEvent("onEndEvent", {
+							 	value: _url
+							});
+						}.bind(that)
 					};
 
 					that.signaturePad = new SignaturePad(that.signCanvas, oOptions);
