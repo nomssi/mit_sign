@@ -64,20 +64,19 @@
 												<layout:GridData span="L2 M2"/>
 											</layoutData>
 										</Label>
-										<Input id="sName" value="{ path: 'draft>/Releaser/Name', 
-										                           type: 'sap.ui.model.type.String' }" 
-										    liveChange="onInputChange"
-										    maxLength="80"
-										    type="Text"
-										    valueLiveUpdate="true"
-										    showValueHelp="true"
-										    showSuggestion="true"
-	 										placeholder="{i18n>placeholder.Signer}"
-	 										suggestionItems="{/Users}"
-	 								        valueHelpRequest="onSignerNameValueHelp">
+										<Input id="sName" required="true"
+											value="{ path: 'draft>/Releaser/Name', 
+													type: 'sap.ui.model.type.String', 
+													constraints: { maxLength: '80' } 
+											}"
+											liveChange="onInputChange" type="Text" valueLiveUpdate="true" 
+											showValueHelp="true" showSuggestion="true"
+											placeholder="{i18n>placeholder.Signer}" 
+											suggestionItems="{/Users}" 
+											valueHelpRequest="onSignerNameValueHelp">
 											<suggestionItems>
-												<core:Item text="{Name}" />
-											</suggestionItems>												
+												<core:Item text="{Name}"/>
+											</suggestionItems>
 											<layoutData>
 												<layout:GridData span="L8 M8"/>
 											</layoutData>
@@ -106,14 +105,14 @@
 												<layout:GridData span="L2 M2"/>
 											</layoutData>
 										</Label>
-										<Input id="sRecvName" value="{ path: 'draft>/Receiver/Name', type: 'sap.ui.model.type.String' }" 
-											maxLength="80"
-											type="Text"
-											liveChange="onInputChange"
-											placeholder="{i18n>placeholder.Receiver}">
+										<Input id="sRecvName"
+											value="{ path: 'draft>/Receiver/Name', 
+													type: 'sap.ui.model.type.String', 
+													constraints: { maxLength: '80' } }"
+											type="Text" liveChange="onInputChange" placeholder="{i18n>placeholder.Receiver}">
 											<layoutData>
 												<layout:GridData span="L8 M8"/>
-											</layoutData>											
+											</layoutData>
 										</Input>
 										<Label text="{i18n&gt;lbl.Signature2}" labelFor="signature-pad2">
 											<layoutData>

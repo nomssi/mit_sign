@@ -81,6 +81,6 @@ sap.ui.define([
 					processor: that._oProcessor
 				})
 			);
-		}		
+		}
 	};
 });

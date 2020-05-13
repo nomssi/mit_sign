@@ -2,6 +2,7 @@ sap.ui.define([
 	"./BaseController",
 	"../model/Signature",
 	"../model/formatter",
+	"../util/messages",	
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
 	"sap/m/MessageToast",
@@ -10,6 +11,7 @@ sap.ui.define([
 	BaseController,
 	Signature,
 	formatter,
+	Messages,
 	Fragment,
 	Filter,
 	MessageToast,
@@ -90,24 +92,12 @@ sap.ui.define([
 			}.bind(this));
 		},
 
-		_popoverMessage: function (sMessage, sText, sType, sTarget) {
-			this._oMessageManager.addMessages(
-				new sap.ui.core.message.Message({
-					message: sMessage,
-					type: sType,
-					additionalText: sText,
-					target: sTarget,
-					processor: this._oMessageProcessor
-				})
-			);
-		},
-
 		_popoverInvalidField: function (oInput, sText, sTarget) {
 			var sMessage = this._oResourceBundle.getText(sText);
-			this._popoverMessage(sMessage,
+			Messages.popoverMessage(sMessage,
 				oInput.getLabels()[0].getText(),
 				sap.ui.core.MessageType.Error,
-				sTarget);
+				sTarget, this);
 			return sMessage;
 		},
 
@@ -299,18 +289,18 @@ sap.ui.define([
 		},
 
 		onWizardCompleted: function (oEvent) {
-
+			
 			var fnSaveError = function (oError) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
-				this._popoverMessage(this.sVbeln,
+				Messages.popoverMessage(this.sVbeln,
 					this._oResourceBundle.getText("step.save"),
 					sap.ui.core.MessageType.Information,
-					this._oLink);
+					this._oLink, this);
 
-				this._popoverMessage(this.sVbeln,
+				Messages.popoverMessage(this.sVbeln,
 					JSON.stringify(oError),
 					sap.ui.core.MessageType.Error,
-					this._oLink);
+					this._oLink, this);
 
 				this._oBusyDialog.close();
 
@@ -322,20 +312,20 @@ sap.ui.define([
 			var fnAfterSave = function (oData, oResponse) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
 
-				this._popoverMessage(this.sVbeln,
+				Messages.popoverMessage(this.sVbeln,
 					this._oResourceBundle.getText("step.save"),
 					sap.ui.core.MessageType.Information,
-					this._oLink);
+					this._oLink, this);
 
-				this._popoverMessage(this.sVbeln,
+				Messages.popoverMessage(this.sVbeln,
 					this._oResourceBundle.getText("pdf.Created") + " Datei {PDFUrl}",
 					sap.ui.core.MessageType.Success,
-					this._oLink);
+					this._oLink, this);
 
-				this._popoverMessage(this.sVbeln,
+				Messages.popoverMessage(this.sVbeln,
 					"EMail an {ReceiverName} per Mail mit Id {FloeId} versandt",
 					sap.ui.core.MessageType.Information,
-					this._oLink);
+					this._oLink, this);
 
 				// this._wizard.setCurrentStep(this.byId("contentStep"));
 				this._oBusyDialog.close();

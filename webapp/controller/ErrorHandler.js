@@ -69,10 +69,6 @@ sap.ui.define([
 			);
 		},
 
-		_popoverMessage: function (sMessage, sText, sType, sTarget) {
-			Messages.popoverMessage(sMessage, sText, sType, sTarget, this);
-		},
-
 		/**
 		 * Shows a {@link sap.m.MessageBox} when a service call has failed.
 		 * Only the first error message will be display.
@@ -101,10 +97,11 @@ sap.ui.define([
 
 			// var aDetails = JSON.parse(sDetails.responseText);
 			// MessageToast.show(this._sErrorText + " " + aDetails.error.message.value);
-			this._popoverMessage("Error", // this.sVbeln,  // TEST
+			Messages.popoverMessage("Error", // this.sVbeln,  // TEST
 				this._sErrorText + " " + sDetails.responseText,
 				sap.ui.core.MessageType.Error,
-				this._oLink);
+				this._oLink,
+				this);
 
 			// done with the special service and custom handler,  fall back on the default ErrorHandler
 			this._bMessageOpen = false;
