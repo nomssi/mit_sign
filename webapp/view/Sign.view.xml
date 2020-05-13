@@ -108,7 +108,7 @@
 										<Input id="sRecvName"
 											value="{ path: 'draft>/Receiver/Name', 
 													type: 'sap.ui.model.type.String', 
-													constraints: { maxLength: '80' } }"
+													constraints: { maxLength: '80', search: '^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\\- ]+$' } }"
 											type="Text" liveChange="onInputChange" placeholder="{i18n>placeholder.Receiver}">
 											<layoutData>
 												<layout:GridData span="L8 M8"/>
