@@ -2,7 +2,7 @@ sap.ui.define([
 	"./BaseController",
 	"../model/Signature",
 	"../model/formatter",
-	"../util/messages",	
+	"../util/messages",
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
 	"sap/m/MessageToast",
@@ -24,14 +24,11 @@ sap.ui.define([
 
 		exit: function () {
 			this._oHelper.destroy();
-			this._oDraft.destroy();
 		},
 
 		onInit: function () {
 
 			this._wizard = this.byId("signWizard");
-			this._oNavContainer = this.byId("wizardNavContainer");
-			this._oWizardContentPage = this.byId("wizardContentPage");
 
 			this.initMessageManager(this);
 
@@ -59,10 +56,6 @@ sap.ui.define([
 				property: "/Receiver/Url"
 			};
 
-			// this._oSourceReleaser.field.bindValue({
-			// 	path: "{SignerName}",
-			// 	mode: sap.ui.model.BindingMode.OneWay
-			// });
 		},
 
 		_routePatternMatched: function (oEvent) {
@@ -71,6 +64,8 @@ sap.ui.define([
 			this.bindVbelnTo(this.getModel(), sVbeln, this);
 
 			this._oMessageManager.removeAllMessages(); // reset potential server-side messages
+
+			this._wizard.setCurrentStep(this.byId("contentStep"));
 		},
 
 		/**
@@ -79,8 +74,6 @@ sap.ui.define([
 		 */
 		onBack: function () {
 			this.getRouter().navTo("home");
-
-			this._wizard.setCurrentStep(this.byId("contentStep"));
 		},
 
 		removeMessageFromTarget: function (sTarget) {
@@ -101,16 +94,15 @@ sap.ui.define([
 			return sMessage;
 		},
 
-		_isValidInput: function (oInput) {
+		_isValidInput: function (sCurrentValue) {
 			var oState = {
 				valid: false,
 				errorId: "",
 				state: "Error"
 			};
-			var sCurrentValue = oInput.getValue();
 
 			if (sCurrentValue) {
-				var isValidEntry = (/^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\- ]+$/).test(oInput.getValue()); // RegEx: Letters, no number, Umlaut, space, .
+				var isValidEntry = (/^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\- ]+$/).test(sCurrentValue); // RegEx: Letters, no number, Umlaut, space, .
 
 				if (isValidEntry) {
 					oState.valid = true;
@@ -124,23 +116,18 @@ sap.ui.define([
 			return oState;
 		},
 
-		_validateField: function (oSource) {
-			// First check Input field			
-			var oInput = oSource.field;
-			var oState = this._isValidInput(oInput);
-			// var sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
-			var sTarget = "draft>" + oInput.getBindingPath("value");
+		_validateSign: function (oSource) {
+			var oInput = oSource.field; // First check Input field	
+			var sPath = "draft>"; // oInput.getBindingContext().getPath() + "/";
+			var sTarget = sPath + oInput.getBindingPath("value");
 
 			this.removeMessageFromTarget(sTarget);
 
+			var oState = this._isValidInput(oInput.getValue());
 			if (oState.valid === false) {
 				oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
-				oState.state = "Warning";
 			} else {
-				// unnecessary is field is assigned to draft JSON model (two way binding):
-				// this.setDraftProperty(oSource.property, oSource.field.getValue()); 
-				// Then check SignPad
-				if (oSource.pad.isEmpty()) {
+				if (oSource.pad.isEmpty()) { // Then check SignPad
 					oState = {
 						valid: false,
 						errorId: "missing.signature",
@@ -156,34 +143,10 @@ sap.ui.define([
 			oSource.step.setValidated(oState.valid);
 		},
 
-		_validateSign: function (oSource, oEvent) {
-			this.setDraftProperty(oSource.property, oEvent.getParameter("value"));
-			this._validateField(oSource);
-		},
-
 		_cloneSource: function (oOriginalSource, sProperty) {
 			var oSource = Object.create(oOriginalSource); // clone step, pad, field, button, property
 			oSource.property = sProperty;
 			return oSource;
-		},
-
-		onInputChange: function (oEvent) {
-			// Whenever the clear text name is changed in the input field, update the draft model and validate
-			// onInputChange is the change event defined in the XML view.
-			var oSource; // undefined
-
-			switch (oEvent.getSource()) {
-			case this._oSourceReleaser.field:
-				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser/Name");
-				break;
-			case this._oSourceReceiver.field:
-				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver/Name");
-				break;
-			default:
-				return;
-			};
-
-			this._validateField(oSource);
 		},
 
 		onClearButton: function (oEvent) {
@@ -202,14 +165,22 @@ sap.ui.define([
 
 			oSource.pad.clear();
 
-			this._validateSign(oSource, oEvent);
+			this._validateSign(oSource);
 			this._wizard.setCurrentStep(oSource.step);
 		},
 
 		onSignChange: function (oEvent) {
+			// Whenever the clear text name is changed in the input field, update the draft model and validate
+			// onSignChange is the change event defined in the XML view.
 			var oSource; // undefined
 
 			switch (oEvent.getSource()) {
+			case this._oSourceReleaser.field:
+				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser/Name");
+				break;
+			case this._oSourceReceiver.field:
+				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver/Name");
+				break;
 			case this._oSourceReleaser.pad:
 				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser/Url");
 				break;
@@ -220,7 +191,7 @@ sap.ui.define([
 				return;
 			};
 
-			this._validateSign(oSource, oEvent);
+			this._validateSign(oSource);
 		},
 
 		onSignerNameValueHelp: function (oEvent) {
@@ -257,30 +228,20 @@ sap.ui.define([
 		_handleValueHelpClose: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem");
 			if (oSelectedItem) {
-				var sReleaserName = oSelectedItem.getTitle();
-				this._oSourceReleaser.field.setValue(sReleaserName);
-				// unnecessary if field is assigned to draft JSON model (two way binding)
-				// this.setDraftProperty("/Releaser/Name", sReleaserName);
+				this._oSourceReleaser.field.setValue(oSelectedItem.getTitle()); // also sets JSON draft model property "/Releaser/Name" (two way binding)
+				this._validateSign(this._oSourceReleaser);
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		},
 
-		onTriggerOutput: function () {
-			var oStep = this.byId("signReceiverStep");
-			this._wizard.validateStep(oStep);
-		},
-
-		_getDraftData: function (oControl) {
-			var oModel = oControl.getView().getModel("draft");
+		_getDraftData: function (oModel) {
 			var oData = {
 				Vbeln: oModel.getProperty("/Vbeln"),
-				Issuer: oModel.getProperty("/Releaser/Name"),			// Klartext Name Lager
-				Receiver: oModel.getProperty("/Receiver/Name"),			// Klartext Name Abholer
-				SignatureIssuer: this._oSourceReleaser.pad.export(),	// Signatur Lager
-				SignatureReceiver: this._oSourceReceiver.pad.export()	// Signatur Abholer
+				Issuer: oModel.getProperty("/Releaser/Name"), // Klartext Name Lager
+				Receiver: oModel.getProperty("/Receiver/Name"), // Klartext Name Abholer
+				SignatureIssuer: oModel.getProperty("/Releaser/Url"), // Signatur Lager
+				SignatureReceiver: oModel.getProperty("/Receiver/Url") // Signatur Abholer
 			};
-			oModel.setProperty("/Releaser/Url", oData.SignatureIssuer);
-			oModel.setProperty("/Receiver/Url", oData.SignatureReceiver);
 
 			if (typeof oData.Issuer !== "undefined" && typeof oData.Receiver !== "undefined" &&
 				typeof oData.SignatureIssuer !== "undefined" && typeof oData.SignatureReceiver !== "undefined") {
@@ -289,7 +250,7 @@ sap.ui.define([
 		},
 
 		onWizardCompleted: function (oEvent) {
-			
+
 			var fnSaveError = function (oError) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
 				Messages.popoverMessage(this.sVbeln,
@@ -327,7 +288,6 @@ sap.ui.define([
 					sap.ui.core.MessageType.Information,
 					this._oLink, this);
 
-				// this._wizard.setCurrentStep(this.byId("contentStep"));
 				this._oBusyDialog.close();
 
 				this.getRouter().navTo("complete", {
@@ -335,9 +295,14 @@ sap.ui.define([
 				});
 			};
 
-			// Save draft: load BusyDialog fragment asynchronously
-			var oSignData = this._getDraftData(this);
+			var oModel = this.getModel("draft");
+			// maintain signatures in the draft model now
+			oModel.setProperty("/Releaser/Url", this._oSourceReleaser.pad.export()); // Signatur Lager
+			oModel.setProperty("/Receiver/Url", this._oSourceReceiver.pad.export()); // Signatur Abholer
+			// extract draft model data
+			var oSignData = this._getDraftData(oModel);
 
+			// save draft to oData model
 			if (this._oBusyDialog) {
 				this._oBusyDialog.open();
 				this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), oSignData);

@@ -6,8 +6,6 @@ sap.ui.define([
 	return BaseController.extend("Signature.controller.Complete", {
 
 		onInit: function () {
-			// base component's init function
-			// BaseController.prototype.init.apply(this, arguments);
 
 			this.getRouter().getRoute("complete").attachPatternMatched(this._routePatternMatched, this);
 

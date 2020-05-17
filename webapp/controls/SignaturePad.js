@@ -78,8 +78,8 @@ sap.ui.define([
 					imageData = croppedCtx.getImageData(0, 0, oCroppedCanvas.width, oCroppedCanvas.height),
 					x, y, index;
 
-				for (y = 0; y < h; y++) {
-					for (x = 0; x < w; x++) {
+				for (y = 0; y < h; y += 1) {
+					for (x = 0; x < w; x += 1) {
 						index = (y * w + x) * 4;
 						if (imageData.data[index + 3] > 0) {
 							pix.x.push(x);
@@ -130,27 +130,11 @@ sap.ui.define([
 				return bState;
 			},
 
-			undo: function () {
-				if (this.signaturePad) {
-					// Undo
-					var data = this.signaturePad.toData();
-					if (data) {
-						data.pop(); // remove the last dot or line
-						this.signaturePad.fromData(data);
-					}
-					if (this.signaturePad.isEmpty()) {
-						this.fireEvent("onEndEvent", {
-							value: ""
-						});
-					}
-				}
-			},
-
 			export: function () {
 				var _url;
 				if (this.signaturePad) {
-					//_url = this._cropSignatureCanvas(this.signCanvas);
-					_url = this.signaturePad.toDataURL();
+					// _url = this._cropSignatureCanvas(this.signCanvas);  Problem with Size/Offset or Scale
+					_url = this.signCanvas.toDataURL("image/svg+xml");
 				}
 				return _url;
 			},
@@ -174,13 +158,13 @@ sap.ui.define([
 						.style("width", oSignPad.getWidth())
 						.style("height", oSignPad.getHeight())
 						.openEnd();
-
+					
 					oRm.openStart("canvas", oSignPad)
-						//	   .writeControlData(oSignPad) // e.g id='signature-pad'
-						.class("m-signature-pad");
-
-					oRm.style("width", oSignPad.getWidth())
+						.style("width", oSignPad.getWidth())
 						.style("height", oSignPad.getHeight())
+						//	   .writeControlData(oSignPad) // e.g id='signature-pad'
+						.class("m-signature-pad")
+
 						.style("background-color", oSignPad.getProperty("bgColor"))
 						// .style("border", oSignPad.getBorderSize() + " " + oSignPad.getBorderStyle() + " " + oSignPad.getBorderColor())
 						// .writeClasses()
@@ -232,14 +216,10 @@ sap.ui.define([
 						// this option can be omitted if only saving as PNG or SVG
 						// backgroundColor: "rgb(255, 255, 255)",
 						// onBegin: ??,
+						penColor:  that.getProperty("signcolor"),
 						onEnd: function (oEvent) {
-							var _url = "";
-							if (this.signaturePad) {
-								// _url = this.export( );
-							};
-
 							this.fireEvent("onEndEvent", {
-							 	value: _url
+								value: ""		// we only need the state (empty/not empty, not yet the sign data)
 							});
 						}.bind(that)
 					};

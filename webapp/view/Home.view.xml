@@ -10,6 +10,7 @@
 			    selectionChange=".onEventListSelect" 
 			    noDataText="{i18n>homeNoData}" 
 			    busyIndicatorDelay="0"
+			    sticky="HeaderToolbar"
 				items="{ path : '/Events', 
 				         sorter : { path : 'VBELN', 
 				                    descending : false },

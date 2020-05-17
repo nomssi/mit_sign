@@ -16,27 +16,22 @@ sap.ui.define([
 		formatter: formatter,
 
 		onExit: function () {
-			this._intervalID.clearInterval();	// stop the interval on exit; 
+			if (this._intervalID) {
+				clearInterval(this._intervalID);	// stop the interval on exit; 
+			};
 		},
 
 		onInit: function () {
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
-			this._router.getRoute("sign").attachMatched(this._onRouteMatched, this);
+			// this._router.getRoute("sign").attachMatched(this._onRouteMatched, this);
 
 			// Create Trigger and register handler
 			this._intervalID = setInterval(function () {
 				this._reloadData();
-			}.bind(this), 10000);
+			}.bind(this), 20000);
 
 			this._initViewPropertiesModel();
-		},
-
-		_onRouteMatched: function () {
-			var bSmallScreen = this.getModel("appView").getProperty("/smallScreenMode");
-			if (bSmallScreen) {
-				this._setLayout("One");
-			}
 		},
 
 		_reloadData: function () {

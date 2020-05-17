@@ -12,6 +12,17 @@ sap.ui.define([
 
 	return Controller.extend("Signature.controller.BaseController", {
 
+		initMessageManager: function (that) {
+			that._oView = that.getView();
+			that._oLink = Messages.createDefaultLink();
+
+			// create a message manager and register the message model
+			that._oMessageManager = sap.ui.getCore().getMessageManager();
+			that._oMessageManager.registerObject(that._oView, true);
+			that._oProcessor = that._oMessageManager.getMessageModel();
+			that._oView.setModel(that._oProcessor, "message");
+		},
+
 		/**
 		 * Convenience method for accessing the router.
 		 * @public
@@ -51,52 +62,27 @@ sap.ui.define([
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
 
-		/**
-		 * React to FlexibleColumnLayout resize events
-		 * Hides navigation buttons and switches the layout as needed
-		 * @param {sap.ui.base.Event} oEvent the change event
-		 */
-		onStateChange: function (oEvent) {
-			var sLayout = oEvent.getParameter("layout"),
-				iColumns = oEvent.getParameter("maxColumnsCount");
-
-			if (iColumns === 1) {
-				this.getModel("appView").setProperty("/smallScreenMode", true);
-			} else {
-				this.getModel("appView").setProperty("/smallScreenMode", false);
-				// swich back to two column mode when device orientation is changed
-				if (sLayout === "OneColumn") {
-					this._setLayout("Two");
-				}
-			}
-		},
-
-		/**
-		 * Sets the flexible column layout to one, two, or three columns for the different scenarios across the app
-		 * @param {string} sColumns the target amount of columns
-		 * @private
-		 */
-		_setLayout: function (sColumns) {
-			if (sColumns) {
-				this.getModel("appView").setProperty("/layout", sColumns + "Column" + (sColumns === "One" ? "" : "sMidExpanded"));
-			}
-		},
-
-		/**
-		 * Apparently, the middle page stays hidden on phone devices when it is navigated to a second time
-		 * @private
-		 */
-		_unhideMiddlePage: function () {
-			// TODO: bug in sap.f router, open ticket and remove this method afterwards
-			setTimeout(function () {
-				this.getOwnerComponent().getRootControl().byId("layout").getCurrentMidColumnPage().removeStyleClass("sapMNavItemHidden");
-			}.bind(this), 0);
+		initDraftModel: function () {
+			//  Model for Draft handling
+			var oData = {
+				Receiver: {
+					Name: "",
+					Url: ""
+				},
+				Releaser: {
+					Name: "",
+					Url: ""
+				},
+				Vbeln: ""
+			};
+			var oDraftModel = new JSONModel(oData); // binding is 2 ways
+			this.setModel(oDraftModel, "draft");
 		},
 
 		setDraftProperty: function (sProperty, vValue) {
 			this.getModel("draft").setProperty(sProperty, vValue);
 		},
-		
+
 		bindVbelnTo: function (oModel, sVbeln, target) {
 			// the binding should be done after insuring that the metadata is loaded successfully
 			var oView = target.getView();
@@ -104,7 +90,7 @@ sap.ui.define([
 
 			this.initDraftModel();
 			this.setDraftProperty("/Vbeln", sVbeln);
-			
+
 			oModel.metadataLoaded().then(function () {
 
 				var sPath = "/" + target.getModel().createKey("Events", {
@@ -133,34 +119,6 @@ sap.ui.define([
 			});
 		},
 
-		initDraftModel: function () {
-			//  Model for Draft handling
-			var oData = {
-				Receiver: {
-					Name: "",
-					Url: ""
-				},
-				Releaser: {
-					Name: "",
-					Url: ""
-				},
-				Vbeln: ""
-			};
-			this._oDraftModel = new JSONModel(oData);		// binding is 2 ways
-			this.setModel(this._oDraftModel, "draft");
-		},
-
-		initMessageManager: function (that) {
-			that._oView = that.getView();
-			that._oLink = Messages.createDefaultLink();
-
-			// create a message manager and register the message model
-			that._oMessageManager = sap.ui.getCore().getMessageManager();
-			that._oMessageManager.registerObject(that._oView, true);
-			that._oProcessor = that._oMessageManager.getMessageModel();
-			that._oView.setModel(that._oProcessor, "message");
-		},
-
 		/**
 		 * Only validation on client side, does not involve a back-end server.
 		 * @param {sap.ui.base.Event} oEvent Press event of the button to display the MessagePopover
@@ -180,7 +138,7 @@ sap.ui.define([
 				// description: '{message>description}',
 				link: this._oLink
 			});
-			
+
 			if (!this.byId("errorMessagePopover")) {
 				var oMessagePopover = new MessagePopover(this.createId("errorMessagePopover"), {
 					items: {
@@ -201,12 +159,11 @@ sap.ui.define([
 		_addDependent: function (oMessagePopover) {
 			this.getView().addDependent(oMessagePopover);
 		},
-		
+
 		/**
 		 * Navigates back in browser history or to the home screen
 		 */
 		onBack: function () {
-			this._unhideMiddlePage();
 			var oHistory = History.getInstance();
 			var oPrevHash = oHistory.getPreviousHash();
 			if (typeof oPrevHash === "undefined") {

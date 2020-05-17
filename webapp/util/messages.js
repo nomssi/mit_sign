@@ -37,11 +37,12 @@ sap.ui.define([
 		// Show an error dialog with information from the oData response object.
 		// oParameter - The object containing error information
 		showErrorMessage: function(oParameter, fnOnClose) {
-			var oErrorDetails = fnParseError(oParameter),
-				oBundle = sap.ui.getCore().getLibraryResourceBundle("nw.epm.refapps.shop.reuse");
+			var oErrorDetails = fnParseError(oParameter);
+			var oBundle = sap.ui.getCore().getModel("i18n").getResourceBundle();
+
 			MessageBox.show(oErrorDetails.sMessage, {
 				icon: MessageBox.Icon.ERROR,
-				title: oBundle.getText("xtit.error"),
+				title: oBundle.getText("errorText"),
 				details: oErrorDetails.sDetails,
 				actions: MessageBox.Action.CLOSE,
 				onClose: fnOnClose,

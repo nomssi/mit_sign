@@ -19,7 +19,7 @@ sap.ui.define([
 			});
 			return numberFormat.format(sValue);
 		},
-		
+
 		/**
 		 * Returns the status text based on the delivery  status
 		 * @param {string} sStatus delivery  status
@@ -36,7 +36,7 @@ sap.ui.define([
 
 			return mStatusText[sStatus] || sStatus;
 		}
-		
+
 	};
 
 	return formatter;
