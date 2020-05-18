@@ -1,8 +1,6 @@
 sap.ui.define([
-	"sap/ui/core/message/Message",
-	"sap/ui/core/library",
 	"./BaseController"
-], function (Message, coreLibrary, BaseController) {
+], function (BaseController) {
 	"use strict";
 
 	return BaseController.extend("Signature.controller.Error", {

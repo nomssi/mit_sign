@@ -2,8 +2,8 @@ sap.ui.define(["sap/ui/base/Object"],
     function(BaseObject) {
         "use strict";
         /* eslint-env es6 */
-        return BaseObject.extend("bapiWarning.localService.MockRequests", {
-            sEntitySetName: "MyEntity",
+        return BaseObject.extend("Signature.localService.MockRequests", {
+            sEntitySetName: "Events",
             constructor: function(oMockServer) {
                 this._oMockServer = oMockServer;
             },

@@ -2,6 +2,13 @@
 	controllerName="Signature.controller.Error" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page id="signError" title="{i18n>Error.Title} Auslieferung {VBELN}" showNavButton="true" 
 	      navButtonTooltip="{i18n>homeButtonText}" navButtonPress="onHome">
+				<landmarkInfo>
+					<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n>Checkout_rootLabel}" contentRole="Main"
+						contentLabel="{i18n>Checkout_summaryContentLabel}" footerRole="Banner" footerLabel="{i18n>Checkout_footerLabel}"/>
+				</landmarkInfo>
+				<headerContent>
+					<Button id="homeButton" type="Emphasized" text="{i18n&gt;homeButtonText}" press=".onHome"/>
+				</headerContent>		
 			<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Error}" type="Error" showIcon="true"/>
 				<MessageView items="{message>/}">
 					<MessageItem
