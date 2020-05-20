@@ -2,13 +2,17 @@ sap.ui.define([
 	"./BaseController",
 	"sap/ui/model/json/JSONModel",
 	"../model/formatter",
+	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
+	"sap/ui/model/Sorter",
 	"sap/ui/model/FilterOperator"
 ], function (
 	BaseController,
 	JSONModel,
 	formatter,
+	Fragment,
 	Filter,
+	Sorter,
 	FilterOperator) {
 	"use strict";
 
@@ -17,7 +21,7 @@ sap.ui.define([
 
 		onExit: function () {
 			if (this._intervalID) {
-				clearInterval(this._intervalID);	// stop the interval on exit; 
+				clearInterval(this._intervalID); // stop the interval on exit; 
 			};
 		},
 
@@ -44,9 +48,33 @@ sap.ui.define([
 		_initViewPropertiesModel: function () {
 			var date = new Date();
 			this._oViewProperties = new JSONModel({
-				updateTime: date.toLocaleTimeString("de-DE")
+				updateTime: date.toLocaleTimeString("de-DE"),
+				listTableTitle: this.getResourceBundle().getText("ReceiverName")
 			});
 			this.setModel(this._oViewProperties, "viewProperties");
+		},
+
+		/**
+		 * Triggered by the table's 'updateFinished' event: after new table
+		 * data is available, this handler method updates the table counter.
+		 * This should only happen if the update was successful, which is
+		 * why this handler is attached to 'updateFinished' and not to the
+		 * table's list binding's 'dataReceived' method.
+		 * @param {sap.ui.base.Event} oEvent the update finished event
+		 * @public
+		 */
+		onUpdateFinished: function (oEvent) {
+			// update the list's object counter after the table update
+			var sTitle,
+				oList = oEvent.getSource(),
+				iTotalItems = oEvent.getParameter("total");
+			// only update the counter if the length is final and the list is not empty
+			if (iTotalItems && oList.getBinding("items").isLengthFinal()) {
+				sTitle = this.getResourceBundle().getText("ListTitleCount", [iTotalItems]);
+			} else {
+				sTitle = this.getResourceBundle().getText("ReceiverName");
+			}
+			this.getModel("viewProperties").setProperty("/listTableTitle", sTitle);
 		},
 
 		onRefresh: function () {
@@ -85,21 +113,88 @@ sap.ui.define([
 
 		_applyListFilters: function (aFilter) {
 			// filter the list via binding
-			var oList = this.getView().byId("eventsList");
-
-			var oBinding = oList.getBinding("items");
-			oBinding.filter(aFilter);
+			var oListBinding = this.getView().byId("eventsList").getBinding("items");
+			oListBinding.filter(aFilter);
 		},
 
+		onGroupByEvent: function (oEvent) {
+			// sort first, als only adjacent rows can be grouped
+			var oListBinding = this.byId("eventsList").getBinding("items");
+			var oSorter = new Sorter("ReceiverPartner", false, true);
+			oListBinding.sort(oSorter);
+		},
+
+		/**
+		 * Event handler for the filter, sort and group buttons to open the ViewSettingsDialog.
+		 * @param {sap.ui.base.Event} oEvent the button press event
+		 * @public
+		 */
+		onOpenViewSettings: function (oEvent) {
+			var sDialogTab = "filter";
+			if (oEvent.getSource() instanceof sap.m.Button) {
+				var sButtonId = oEvent.getSource().getId();
+				if (sButtonId.match("sort")) {
+					sDialogTab = "sort";
+				} else if (sButtonId.match("group")) {
+					sDialogTab = "group";
+				}
+			}
+			// load asynchronous XML fragment
+			if (this.byId("viewSettingsDialog")) {
+				this.byId("viewSettingsDialog").open(sDialogTab);
+			} else {
+				Fragment.load({
+					id: this.getView().getId(),
+					name: "Signature.view.ViewSettingsDialog",
+					controller: this
+				}).then(function (oDialog) {
+					// connect dialog to the root view of this component (models, lifecycle)
+					this.getView().addDependent(oDialog);
+					oDialog.addStyleClass(this.getOwnerComponent().getContentDensityClass());
+					oDialog.open(sDialogTab);
+				}.bind(this));
+			}
+		},
+
+		/**
+		 * Event handler called when ViewSettingsDialog has been confirmed, i.e.
+		 * has been closed with 'OK'. In the case, the currently chosen filters, sorters or groupers
+		 * are applied to the master list, which can also mean that they
+		 * are removed from the master list, in case they are
+		 * removed in the ViewSettingsDialog.
+		 * @param {sap.ui.base.Event} oEvent the confirm event
+		 * @public
+		 */
+		onConfirmViewSettingsDialog: function (oEvent) {
+
+			this._applySortGroup(oEvent);
+		},
+
+		/**
+		 * Apply the chosen sorter and grouper to the master list
+		 * @param {sap.ui.base.Event} oEvent the confirm event
+		 * @private
+		 */
+		_applySortGroup: function (oEvent) {
+			var aSorters = [],
+				mParams = oEvent.getParameters(),
+				oListBinding = this.getView().byId("eventsList").getBinding("items");
+				
+			var sPath = mParams.sortItem.getKey();
+			var bDescending = mParams.sortDescending;
+			aSorters.push(new Sorter(sPath, bDescending));
+			oListBinding.sort(aSorters);
+		},
+		
 		onSortVBELN: function () {
 			// reuse the current sorter
 			var oListBinding = this.getView().byId("eventsList").getBinding("items");
 			var aListSorters = oListBinding.aSorters;
-			var oSorter;
+			var aSorter;
 			if (aListSorters.length > 0) {
-				oSorter = aListSorters[0];
-				oSorter.bDescending = !oSorter.bDescending;
-				oListBinding.sort(oSorter);
+				aSorter = aListSorters[0];
+				aSorter.bDescending = !aSorter.bDescending;
+				oListBinding.sort(aSorter);
 			}
 		}
 	});

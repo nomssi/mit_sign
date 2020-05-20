@@ -164,9 +164,8 @@ sap.ui.define([
 		 * Navigates back in browser history or to the home screen
 		 */
 		onBack: function () {
-			var oHistory = History.getInstance();
-			var oPrevHash = oHistory.getPreviousHash();
-			if (typeof oPrevHash === "undefined") {
+			var sPreviousHash = History.getInstance().getPreviousHash();
+			if (typeof sPreviousHash === "undefined") {
 				this.getRouter().navTo("home");
 			} else {
 				window.history.go(-1);

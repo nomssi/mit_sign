@@ -18,7 +18,16 @@
         "entryPath": "/test-resources"
       },
       "description": "SAPUI5 Test Resources"
-    }
+    },
+    {
+      "path": "/sap/opu/odata",
+      "target": {
+        "type": "destination",
+        "name": "makeit_dev",
+        "entryPath": "/sap/opu/odata"
+      },
+      "description": "DEV Cloud Connector"
+    }    
   ],
   "sendWelcomeFileRedirect": true
 }

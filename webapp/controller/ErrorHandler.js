@@ -16,11 +16,11 @@ sap.ui.define([
 		 * @alias Signature.controller.ErrorHandler
 		 */
 		constructor: function (oComponent) {
-
+			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();			
 			this._oComponent = oComponent;
 			this._oModel = oComponent.getModel();
 			this._bMessageOpen = false;
-			this._sErrorText = oComponent.getModel("i18n").getResourceBundle().getText("errorText");
+			this._sErrorText = this._oResourceBundle.getText("errorText");			
 
 			this._oLink = Messages.createDefaultLink();
 
@@ -30,43 +30,18 @@ sap.ui.define([
 
 			this._oModel.attachMetadataFailed(function (oEvent) {
 				var oParams = oEvent.getParameters();
-
-				this._showMetadataError(oParams.response);
+				this._showServiceError(oParams.response);
 			}, this);
-
+			
 			this._oModel.attachRequestFailed(function (oEvent) {
 				var oParams = oEvent.getParameters();
-
 				// An entity that was not found in the service is also throwing a 404 error in oData.
 				// We already cover this case with a notFound target so we skip it here.
 				// A request that cannot be sent to the server is a technical error that we have to handle though
-				if (oParams.response.statusCode !== "404" || (oParams.response.statusCode === 404 && oParams.response.responseText.indexOf(
-						"Cannot POST") === 0)) {
+				if (oParams.response.statusCode !== "404" || (oParams.response.statusCode === 404 && oParams.response.responseText.indexOf("Cannot POST") === 0)) {
 					this._showServiceError(oParams.response);
 				}
 			}, this);
-		},
-
-		/**
-		 * Shows a {@link sap.m.MessageBox} when the metadata call has failed.
-		 * The user can try to refresh the metadata.
-		 * @param {string} sDetails a technical error to be displayed on request
-		 * @private
-		 */
-		_showMetadataError: function (sDetails) {
-			MessageBox.error(
-				this._sErrorText, {
-					id: "metadataErrorMessageBox",
-					details: sDetails,
-					styleClass: this._oComponent.getContentDensityClass(),
-					actions: [MessageBox.Action.RETRY, MessageBox.Action.CLOSE],
-					onClose: function (sAction) {
-						if (sAction === MessageBox.Action.RETRY) {
-							this._oModel.refreshMetadata();
-						}
-					}.bind(this)
-				}
-			);
 		},
 
 		/**

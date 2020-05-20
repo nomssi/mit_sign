@@ -1,20 +1,20 @@
 <mvc:View id="EmptyPageView" controllerName="Signature.controller.BaseController"
-xmlns:l="sap.ui.layout" height="100%"
+ height="100%"
 xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
 <MessagePage 
    id="signEmptyPage" showHeader="false"
    icon="sap-icon://doctor"
    navButtonPress="onBack"
-   showNavButton="true"
+	showNavButton="{=
+		${device>/system/phone} ||
+		${device>/system/tablet} &amp;&amp;
+		${device>/orientation/portrait}
+	}"
    text="{i18n>ymsg.pageNotFoundTitle}"
    description="{i18n>ymsg.pageNotFoundIntro}"
    title="{i18n>ymsg.pageNotFoundIntro}">
 	<customDescription>
-		<Link text="{i18n>ymsg.Back}"
-		press="onBack"/>
+		<Link id="signNotFoundLink" text="{i18n>ymsg.Back}" press="onBack"/>
 	</customDescription>
 </MessagePage>
 </mvc:View>
-
-
-		

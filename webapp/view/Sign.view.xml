@@ -24,7 +24,7 @@
 											<content>
 												<Title text="Empfänger {ReceiverPartner}" level="H2"/>
 												<ToolbarSpacer/>
-												<Label text="angelegt von {CreatedBy}"/>
+												<Label text="{i18n>CreatedBy} {CreatedBy}"/>
 											</content>
 										</OverflowToolbar>
 									</headerToolbar>
@@ -121,7 +121,7 @@
 											</layoutData>
 										</Label>
 										<pad:SignaturePad id="signature-pad2" value="{draft>/Receiver/Url}" onEndEvent="onSignChange"
-															signcolor="blue" width="800px" height="200px"/>
+															signcolor="mediumblue" width="800px" height="200px"/>
 										<Button icon="sap-icon://undo" text="{i18n&gt;Clear}" press="onClearButton" type="Transparent" id="btnClear2">
 											<layoutData>
 												<layout:GridData span="L2 M2"/>

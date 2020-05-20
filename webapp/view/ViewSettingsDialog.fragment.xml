@@ -1,0 +1,22 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+
+	<ViewSettingsDialog
+		id="viewSettingsDialog"
+		confirm=".onConfirmViewSettingsDialog">
+		<sortItems>
+			<ViewSettingsItem
+				text="{i18n>CreatedBy}"
+				key="CreatedBy"/>
+			<ViewSettingsItem
+				text="{i18n>ReceiverName}"
+				key="ReceiverPartner"
+				selected="true"/>
+			<ViewSettingsItem
+				text="{i18n>Deliveries}"
+				key="VBELN"/>
+		</sortItems>
+
+	</ViewSettingsDialog>
+</core:FragmentDefinition>

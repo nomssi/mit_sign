@@ -18,18 +18,45 @@
 				        }" 
 				growing="true"
 				growingThreshold="5" 
-				growingScrollToLoad="false">
+				growingScrollToLoad="true"
+				updateFinished=".onUpdateFinished">				
 				<headerToolbar>
 					<Toolbar>
-						<Title text="{i18n>ReceiverName}" />
+						<Title id="tableHeader"
+							text="{viewProperties>/listTableTitle}"
+							level="H3"/>						
 						<ToolbarSpacer />
-						<Button icon="sap-icon://sort" tooltip="Sort by VBELN"
-						        press="onSortVBELN" />
-						<SearchField width="50%" search="onFilterEvents" />
+						<SearchField
+							id="searchField"
+							tooltip="{i18n>SearchTooltip}"
+							maxLength="120"
+							placeholder="{i18n>SearchRecipient}"
+							search=".onFilterEvents"
+							width="auto">
+							<layoutData>
+								<OverflowToolbarLayoutData
+									minWidth="150px"
+									maxWidth="240px"
+									shrinkable="true"
+									priority="NeverOverflow"/>
+							</layoutData>
+						</SearchField>
+						<Button
+							id="sortButton"
+							press=".onOpenViewSettings"
+							icon="sap-icon://sort"
+							tooltip="{i18n>SortDialog}"
+							type="Transparent"/>
+						<Button
+							id="groupButton"
+							press=".onGroupByEvent"
+							icon="sap-icon://group-2"
+							tooltip="{i18n>GroupDialog}"
+							type="Transparent"/>						
 					</Toolbar>
 				</headerToolbar>
 				<items>
-					<ObjectListItem type="Navigation" title="{Head/Kunnr} {ReceiverPartner}" 
+					<ObjectListItem type="Navigation" title="{ReceiverPartner}" 
 					                press="onEventListItemPress" 
 					                intro="{CreatedBy}"
 						iconDensityAware="false">

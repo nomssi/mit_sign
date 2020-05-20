@@ -51,7 +51,7 @@
 					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="Posnr" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Untzeich.INT2/int16" sap:creatable="false"
 					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-				<Property Name="Lfimg" Type="Edm.Float" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+				<Property Name="Lfimg" Type="Edm.Decimal" Scale="3" Precision="13" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="Meins" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
@@ -121,8 +121,8 @@
 					<Parameter Name="Sign_Lager" Type="Edm.String" Mode="In"/>
 				</FunctionImport>
 			</EntityContainer>
-			<atom:link rel="self" href="http://OBELIX3.1net.dom:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
-			<atom:link rel="latest-version" href="http://OBELIX3.1net.dom:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata"
+			<atom:link rel="self" href="http://obelix3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://obelix3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata"
 				xmlns:atom="http://www.w3.org/2005/Atom"/>
 		</Schema>
 	</edmx:DataServices>
