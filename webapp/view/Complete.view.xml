@@ -6,7 +6,7 @@
 						contentLabel="{i18n>Checkout_summaryContentLabel}" footerRole="Banner" footerLabel="{i18n>Checkout_footerLabel}"/>
 				</landmarkInfo>
 				<headerContent>
-					<Button id="homeButton" type="Emphasized" text="{i18n&gt;homeButtonText}" press=".onHome"/>
+					<Button id="homeButton" icon="sap-icon://home" type="Emphasized" text="{i18n&gt;homeButtonText}" press=".onHome"/>
 				</headerContent>
 		<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Finish}" type="Success" showIcon="true"/>
 		<content>

@@ -82,7 +82,7 @@ sap.ui.define([
 			if (iTotalItems && oList.getBinding("items").isLengthFinal()) {
 				sTitle = this.getResourceBundle().getText("ListTitleCount", [iTotalItems]);
 			} else {
-				sTitle = this.getResourceBundle().getText("ReceiverName");
+				sTitle = this.getResourceBundle().getText("ListTitle");
 			}
 			this.getModel("viewProperties").setProperty("/listTableTitle", sTitle);
 		},

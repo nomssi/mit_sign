@@ -1,6 +1,9 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="Signature.controller.Home"
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="{i18n>Deliveries} {viewProperties>/updateTime}">
+		<headerContent>
+			<Button id="accountButton" icon="sap-icon://account" tooltip="UserId" type="Transparent"/>
+		</headerContent>	
 		<content>
 			<PullToRefresh id="pullToRefresh" visible="{device>/support/touch}" refresh=".onRefresh"/>
 			<!-- This list shows the search results -->
@@ -43,7 +46,6 @@
 									priority="NeverOverflow"/>
 							</layoutData>
 						</SearchField>
-						<Button text="{i18n>Reset}" type="Transparent" press="onReset"/>
 						<OverflowToolbarButton
 							id="sortButton"
 							press=".onOpenViewSettings"
@@ -55,7 +57,12 @@
 							press=".onGroupByEvent"
 							icon="sap-icon://group-2"
 							tooltip="{i18n>GroupDialog}"
-							type="Transparent"/>						
+							type="Transparent"/>
+						<OverflowToolbarButton
+							id="resetButton"
+							icon="sap-icon://reset" 
+							tooltip="{i18n>Reset}" 
+							type="Transparent" press="onReset"/>							
 					</Toolbar>
 				</headerToolbar>
 				<items>
