@@ -127,7 +127,7 @@ sap.ui.define([
 			oListBinding.filter(aFilter);
 		},
 
-		onGroupByEvent: function (oEvent) {
+		onGroupByEvent: function () {
 			// sort first, als only adjacent rows can be grouped
 			var oListBinding = this.byId("eventsList").getBinding("items");
 			var oSorter = new Sorter("ReceiverPartner", false, true);
@@ -208,7 +208,7 @@ sap.ui.define([
 			}
 		},
 
-		onReset: function (oEvent) {
+		onReset: function () {
 			var oListBinding = this.getView().byId("eventsList").getBinding("items");
 			oListBinding.sort([]);
 		},

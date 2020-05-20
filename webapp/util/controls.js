@@ -5,7 +5,7 @@ sap.ui.define([
 
 	// class providing static utility methods for dealing with controls.
 
-		// the densitiy class that should be set according to the environment (may be "")
+	// the densitiy class that should be set according to the environment (may be "")
 	var	sContentDensityClass = (function() {
 			var oBody = jQuery(document.body),
 				sCompactClass = "sapUiSizeCompact",

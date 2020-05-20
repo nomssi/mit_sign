@@ -1,10 +1,10 @@
 sap.ui.define([
 		"sap/m/MessageBox",
+		"sap/ui/core/message/Message",
 		"sap/ui/model/json/JSONModel",
-		"sap/ui/Device",	
 		"sap/m/Link",
 		"./controls"
-	], function(MessageBox, JSONModel, Device, Link, controls) {
+	], function(MessageBox, Message, JSONModel, Link, controls) {
 	"use strict";
 
 	function fnExtractErrorMessageFromDetails(sDetails) {
@@ -63,18 +63,16 @@ sap.ui.define([
 		},
 		
 		createDefaultLink: function() {
-	       var generalInfoUrl = "https://eins.de";
-	        
 			return new Link({
 					text: "Allgemeine Informationen anzeigen",
-					href: generalInfoUrl,
+					href: "https://eins.de",
 					target: "_blank"
 				});	
 		},
 		
 		popoverMessage: function (sMessage, sText, sType, sTarget, that) {
 			that._oMessageManager.addMessages(
-				new sap.ui.core.message.Message({
+				new Message({
 					message: sMessage,
 					type: sType,
 					additionalText: sText,

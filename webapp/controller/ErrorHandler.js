@@ -1,9 +1,7 @@
 sap.ui.define([
 	"sap/ui/base/Object",
-	"sap/m/MessageBox",
-	"sap/m/MessageToast",
 	"../util/messages"
-], function (UI5Object, MessageBox, MessageToast, Messages) {
+], function (UI5Object, Messages) {
 	"use strict";
 
 	return UI5Object.extend("Signature.controller.ErrorHandler", {

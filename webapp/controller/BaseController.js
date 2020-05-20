@@ -1,13 +1,12 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/m/MessageToast",
 	"sap/m/MessagePopover",
 	"sap/m/MessagePopoverItem",
 	"sap/ui/core/UIComponent",
 	"sap/ui/core/routing/History",
 	"../util/messages",
 	"sap/ui/model/json/JSONModel"
-], function (Controller, MessageToast, MessagePopover, MessagePopoverItem, UIComponent, History, Messages, JSONModel) {
+], function (Controller, MessagePopover, MessagePopoverItem, UIComponent, History, Messages, JSONModel) {
 	"use strict";
 
 	return Controller.extend("Signature.controller.BaseController", {

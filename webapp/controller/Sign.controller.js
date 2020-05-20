@@ -3,19 +3,19 @@ sap.ui.define([
 	"../model/Signature",
 	"../model/formatter",
 	"../util/messages",
+	"../util/controls",
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
-	"sap/m/MessageToast",
-	"sap/ui/core/syncStyleClass"
+	"sap/m/MessageToast"
 ], function (
 	BaseController,
 	Signature,
 	formatter,
 	Messages,
+	controls,
 	Fragment,
 	Filter,
-	MessageToast,
-	syncStyleClass) {
+	MessageToast) {
 	"use strict";
 
 	return BaseController.extend("Signature.controller.Sign", {
@@ -299,10 +299,10 @@ sap.ui.define([
 			// maintain signatures in the draft model now
 			oModel.setProperty("/Releaser/Url", this._oSourceReleaser.pad.export()); // Signatur Lager
 			oModel.setProperty("/Receiver/Url", this._oSourceReceiver.pad.export()); // Signatur Abholer
-			// extract draft model data
-			var oSignData = this._getDraftData(oModel);
 
 			// save draft to oData model
+			var oSignData = this._getDraftData(oModel);
+
 			if (this._oBusyDialog) {
 				this._oBusyDialog.open();
 				this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), oSignData);
@@ -312,8 +312,8 @@ sap.ui.define([
 					controller: this
 				}).then(function (oFragment) {
 					this._oBusyDialog = oFragment;
-					this.getView().addDependent(this._oBusyDialog);
-					syncStyleClass("sapUiSizeCompact", this.getView(), this._oBusyDialog);
+					controls.attachControlToView(this.getView(), this._oBusyDialog);
+
 					this._oBusyDialog.open();
 					this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), oSignData);
 				}.bind(this));

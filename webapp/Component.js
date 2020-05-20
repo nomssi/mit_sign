@@ -2,9 +2,8 @@ sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"./model/models",
 	"./controller/ErrorHandler",
-	"./util/controls",
-	"sap/m/MessageBox"
-], function (UIComponent, models, ErrorHandler, controls, MessageBox) {
+	"./util/controls"
+], function (UIComponent, models, ErrorHandler, controls) {
 	"use strict";
 
 	return UIComponent.extend("Signature.Component", {
@@ -85,21 +84,6 @@ sap.ui.define([
 			this._oErrorHandler.destroy();
 			// call the base component's destroy function
 			UIComponent.prototype.destroy.apply(this, arguments);
-		},
-
-		_showServiceError: function (sDetails) {
-			if (this._bMessageOpen) {
-				return;
-			};
-			this._bMessageOpen = true;
-			MessageBox.error("Fehler / An Error occured",
-			{
-				details: sDetails,
-				actions: [MessageBox.Action.CLOSE],
-				onClose: function () {
-					this._bMessageOpen = false;
-				}.bind(this)
-			});
 		},
 
 		/**

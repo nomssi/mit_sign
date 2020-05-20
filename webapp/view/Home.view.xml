@@ -43,7 +43,7 @@
 									priority="NeverOverflow"/>
 							</layoutData>
 						</SearchField>
-						<Button text="Reset" type="Transparent" press="onReset"/>
+						<Button text="{i18n>Reset}" type="Transparent" press="onReset"/>
 						<OverflowToolbarButton
 							id="sortButton"
 							press=".onOpenViewSettings"
