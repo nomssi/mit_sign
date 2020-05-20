@@ -20,8 +20,22 @@ sap.ui.define([
 		formatter: formatter,
 
 		onExit: function () {
+			this._disableAutoReload();
+		},
+
+		_enableAutoReload: function () {
+			if (!this._intervalID) {
+				// Create Trigger and register handler
+				this._intervalID = setInterval(function () {
+					this._reloadData();
+				}.bind(this), 20000);
+			}
+		},
+
+		_disableAutoReload: function () {
 			if (this._intervalID) {
 				clearInterval(this._intervalID); // stop the interval on exit; 
+				this._intervalID = 0;
 			};
 		},
 
@@ -30,11 +44,7 @@ sap.ui.define([
 			this._router = oComponent.getRouter();
 			// this._router.getRoute("sign").attachMatched(this._onRouteMatched, this);
 
-			// Create Trigger and register handler
-			this._intervalID = setInterval(function () {
-				this._reloadData();
-			}.bind(this), 20000);
-
+			this._enableAutoReload();
 			this._initViewPropertiesModel();
 		},
 
@@ -179,13 +189,13 @@ sap.ui.define([
 			var aSorters = [],
 				mParams = oEvent.getParameters(),
 				oListBinding = this.getView().byId("eventsList").getBinding("items");
-				
+
 			var sPath = mParams.sortItem.getKey();
 			var bDescending = mParams.sortDescending;
 			aSorters.push(new Sorter(sPath, bDescending));
 			oListBinding.sort(aSorters);
 		},
-		
+
 		onSortVBELN: function () {
 			// reuse the current sorter
 			var oListBinding = this.getView().byId("eventsList").getBinding("items");
@@ -195,6 +205,19 @@ sap.ui.define([
 				aSorter = aListSorters[0];
 				aSorter.bDescending = !aSorter.bDescending;
 				oListBinding.sort(aSorter);
+			}
+		},
+
+		onReset: function (oEvent) {
+			var oListBinding = this.getView().byId("eventsList").getBinding("items");
+			oListBinding.sort([]);
+		},
+
+		toggleAutoUpdate: function (oEvent) {
+			if (oEvent.getSource().getPressed()) {
+				this._enableAutoReload();
+			} else {
+				this._disableAutoReload();
 			}
 		}
 	});

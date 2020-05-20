@@ -22,6 +22,8 @@
 				updateFinished=".onUpdateFinished">				
 				<headerToolbar>
 					<Toolbar>
+						<ToggleButton id="autoSync" icon="sap-icon://synchronize" enabled="true" 
+									pressed="true" press="toggleAutoUpdate" />												
 						<Title id="tableHeader"
 							text="{viewProperties>/listTableTitle}"
 							level="H3"/>						
@@ -36,18 +38,19 @@
 							<layoutData>
 								<OverflowToolbarLayoutData
 									minWidth="150px"
-									maxWidth="240px"
+									maxWidth="300px"
 									shrinkable="true"
 									priority="NeverOverflow"/>
 							</layoutData>
 						</SearchField>
-						<Button
+						<Button text="Reset" type="Transparent" press="onReset"/>
+						<OverflowToolbarButton
 							id="sortButton"
 							press=".onOpenViewSettings"
 							icon="sap-icon://sort"
 							tooltip="{i18n>SortDialog}"
 							type="Transparent"/>
-						<Button
+						<OverflowToolbarButton
 							id="groupButton"
 							press=".onGroupByEvent"
 							icon="sap-icon://group-2"
