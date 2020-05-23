@@ -37,39 +37,66 @@ sap.ui.define([
 			return mStatusText[sStatus] || sStatus;
 		},
 
-		formatEmail: function (sFloeId) {
+		formatFloeId: function (sFloeId) {
 			if (sFloeId && sFloeId !== "0000000000") {
 				return sFloeId;
 			};
 			return "";
 		},
 
-		formatMarker: function (sFloeId, sSaved) {
+		formatMarker: function (sFloeId, sSaved, sActive) {
 			var sMarker;
 			if (sFloeId && sFloeId !== "0000000000") {
-				sMarker = "Flagged";
+				sMarker = "Favorite";
 			} else {
 				if (sSaved) {
-					sMarker = "Draft";
-				} else {
-					sMarker = "Favorite";
+					sMarker = "Locked";
 				};
 			};
 			return sMarker;
 		},
 
-		formatState: function (sFloeId, sSaved) {
+		formatState: function (sFloeId, bSaved, bActive, bEmailValid) {
 			var sState;
-			if (sFloeId && sFloeId !== "0000000000") {
-				sState = "Success";
-			} else if (sSaved) {
-				sState ="Warning";
+
+			if (bActive) {
+				if (bEmailValid) {
+					sState = "None";
+				} else {
+					sState = "Error";			// to be reviewed, but eMail missing
+				};
 			} else {
-				sState = "None";
+				if (sFloeId && sFloeId !== "0000000000") {
+					sState = "Success";
+				} else {
+					sState = "Warning";
+				};
 			};
 			return sState;
+		},
+		
+		formatStateText: function (sFloeId, bSaved, bActive, bEmailValid) {
+			var sText = "sap-icon://status-error";
+			if (bActive) {
+				if (bEmailValid) {
+					sText = "zu unterschreiben";
+				} else {
+					sText = "Empfänger E-Mail fehlt";
+				};
+			} else {
+				if (sFloeId && sFloeId !== "0000000000") {
+					sText = "abgeschlossen";
+				} else {
+					if (bEmailValid) {
+						sText = "gesichert, nicht versandt";
+					} else {
+						sText = "gesichert, Empfänger E-Mail fehlt";
+					}
+				};
+			};
+			return sText;
 		}
-
+				
 	};
 
 	return formatter;

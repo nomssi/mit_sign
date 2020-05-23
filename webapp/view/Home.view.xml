@@ -31,25 +31,27 @@
 					<ObjectListItem type="Navigation"
 									title="{ReceiverPartner}" 
 									press="onEventListItemPress" 
-									intro="{CreatedBy}" 
-									iconDensityAware="false">
+									number="{VBELN}">
 						<firstStatus>
+							<ObjectStatus 
+									state="{parts:[{path: 'FloeId'},
+								          		{path: 'Saved'},
+								          		{path: 'Active'},
+								          		{path: 'EMailValid'}],
+										          formatter: '.formatter.formatState' }"
+									text="{parts:[{path: 'FloeId'},
+								          		{path: 'Saved'},
+								          		{path: 'Active'},
+								          		{path: 'EMailValid'}],
+										          formatter: '.formatter.formatStateText' }"/>
+						</firstStatus>
+						<secondStatus>
 							<ObjectStatus visible="{= ${Saved}}"
 										icon="sap-icon://customer-and-contacts" 
 										text="{ReceiverName} {path: 'FloeId', 
-											                formatter: '.formatter.formatEmail' }"
-											state="{
-												parts:[{path: 'FloeId'}, {path: 'Saved'}],
-											    formatter: '.formatter.formatState' }"/>
-						</firstStatus>
-						<ObjectAttribute text="{VBELN}"/>
-							<markers>
-								<ObjectMarker visible="{= ${Saved} }"
-								              type="{parts:[{path: 'FloeId'}, {path: 'Saved'}],
-											             formatter: '.formatter.formatMarker' }" />
-								<ObjectMarker visible="{= ${EMailValid} === 'false'}"
-								              type="Locked" />
-							</markers>							
+											                formatter: '.formatter.formatFloeId' }"/>
+						</secondStatus>
+						<ObjectAttribute text="{CreatedBy}"/>
 					</ObjectListItem>
 				</items>
 			</List>

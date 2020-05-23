@@ -159,7 +159,9 @@ sap.ui.define([
 				},
 				groupItems: true,
 				afterClose: function () {
-					this._oMessagePopover.destroy();
+					if (this._oMessagePopover) {
+						this._oMessagePopover.destroy();
+					}
 				}
 			});
 			this._addDependent(this._oMessagePopover);
