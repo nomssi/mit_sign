@@ -1,81 +1,66 @@
-<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="Signature.controller.Home"
-	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="{i18n>Deliveries} {viewProperties>/updateTime}">
+<core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
+	controllerName="Signature.controller.Home">
+	<Page title="{viewProperties>/listTableTitle}">
 		<headerContent>
-			<Button id="accountButton" icon="sap-icon://account" tooltip="UserId" type="Transparent"/>
-		</headerContent>	
+			<Image id="einsIcon" src="https://www.eins.de/files/eins/layout/img/favicon.ico" decorative="true"/>
+		</headerContent>
 		<content>
 			<PullToRefresh id="pullToRefresh" visible="{device>/support/touch}" refresh=".onRefresh"/>
 			<!-- This list shows the search results -->
-			<List visible="true" 
-			    id="eventsList"
-			    class="sapUIResponsiveMargin"
-			    selectionChange=".onEventListSelect" 
-			    noDataText="{i18n>homeNoData}" 
-			    busyIndicatorDelay="0"
-			    sticky="HeaderToolbar"
-				items="{ path : '/Events', 
-				         sorter : { path : 'VBELN', 
-				                    descending : false },
-				         parameters : { 'expand' : 'EventPositions' }
-				        }" 
-				growing="true"
-				growingThreshold="5" 
-				growingScrollToLoad="true"
-				updateFinished=".onUpdateFinished">				
+			<List visible="true" id="eventsList" class="sapUIResponsiveMargin" selectionChange=".onEventListSelect" noDataText="{i18n>homeNoData}"
+				busyIndicatorDelay="0" sticky="HeaderToolbar"
+				items="{ path : '/Events', sorter : { path : 'VBELN', descending : false }, parameters : { 'expand' : 'EventPositions' } }" growing="true"
+				growingThreshold="5" growingScrollToLoad="true" updateFinished=".onUpdateFinished">
 				<headerToolbar>
 					<Toolbar>
-						<ToggleButton id="autoSync" icon="sap-icon://synchronize" enabled="true" 
-									pressed="true" press="toggleAutoUpdate" />												
-						<Title id="tableHeader"
-							text="{viewProperties>/listTableTitle}"
-							level="H3"/>						
-						<ToolbarSpacer />
-						<SearchField
-							id="searchField"
-							tooltip="{i18n>SearchTooltip}"
-							maxLength="120"
-							placeholder="{i18n>SearchRecipient}"
-							search=".onFilterEvents"
+						<ToggleButton id="autoSync" icon="sap-icon://synchronize" enabled="true" pressed="true" press="toggleAutoUpdate"/>
+						<Title id="tableHeader" text="{viewProperties>/updateTime}" level="H3"/>
+						<ToolbarSpacer/>
+						<SearchField id="searchField" tooltip="{i18n>SearchTooltip}" maxLength="120" placeholder="{i18n>SearchRecipient}" search=".onFilterEvents"
 							width="auto">
 							<layoutData>
-								<OverflowToolbarLayoutData
-									minWidth="150px"
-									maxWidth="300px"
-									shrinkable="true"
-									priority="NeverOverflow"/>
+								<OverflowToolbarLayoutData minWidth="150px" maxWidth="300px" shrinkable="true" priority="NeverOverflow"/>
 							</layoutData>
 						</SearchField>
-						<OverflowToolbarButton
-							id="sortButton"
-							press=".onOpenViewSettings"
-							icon="sap-icon://sort"
-							tooltip="{i18n>SortDialog}"
-							type="Transparent"/>
-						<OverflowToolbarButton
-							id="groupButton"
-							press=".onGroupByEvent"
-							icon="sap-icon://group-2"
-							tooltip="{i18n>GroupDialog}"
-							type="Transparent"/>
-						<OverflowToolbarButton
-							id="resetButton"
-							icon="sap-icon://reset" 
-							tooltip="{i18n>Reset}" 
-							type="Transparent" press="onReset"/>							
+						<OverflowToolbarButton id="sortButton" press=".onOpenViewSettings" icon="sap-icon://sort" tooltip="{i18n>SortDialog}" type="Transparent"/>
+						<OverflowToolbarButton id="groupButton" press=".onGroupByEvent" icon="sap-icon://group-2" tooltip="{i18n>GroupDialog}" type="Transparent"/>
+						<OverflowToolbarButton id="resetButton" icon="sap-icon://reset" tooltip="{i18n>Reset}" type="Transparent" press="onReset"/>
 					</Toolbar>
 				</headerToolbar>
 				<items>
-					<ObjectListItem type="Navigation" title="{ReceiverPartner}" 
-					                press="onEventListItemPress" 
-					                intro="{CreatedBy}"
-						iconDensityAware="false">
-						<attributes>
-							<ObjectAttribute text="{VBELN}"/>
-						</attributes>
+					<ObjectListItem type="Navigation"
+									title="{ReceiverPartner}" 
+									press="onEventListItemPress" 
+									intro="{CreatedBy}" 
+									iconDensityAware="false">
+						<firstStatus>
+							<ObjectStatus visible="{= ${Saved}}"
+										icon="sap-icon://customer-and-contacts" 
+										text="{ReceiverName} {path: 'FloeId', 
+											                formatter: '.formatter.formatEmail' }"
+											state="{
+												parts:[{path: 'FloeId'}, {path: 'Saved'}],
+											    formatter: '.formatter.formatState' }"/>
+						</firstStatus>
+						<ObjectAttribute text="{VBELN}"/>
+							<markers>
+								<ObjectMarker visible="{= ${Saved} }"
+								              type="{parts:[{path: 'FloeId'}, {path: 'Saved'}],
+											             formatter: '.formatter.formatMarker' }" />
+								<ObjectMarker visible="{= ${EMailValid} === 'false'}"
+								              type="Locked" />
+							</markers>							
 					</ObjectListItem>
 				</items>
 			</List>
 		</content>
+				<footer>
+					<Bar id="homeFooterBar" visible="{= ${message>/}.length === 0 ? false : true}">
+						<contentLeft>
+							<Button id="showPopoverButton" icon="sap-icon://message-popup" type="Emphasized" text="{= ${message>/}.length }"
+								press=".handleMessagePopoverPress"/>
+						</contentLeft>
+					</Bar>
+				</footer>		
 	</Page>
 </core:View>

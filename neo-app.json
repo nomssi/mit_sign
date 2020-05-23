@@ -27,7 +27,16 @@
         "entryPath": "/sap/opu/odata"
       },
       "description": "DEV Cloud Connector"
-    }    
+    },
+    {
+      "path": "/sap/public",
+      "target": {
+        "type": "destination",
+        "name": "makeit_dev",
+        "entryPath": "/sap/public"
+      },
+      "description": "DEV Cloud Connector Cache"
+    }        
   ],
   "sendWelcomeFileRedirect": true
 }

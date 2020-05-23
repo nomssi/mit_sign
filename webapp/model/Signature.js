@@ -3,7 +3,7 @@
 sap.ui.define([
 	"sap/ui/base/Object",
 	"../util/messages"
-], function (Object, messages) {
+], function (Object, Messages) {
 	"use strict";
 
 	return Object.extend("Signature.model.Signature", {
@@ -38,7 +38,7 @@ sap.ui.define([
 							for (var i = 0; i < oResponseData.__batchResponses.length && !this._sMessage; i += 1) {
 								var oEntry = oResponseData.__batchResponses[i];
 								if (oEntry.response) {
-									this._sMessage = messages.extractErrorMessageFromDetails(oEntry.response.body);
+									this._sMessage = Messages.extractErrorMessageFromDetails(oEntry.response.body);
 								}
 							}
 						}

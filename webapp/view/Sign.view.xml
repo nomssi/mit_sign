@@ -22,7 +22,7 @@
 									<headerToolbar>
 										<OverflowToolbar>
 											<content>
-												<Title text="Empfänger {ReceiverPartner}" level="H2"/>
+												<Title text="{i18n>ReceiverName} {ReceiverPartner}" level="H2"/>
 												<ToolbarSpacer/>
 												<Label text="{i18n>CreatedBy} {CreatedBy}"/>
 											</content>

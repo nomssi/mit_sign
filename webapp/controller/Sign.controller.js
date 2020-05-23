@@ -76,15 +76,6 @@ sap.ui.define([
 			this.getRouter().navTo("home");
 		},
 
-		removeMessageFromTarget: function (sTarget) {
-			// clear potential server-side messages to allow saving the item again
-			this._oMessageManager.getMessageModel().getData().forEach(function (oMessage) {
-				if (oMessage.target === sTarget) {
-					this._oMessageManager.removeMessages(oMessage);
-				}
-			}.bind(this));
-		},
-
 		_popoverInvalidField: function (oInput, sText, sTarget) {
 			var sMessage = this._oResourceBundle.getText(sText);
 			Messages.popoverMessage(sMessage,
@@ -124,9 +115,7 @@ sap.ui.define([
 			this.removeMessageFromTarget(sTarget);
 
 			var oState = this._isValidInput(oInput.getValue());
-			if (oState.valid === false) {
-				oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
-			} else {
+			if (oState.valid) {
 				if (oSource.pad.isEmpty()) { // Then check SignPad
 					oState = {
 						valid: false,
@@ -137,6 +126,8 @@ sap.ui.define([
 				} else {
 					oState.state = "None";
 				};
+			} else {
+				oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
 			};
 
 			oInput.setValueState(oState.state);
@@ -251,17 +242,14 @@ sap.ui.define([
 
 		onWizardCompleted: function (oEvent) {
 
-			var fnSaveError = function (oError) {
+			var fnSaveError = function (oDetails) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
-				Messages.popoverMessage(this.sVbeln,
+				var oError = oDetails.response ? oDetails.response : oDetails;
+				Messages.popoverTechnicalMessage(this.sVbeln,
 					this._oResourceBundle.getText("step.save"),
+					oError.responseText,
 					sap.ui.core.MessageType.Information,
-					this._oLink, this);
-
-				Messages.popoverMessage(this.sVbeln,
-					JSON.stringify(oError),
-					sap.ui.core.MessageType.Error,
-					this._oLink, this);
+					null, this);
 
 				this._oBusyDialog.close();
 
@@ -273,20 +261,16 @@ sap.ui.define([
 			var fnAfterSave = function (oData, oResponse) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
 
-				Messages.popoverMessage(this.sVbeln,
+				Messages.popoverTechnicalMessage(this.sVbeln,
 					this._oResourceBundle.getText("step.save"),
-					sap.ui.core.MessageType.Information,
-					this._oLink, this);
-
-				Messages.popoverMessage(this.sVbeln,
-					this._oResourceBundle.getText("pdf.Created") + " Datei {PDFUrl}",
+					this._oResourceBundle.getText("pdf.Created") + " Datei {oData.PDFUrl}",
 					sap.ui.core.MessageType.Success,
-					this._oLink, this);
+					null, this);
 
 				Messages.popoverMessage(this.sVbeln,
 					"EMail an {ReceiverName} per Mail mit Id {FloeId} versandt",
 					sap.ui.core.MessageType.Information,
-					this._oLink, this);
+					null, this);
 
 				this._oBusyDialog.close();
 

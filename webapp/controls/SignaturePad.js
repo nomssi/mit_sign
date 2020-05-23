@@ -20,7 +20,7 @@ sap.ui.define([
 					},
 					"height": {
 						"type": "sap.ui.core.CSSSize",
-						"defaultValue": "100px"
+						"defaultValue": "auto"
 					},
 					"thickness": {
 						type: "int",
@@ -32,7 +32,6 @@ sap.ui.define([
 					},
 					"bgColor": {
 						"type": "sap.ui.core.CSSColor",
-						// "defaultValue": sap.ui.core.theming.Parameters.get("sapUiContentImagePlaceholderBackground")
 						"defaultValue": sap.ui.core.theming.Parameters.get("sapUiButtonHoverBackground")
 					},
 					"signcolor": {
@@ -51,59 +50,6 @@ sap.ui.define([
 						}
 					}
 				}
-			},
-
-			/**
-			 * Crop signature canvas to only contain the signature and no whitespace.
-			 *
-			 * @since 1.0.0
-			 */
-			_cropSignatureCanvas: function (oCanvas) {
-
-				// First duplicate the canvas to not alter the original
-				var oCroppedCanvas = document.createElement("canvas");
-				var croppedCtx = oCroppedCanvas.getContext("2d");
-
-				oCroppedCanvas.width = oCanvas.width;
-				oCroppedCanvas.height = oCanvas.height;
-				croppedCtx.drawImage(oCanvas, 0, 0);
-
-				// Next do the actual cropping
-				var w = oCroppedCanvas.width,
-					h = oCroppedCanvas.height,
-					pix = {
-						x: [],
-						y: []
-					},
-					imageData = croppedCtx.getImageData(0, 0, oCroppedCanvas.width, oCroppedCanvas.height),
-					x, y, index;
-
-				for (y = 0; y < h; y += 1) {
-					for (x = 0; x < w; x += 1) {
-						index = (y * w + x) * 4;
-						if (imageData.data[index + 3] > 0) {
-							pix.x.push(x);
-							pix.y.push(y);
-						}
-					}
-				}
-				pix.x.sort(function (a, b) {
-					return a - b;
-				});
-				pix.y.sort(function (a, b) {
-					return a - b;
-				});
-				var n = pix.x.length - 1;
-
-				w = pix.x[n] - pix.x[0];
-				h = pix.y[n] - pix.y[0];
-				var cut = croppedCtx.getImageData(pix.x[0], pix.y[0], w, h);
-
-				oCroppedCanvas.width = w;
-				oCroppedCanvas.height = h;
-				croppedCtx.putImageData(cut, 0, 0);
-
-				return oCroppedCanvas.toDataURL("image/svg+xml");
 			},
 
 			clear: function () {
@@ -133,7 +79,6 @@ sap.ui.define([
 			export: function () {
 				var _url;
 				if (this.signaturePad) {
-					// _url = this._cropSignatureCanvas(this.signCanvas);  Problem with Size/Offset or Scale
 					_url = this.signCanvas.toDataURL("image/svg+xml");
 				}
 				return _url;
@@ -154,21 +99,21 @@ sap.ui.define([
 					// initialize button width
 					// var iThickness = parseInt(oSignPad.getProperty("thickness"), 10);
 
-					oRm.openStart("div", oSignPad)
-						.style("width", oSignPad.getWidth())
-						.style("height", oSignPad.getHeight())
-						.openEnd();
-					
-					oRm.openStart("canvas", oSignPad)
-						.style("width", oSignPad.getWidth())
-						.style("height", oSignPad.getHeight())
-						//	   .writeControlData(oSignPad) // e.g id='signature-pad'
-						.class("m-signature-pad")
+					oRm.openStart("div", oSignPad).
+						style("width", oSignPad.getWidth()).
+						style("height", oSignPad.getHeight()).
+						openEnd();
 
-						.style("background-color", oSignPad.getProperty("bgColor"))
-						// .style("border", oSignPad.getBorderSize() + " " + oSignPad.getBorderStyle() + " " + oSignPad.getBorderColor())
-						// .writeClasses()
-						.openEnd();
+					oRm.openStart("canvas", oSignPad).
+						style("width", oSignPad.getWidth()).
+						style("height", oSignPad.getHeight()).
+						//	   writeControlData(oSignPad). // e.g id='signature-pad'
+						class("m-signature-pad").
+
+						style("background-color", oSignPad.getProperty("bgColor")).
+						// style("border", oSignPad.getBorderSize() + " " + oSignPad.getBorderStyle() + " " + oSignPad.getBorderColor()).
+						// writeClasses().
+						openEnd();
 
 					oRm.close("canvas");
 
@@ -216,10 +161,10 @@ sap.ui.define([
 						// this option can be omitted if only saving as PNG or SVG
 						// backgroundColor: "rgb(255, 255, 255)",
 						// onBegin: ??,
-						penColor:  that.getProperty("signcolor"),
+						penColor: that.getProperty("signcolor"),
 						onEnd: function (oEvent) {
 							this.fireEvent("onEndEvent", {
-								value: ""		// we only need the state (empty/not empty, not yet the sign data)
+								value: "" // we only need the state (empty/not empty, not yet the sign data)
 							});
 						}.bind(that)
 					};
@@ -241,7 +186,6 @@ sap.ui.define([
 					var oCanvas = document.querySelector("canvas[id=" + this.getId() + "]");
 
 					this._activate(oCanvas, this);
-
 				}
 			},
 

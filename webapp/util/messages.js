@@ -8,7 +8,7 @@ sap.ui.define([
 	"use strict";
 
 	function fnExtractErrorMessageFromDetails(sDetails) {
-		var sMessageText;
+		var sMessageText = "";
 		if (jQuery.sap.startsWith(sDetails || "", "{\"error\":")) {
 			var oErrModel = new JSONModel();
 			oErrModel.setJSON(sDetails);
@@ -18,9 +18,9 @@ sap.ui.define([
 	}
 
 	function fnParseError(oParameter) {
-		var oParameters = null,
-			oResponse = null,
-			oError = {};
+		var oError = {},
+			oParameters = null,
+			oResponse = null;
 
 		// "getParameters": for the case of catching oDataModel "requestFailed" event
 		oParameters = oParameter.getParameters ? oParameter.getParameters() : null;
@@ -63,23 +63,59 @@ sap.ui.define([
 		},
 		
 		createDefaultLink: function() {
-			return new Link({
+			if (!this._oLink) {
+				this._oLink = new Link({
 					text: "Allgemeine Informationen anzeigen",
 					href: "https://eins.de",
 					target: "_blank"
-				});	
+				});
+			};
+			return this._oLink;
+		},
+
+		// Not used yet
+		newPopoverMessage: function (oControl, oTarget, sType, sTitle, sDescription, sLongText, sDetails) {
+			oControl._oMessageManager.addMessages(
+				new Message({
+					type: sType,
+					message: sTitle,
+					description: sDescription,
+					additionalText: sLongText,
+					technical: true,
+					technicalDetails: sDetails,
+					target: oTarget ? oTarget : this._oLink,
+					processor: oControl._oProcessor
+				})
+			);
 		},
 		
-		popoverMessage: function (sMessage, sText, sType, sTarget, that) {
-			that._oMessageManager.addMessages(
+		popoverMessage: function (sMessage, sText, sType, sTarget, oControl) {
+			oControl._oMessageManager.addMessages(
 				new Message({
 					message: sMessage,
 					type: sType,
+					description: sText,
 					additionalText: sText,
-					target: sTarget,
-					processor: that._oProcessor
+					target: sTarget ? sTarget : this._oLink,
+					processor: oControl._oProcessor
+				})
+			);
+		},
+		
+		popoverTechnicalMessage: function (sMessage, sText, sDetails, sType, sTarget, oControl) {
+			oControl._oMessageManager.addMessages(
+				new Message({
+					message: sMessage,
+					type: sType,
+					description: sText,
+					technicalDetails: sDetails,
+					technical: true,
+					additionalText: sText,
+					target: sTarget ? sTarget : this._oLink,
+					processor: oControl._oProcessor
 				})
 			);
 		}
+		
 	};
 });

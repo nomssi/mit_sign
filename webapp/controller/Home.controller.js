@@ -42,12 +42,17 @@ sap.ui.define([
 		onInit: function () {
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
-			// this._router.getRoute("sign").attachMatched(this._onRouteMatched, this);
+			// this._router.getRoute("").attachMatched(this._onRouteMatched, this);			
 
 			this._enableAutoReload();
 			this._initViewPropertiesModel();
+			this.initMessageManager(this);
 		},
 
+		// _onRouteMatched: function (oEvent) {
+		// 	this._oMessageManager.removeAllMessages(); // reset potential server-side messages
+		// },
+		
 		_reloadData: function () {
 			var oEventsList = this.byId("eventsList");
 			oEventsList.getBinding("items").refresh(true);
@@ -59,9 +64,12 @@ sap.ui.define([
 			var date = new Date();
 			this._oViewProperties = new JSONModel({
 				updateTime: date.toLocaleTimeString("de-DE"),
-				listTableTitle: this.getResourceBundle().getText("ReceiverName")
+				listTableTitle: this.getResourceBundle().getText("ReceiverName"),
+				UserName: "Nutzer..."
 			});
 			this.setModel(this._oViewProperties, "viewProperties");
+
+		//	this._oViewProperties.setProperty("/UserName", this._getUserName());
 		},
 
 		/**

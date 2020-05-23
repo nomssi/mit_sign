@@ -1,12 +1,13 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/m/MessagePopover",
-	"sap/m/MessagePopoverItem",
+	"sap/ui/core/Core",
 	"sap/ui/core/UIComponent",
+	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/routing/History",
-	"../util/messages",
-	"sap/ui/model/json/JSONModel"
-], function (Controller, MessagePopover, MessagePopoverItem, UIComponent, History, Messages, JSONModel) {
+	"sap/m/MessagePopover",
+	"sap/m/MessageItem",
+	"../util/messages"
+], function (Controller, Core, UIComponent, JSONModel, History, MessagePopover, MessageItem, Messages) {
 	"use strict";
 
 	return Controller.extend("Signature.controller.BaseController", {
@@ -16,7 +17,7 @@ sap.ui.define([
 			that._oLink = Messages.createDefaultLink();
 
 			// create a message manager and register the message model
-			that._oMessageManager = sap.ui.getCore().getMessageManager();
+			that._oMessageManager = Core.getMessageManager();
 			that._oMessageManager.registerObject(that._oView, true);
 			that._oProcessor = that._oMessageManager.getMessageModel();
 			that._oView.setModel(that._oProcessor, "message");
@@ -118,40 +119,54 @@ sap.ui.define([
 			});
 		},
 
+		removeMessageFromTarget: function (sTarget) {
+			// clear potential server-side messages to allow saving the item again
+			this._oMessageManager.getMessageModel().getData().forEach(function (oMessage) {
+				if (oMessage.target === sTarget) {
+					this._oMessageManager.removeMessages(oMessage);
+				}
+			}.bind(this));
+		},
+
 		/**
 		 * Only validation on client side, does not involve a back-end server.
 		 * @param {sap.ui.base.Event} oEvent Press event of the button to display the MessagePopover
 		 * From: openui5/src/sap.m/test/sap/m/demokit/cart/webapp/
 		 */
 		handleMessagePopoverPress: function (oEvent) {
-			var oButton = oEvent.getSource();
+			if (!this._oMessagePopover) {
+				this._createMessagePopover();
+			}
+			// this._oMessagePopover.openBy(oEvent.getSource());
+			this._oMessagePopover.toggle(oEvent.getSource());
+		},
 
+		_createMessagePopover: function () {
 			/**
 			 * Gather information that will be visible on the MessagePopover
 			 */
-			var oMessageTemplate = new MessagePopoverItem({
-				type: "{message>type}",
-				title: "{message>message}",
-				subtitle: "{message>additionalText}",
-				// activeTitle: "{message>active}",
-				// description: '{message>description}',
-				link: this._oLink
+			this._oMessagePopover = new MessagePopover(this.createId("errorMessagePopover"), {
+				items: {
+					path: "message>/",
+					template: new MessageItem({
+						type: "{message>type}",
+						title: "{message>message}",
+						subtitle: "{message>additionalText}",
+						groupName: "{message>message}",
+						// activeTitle: "{message>active}",
+						description: "{message>description}"
+					})
+				},
+				groupItems: true,
+				afterClose: function () {
+					this._oMessagePopover.destroy();
+				}
 			});
+			this._addDependent(this._oMessagePopover);
 
-			if (!this.byId("errorMessagePopover")) {
-				var oMessagePopover = new MessagePopover(this.createId("errorMessagePopover"), {
-					items: {
-						path: "message>/",
-						template: oMessageTemplate
-					},
-					afterClose: function () {
-						oMessagePopover.destroy();
-					}
-				});
-				this._addDependent(oMessagePopover);
-			}
-
-			oMessagePopover.openBy(oButton);
+			this._oMessagePopover.getBinding("items").attachChange(function (oEvent) {
+				this._oMessagePopover.navigateBack();
+			}.bind(this));
 		},
 
 		// To be able to stub the addDependent function in unit test, we added it in a separate function

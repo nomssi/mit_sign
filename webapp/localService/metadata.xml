@@ -25,6 +25,10 @@
 					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="ReceiverPartner" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Saved" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Flag" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="EMailValid" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Flag" sap:creatable="false" sap:updatable="false" 
+					sap:sortable="false" sap:filterable="false" /> 
 				<NavigationProperty Name="EventPositions" Relationship="MAK.SIGNATURE_SRV.EventPosition" FromRole="FromRole_EventPosition"
 					ToRole="ToRole_EventPosition"/>
 				<NavigationProperty Name="EventHead" Relationship="MAK.SIGNATURE_SRV.EventHead" FromRole="FromRole_EventHead" ToRole="ToRole_EventHead"/>
@@ -51,8 +55,8 @@
 					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="Posnr" Type="Edm.Int16" Nullable="false" sap:unicode="false" sap:label="Untzeich.INT2/int16" sap:creatable="false"
 					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-				<Property Name="Lfimg" Type="Edm.Decimal" Scale="3" Precision="13" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lfimg" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3" sap:unicode="false" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
 				<Property Name="Meins" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="Maktx" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
@@ -93,13 +97,13 @@
 			</Association>
 			<EntityContainer Name="MAK_SIGNATURE_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
 				<EntitySet Name="Events" EntityType="MAK.SIGNATURE_SRV.Event" sap:creatable="false" sap:updatable="false" sap:deletable="false"
-					sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+					sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="Heads" EntityType="MAK.SIGNATURE_SRV.Head" sap:creatable="false" sap:updatable="false" sap:deletable="false"
 					sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="Positions" EntityType="MAK.SIGNATURE_SRV.Position" sap:creatable="false" sap:updatable="false" sap:deletable="false"
 					sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="Users" EntityType="MAK.SIGNATURE_SRV.User" sap:label="Lager Mitarbeiter" sap:creatable="false" sap:updatable="false"
-					sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 				<AssociationSet Name="EventHeadSet" Association="MAK.SIGNATURE_SRV.EventHead" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:content-version="1">
 					<End EntitySet="Events" Role="FromRole_EventHead"/>
@@ -114,15 +118,15 @@
 					<Parameter Name="Vbeln" Type="Edm.String" Mode="In"/>
 				</FunctionImport>
 				<FunctionImport Name="SaveSignature" ReturnType="MAK.SIGNATURE_SRV.Event" EntitySet="Events" m:HttpMethod="POST">
-					<Parameter Name="Sign_Abholer" Type="Edm.String" Mode="In"/>
+					<Parameter Name="SignatureReceiver" Type="Edm.String" Mode="In"/>
 					<Parameter Name="Vbeln" Type="Edm.String" Mode="In"/>
-					<Parameter Name="Lager" Type="Edm.String" Mode="In"/>
-					<Parameter Name="Abholer" Type="Edm.String" Mode="In"/>
-					<Parameter Name="Sign_Lager" Type="Edm.String" Mode="In"/>
+					<Parameter Name="Issuer" Type="Edm.String" Mode="In"/>
+					<Parameter Name="Receiver" Type="Edm.String" Mode="In"/>
+					<Parameter Name="SignatureIssuer" Type="Edm.String" Mode="In"/>
 				</FunctionImport>
 			</EntityContainer>
-			<atom:link rel="self" href="http://obelix3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
-			<atom:link rel="latest-version" href="http://obelix3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata"
+			<atom:link rel="self" href="http://OBELIX3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://OBELIX3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata"
 				xmlns:atom="http://www.w3.org/2005/Atom"/>
 		</Schema>
 	</edmx:DataServices>

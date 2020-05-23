@@ -35,6 +35,39 @@ sap.ui.define([
 			};
 
 			return mStatusText[sStatus] || sStatus;
+		},
+
+		formatEmail: function (sFloeId) {
+			if (sFloeId && sFloeId !== "0000000000") {
+				return sFloeId;
+			};
+			return "";
+		},
+
+		formatMarker: function (sFloeId, sSaved) {
+			var sMarker;
+			if (sFloeId && sFloeId !== "0000000000") {
+				sMarker = "Flagged";
+			} else {
+				if (sSaved) {
+					sMarker = "Draft";
+				} else {
+					sMarker = "Favorite";
+				};
+			};
+			return sMarker;
+		},
+
+		formatState: function (sFloeId, sSaved) {
+			var sState;
+			if (sFloeId && sFloeId !== "0000000000") {
+				sState = "Success";
+			} else if (sSaved) {
+				sState ="Warning";
+			} else {
+				sState = "None";
+			};
+			return sState;
 		}
 
 	};
