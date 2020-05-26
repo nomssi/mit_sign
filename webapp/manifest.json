@@ -109,7 +109,7 @@
 			},
 			"routes": [
 				{
-					"name": "home",					
+					"name": "home",
 					"pattern": "",
 					"target": "home"
 				},
@@ -159,5 +159,9 @@
 				}
 			}
 		}
+	},
+	"sap.platform.hcp": {
+		"uri": "webapp",
+		"_version": "1.1.0"
 	}
 }

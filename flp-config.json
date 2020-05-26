@@ -1,0 +1,35 @@
+{
+    "application": {
+        "id": "",
+        "title": "Signature.Signature",
+        "description": "Lieferschein unterschreiben",
+        "type": "SAP_UI5_Component",
+        "componentUrl": "/webapp",
+        "appUrl": "#Signature-Display",
+        "navigationComponentName": "Signature",
+        "intentSemanticObject": "Signature",
+        "intentAction": "Display",
+        "html5ApplicationName": "signature",
+        "HCPParentApplicationName": ""
+    },
+    "assignment": {
+        "groups": [
+            "4bf6e577-c8bd-4ae8-ac4a-e0518ba0a350"
+        ],
+        "contentPackages": [
+            "60a25dc6-ddb8-471e-b6d9-ff4e54ed92b5"
+        ],
+        "categories": []
+    },
+    "tile": {
+        "type": "StaticTile",
+        "title": "eLieferschein",
+        "subtitle": "Lieferschein unterschreiben",
+        "searchKeywords": "eLieferschein,Lieferschein unterschreiben",
+        "displayIconUrl": "sap-icon://signature",
+        "displayInfoText": "",
+        "size": "1x1",
+        "serviceURL": "",
+        "refreshInterval": ""
+    }
+}

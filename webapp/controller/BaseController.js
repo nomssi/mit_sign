@@ -136,7 +136,7 @@ sap.ui.define([
 		handleMessagePopoverPress: function (oEvent) {
 			if (!this._oMessagePopover) {
 				this._createMessagePopover();
-			}
+			};
 			// this._oMessagePopover.openBy(oEvent.getSource());
 			this._oMessagePopover.toggle(oEvent.getSource());
 		},
@@ -151,9 +151,10 @@ sap.ui.define([
 					template: new MessageItem({
 						type: "{message>type}",
 						title: "{message>message}",
+						active: "{message>active}",
 						subtitle: "{message>additionalText}",
 						groupName: "{message>message}",
-						// activeTitle: "{message>active}",
+						activeTitle: "{message>activeTitle}",
 						description: "{message>description}"
 					})
 				},

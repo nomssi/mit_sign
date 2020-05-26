@@ -251,6 +251,8 @@ sap.ui.define([
 					sap.ui.core.MessageType.Information,
 					null, this);
 
+				Messages.popoverHelpMessage(this.sVbeln, this);
+				
 				this._oBusyDialog.close();
 
 				this.getRouter().navTo("error", {
@@ -306,7 +308,7 @@ sap.ui.define([
 
 		onBusyDialogClosed: function (oEvent) {
 			if (oEvent.getParameter("cancelPressed")) {
-				MessageToast.show("{i18n>save.cancelled}");
+				MessageToast.show(this._oResourceBundle.getText("save.cancelled"));
 			};
 		}
 

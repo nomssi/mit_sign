@@ -58,6 +58,8 @@ sap.ui.define([
 					this.fireEvent("onEndEvent", {
 						value: ""
 					});
+					this.signaturePad.off();
+					this.signaturePad.on();
 				}
 			},
 
@@ -150,6 +152,8 @@ sap.ui.define([
 					// have to clear it manually.
 
 					this.signaturePad.clear(); // otherwise isEmpty() might return incorrect value	
+					this.signaturePad.off();
+					this.signaturePad.on();   // fix?
 				}
 			},
 

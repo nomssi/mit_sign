@@ -102,6 +102,35 @@ sap.ui.define([
 			);
 		},
 		
+		popoverHelpMessage: function (sMessage, oControl) {
+			var sHelpDescription = "<h2>Fehler beim Speichern</h2>" +
+				"<p>Der unterschriebene Beleg wurde nicht oder nicht vollständig bearbeitet.</p>" +
+				"<ul>" +
+				"	<li>Kein E-Mail-Empfänger: Beleg wurde möglicherweise erzeugt und konnte nicht versendet werden.</li>" +
+				"	<li>Allgemeneine <a href=\"http://eins.de/\">Informationen.</a></li>" +
+				"</ul>" +
+				"<ol>" +
+				"	<li>Wenn der Beleg nicht mehr in der <a href=\"#\">Liste</a> erscheint, gilt er als  verarbeitet.</li>" +
+				"	<li>Mit Transaktion VL71 können Sie die Nachricht ZLD0 selektieren und den Beleg drucken</li>" +				
+				"</ol>";
+
+			oControl._oMessageManager.addMessages(
+				new Message({
+					message: "Wie weiter verfahen?",
+					type: sap.ui.core.MessageType.Information,
+
+					description: sMessage,
+					technicalDetails: sHelpDescription,
+					technical: true,
+
+					additionalText: sHelpDescription,
+					target: this._oLink,
+					processor: oControl._oProcessor
+				})
+
+			);
+		},
+
 		popoverTechnicalMessage: function (sMessage, sText, sDetails, sType, sTarget, oControl) {
 			oControl._oMessageManager.addMessages(
 				new Message({
