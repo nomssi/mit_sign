@@ -7,10 +7,15 @@
 		<content>
 			<PullToRefresh id="pullToRefresh" visible="{device>/support/touch}" refresh=".onRefresh"/>
 			<!-- This list shows the search results -->
-			<List visible="true" id="eventsList" class="sapUIResponsiveMargin" selectionChange=".onEventListSelect" noDataText="{i18n>homeNoData}"
+			<List id="eventsList" class="sapUIResponsiveMargin" 
+			      selectionChange=".onEventListSelect" noDataText="{i18n>homeNoData}"
 				busyIndicatorDelay="0" sticky="HeaderToolbar"
-				items="{ path : '/Events', sorter : { path : 'VBELN', descending : false }, parameters : { 'expand' : 'EventPositions' } }" growing="true"
-				growingThreshold="5" growingScrollToLoad="true" updateFinished=".onUpdateFinished">
+				items="{ path : '/Events', 
+				         sorter : { path : 'VBELN', descending : false }, 
+				         parameters : { 'expand' : 'EventPositions' } }" 
+				growing="true"
+				growingThreshold="5" growingScrollToLoad="true" 
+				updateFinished=".onUpdateFinished">
 				<headerToolbar>
 					<Toolbar>
 						<ToggleButton id="autoSync" icon="sap-icon://synchronize" enabled="true" pressed="true" press="toggleAutoUpdate"/>
@@ -43,7 +48,7 @@
 								          		{path: 'Saved'},
 								          		{path: 'Active'},
 								          		{path: 'EMailValid'}],
-										          formatter: '.formatter.formatStateText' }"/>
+										          formatter: '.formatter.formatObject' }"/>
 						</firstStatus>
 						<secondStatus>
 							<ObjectStatus visible="{= ${Saved}}"

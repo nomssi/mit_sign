@@ -105,7 +105,7 @@ sap.ui.define([
 				
 			var oSelectedItem = oEvent.getSource();
 			var sId = oSelectedItem.getBindingContext().getProperty("VBELN");
-			this._router.navTo("sign", {id: sId	});
+			this._router.navTo("sign", {id: sId});
 		},
 
 		onFilterEvents: function (oEvent) {

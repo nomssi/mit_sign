@@ -79,7 +79,8 @@ sap.ui.define([
 			export: function () {
 				var _url;
 				if (this.signaturePad) {
-					_url = this.signCanvas.toDataURL("image/svg+xml");
+					_url = this.signCanvas.toDataURL("image/png");
+					this.signaturePad.on();
 				}
 				return _url;
 			},

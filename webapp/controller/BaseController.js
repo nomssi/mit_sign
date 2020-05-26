@@ -93,11 +93,11 @@ sap.ui.define([
 
 			oModel.metadataLoaded().then(function () {
 
-				var sPath = "/" + target.getModel().createKey("Events", {
+				var sObjectPath = "/" + target.getModel().createKey("Events", {
 					VBELN: sVbeln
 				});
 				oView.bindElement({
-					path: sPath,
+					path: sObjectPath,
 					events: {
 						dataRequested: function () {
 							oView.setBusy(true);
@@ -108,7 +108,7 @@ sap.ui.define([
 					}
 				});
 
-				var oData = oModel.getData(sPath);
+				var oData = oModel.getData(sObjectPath);
 				// if there is no data the model has to request new data
 				if (!oData) {
 					oView.setBusyIndicatorDelay(0);
