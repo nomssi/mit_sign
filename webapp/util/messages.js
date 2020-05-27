@@ -118,7 +118,7 @@ sap.ui.define([
 				new Message({
 					message: "Wie weiter verfahen?",
 					type: sap.ui.core.MessageType.Information,
-
+					active: true,
 					description: sMessage,
 					technicalDetails: sHelpDescription,
 					technical: true,

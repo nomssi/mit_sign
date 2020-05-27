@@ -75,7 +75,7 @@ sap.ui.define([
 				},
 				Vbeln: ""
 			};
-			var oDraftModel = new JSONModel(oData); // binding is 2 ways
+			var oDraftModel = new JSONModel(oData); // binding is TwoWays
 			this.setModel(oDraftModel, "draft");
 		},
 
@@ -137,8 +137,8 @@ sap.ui.define([
 			if (!this._oMessagePopover) {
 				this._createMessagePopover();
 			};
-			// this._oMessagePopover.openBy(oEvent.getSource());
-			this._oMessagePopover.toggle(oEvent.getSource());
+			this._oMessagePopover.navigateBack();
+			this._oMessagePopover.toggle(oEvent.getSource());		// this._oMessagePopover.openBy(oEvent.getSource());
 		},
 
 		_createMessagePopover: function () {
@@ -167,9 +167,9 @@ sap.ui.define([
 			});
 			this._addDependent(this._oMessagePopover);
 
-			this._oMessagePopover.getBinding("items").attachChange(function (oEvent) {
-				this._oMessagePopover.navigateBack();
-			}.bind(this));
+			// this._oMessagePopover.getBinding("items").attachChange(function (oEvent) {
+			// 	this._oMessagePopover.navigateBack();
+			// }.bind(this));
 		},
 
 		// To be able to stub the addDependent function in unit test, we added it in a separate function

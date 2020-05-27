@@ -20,7 +20,9 @@
 		}
 	},
 	"ReceiverPartner": "Servicebereich Vogtland/Plauen",
-	"CreatedBy": "Herbert Grönemeyer"
+	"CreatedBy": "Herbert Grönemeyer",
+	"Active": true,
+	"EMailValid": true
 }, {
 	"VBELN": "0080054160",
 	"SignatureReleaser": "SignatureReleaser2",
@@ -43,7 +45,8 @@
 		}
 	},
 	"ReceiverPartner": "Service Annaberg",
-	"CreatedBy": "Christopher Hermann"
+	"CreatedBy": "Christopher Hermann",
+	"Active": true
 }, {
 	"VBELN": "0080055880",
 	"SignatureReleaser": "SignatureReleaser3",
@@ -52,7 +55,8 @@
 	"SignerName": "Nomssi Jacques Signer3",
 	"ReceiverName": "Jacques Nomssi Receiver3",
 	"CreatedBy": "Conny Richter",
-	"ReceiverPartner": "HKW Arbeitsvorb. Werkstatt Mechanik"
+	"ReceiverPartner": "HKW Arbeitsvorb. Werkstatt Mechanik",
+	"Active": true
 }, {
 	"VBELN": "0080055813",
 	"SignatureReleaser": "SignatureReleaser4",
@@ -61,7 +65,8 @@
 	"ReceiverName": "Receiver5",
 	"PDFUrl": "PDFUrl4",
 	"CreatedBy": "Conny Richter",
-	"ReceiverPartner": "Servicebereich Vogtland/Plauen"
+	"ReceiverPartner": "Servicebereich Vogtland/Plauen",
+	"Active": true
 }, {
 	"VBELN": "0080054199",
 	"SignatureReleaser": "SignatureReleaser5",
@@ -70,7 +75,8 @@
 	"SignerName": "Signer5",
 	"ReceiverName": "Receiver5",
 	"CreatedBy": "Conny Richter",
-	"ReceiverPartner": "HKW Arbeitsvorb. Werkstatt Mechanik"
+	"ReceiverPartner": "HKW Arbeitsvorb. Werkstatt Mechanik",
+	"Active": true
 }, {
 	"VBELN": "0080057046",
 	"SignatureReleaser": "SignatureReleaser6",
@@ -79,7 +85,8 @@
 	"SignerName": "Signer",
 	"ReceiverName": "Servicebereich Erzgebirge",
 	"CreatedBy": "Conny Richter",
-	"ReceiverPartner": "Strieter Elektronanlagenbau GmbH"
+	"ReceiverPartner": "Strieter Elektronanlagenbau GmbH",
+	"Active": true
 }, {
 	"VBELN": "0080VBELN7",
 	"PDFUrl": "PDFUrl7",
@@ -93,14 +100,18 @@
 	"SignerName": "Signer08",
 	"ReceiverName": "Empfänger08",
 	"CreatedBy": "Felix Lemke",
-	"ReceiverPartner": "Gunter Hüttner + Co. GmbH"
+	"ReceiverPartner": "Gunter Hüttner + Co. GmbH",
+	"Saved": true,
+	"SignatureReceiver": "TestSignatureRecv8",
+	"FloeId": "Floe13444"
 }, {
 	"VBELN": "0080VBELN9",
 	"PDFUrl": "PDFUrl9",
 	"SignerName": "Signer09",
 	"ReceiverName": "Empfänger09",
 	"CreatedBy": "Felix Lemke",
-	"ReceiverPartner": "Servicebereich Vogtland/Plauen"
+	"ReceiverPartner": "Servicebereich Vogtland/Plauen",
+	"Active": true
 }, {
 	"VBELN": "008VBELN10",
 	"PDFUrl": "PDFUrl10",

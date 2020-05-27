@@ -25,13 +25,15 @@
 					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="ReceiverPartner" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Active" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Flag" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="Saved" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Flag" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
-				<Property Name="EMailValid" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Flag" sap:creatable="false" sap:updatable="false" 
-					sap:sortable="false" sap:filterable="false" /> 
+				<Property Name="EMailValid" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Flag" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+				<NavigationProperty Name="EventHead" Relationship="MAK.SIGNATURE_SRV.EventHead" FromRole="FromRole_EventHead" ToRole="ToRole_EventHead"/>
 				<NavigationProperty Name="EventPositions" Relationship="MAK.SIGNATURE_SRV.EventPosition" FromRole="FromRole_EventPosition"
 					ToRole="ToRole_EventPosition"/>
-				<NavigationProperty Name="EventHead" Relationship="MAK.SIGNATURE_SRV.EventHead" FromRole="FromRole_EventHead" ToRole="ToRole_EventHead"/>
 			</EntityType>
 			<EntityType Name="Head" sap:content-version="1">
 				<Key>
@@ -114,7 +116,7 @@
 					<End EntitySet="Events" Role="FromRole_EventPosition"/>
 					<End EntitySet="Positions" Role="ToRole_EventPosition"/>
 				</AssociationSet>
-				<FunctionImport Name="ClearSignature" ReturnType="MAK.SIGNATURE_SRV.Event" EntitySet="Events" m:HttpMethod="POST">
+				<FunctionImport Name="TriggerOutput" ReturnType="MAK.SIGNATURE_SRV.Event" EntitySet="Events" m:HttpMethod="POST">
 					<Parameter Name="Vbeln" Type="Edm.String" Mode="In"/>
 				</FunctionImport>
 				<FunctionImport Name="SaveSignature" ReturnType="MAK.SIGNATURE_SRV.Event" EntitySet="Events" m:HttpMethod="POST">

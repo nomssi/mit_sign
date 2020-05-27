@@ -10,6 +10,16 @@
 					<Button id="homeButton" icon="sap-icon://home" type="Emphasized" text="{i18n&gt;homeButtonText}" press=".onHome"/>
 				</headerContent>		
 			<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Error}" type="Error" showIcon="true"/>
+			<Button id="buttonPrint" 
+				text="Manueller Druck"
+				icon="sap-icon://print"
+				press="onActionPrint">
+			</Button>
+			<Button id="buttonClose" 
+				text="Abschluss erzwingen"
+				icon="sap-icon://complete"
+				press="onActionClose">
+			</Button>			
 				<MessageView items="{message>/}">
 					<MessageItem
 						type="{message>type}"

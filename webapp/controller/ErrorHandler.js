@@ -23,10 +23,6 @@ sap.ui.define([
 			this._oMessageManager = sap.ui.getCore().getMessageManager();
 			this._oProcessor = this._oMessageManager.getMessageModel();
 
-			// this._oMessagePopover.getBinding("items").attachChange(function (oEvent) {
-			// 	this._oMessagePopover.navigateBack();
-			// }.bind(this));
-
 			this._oModel.attachMetadataFailed(function (oEvent) {
 				var oParams = oEvent.getParameters();
 				this._showServiceError(oParams);
@@ -55,7 +51,7 @@ sap.ui.define([
 			var sDetails = Messages.getErrorDetails(oError);
 			Messages.popoverTechnicalMessage(oError.message,  // Messages.getErrorContent(oParameter),
 				sDetails,
-				oError.responseText,
+				oError.responseText || "",
 				sap.ui.core.MessageType.Error,
 				null,
 				this);

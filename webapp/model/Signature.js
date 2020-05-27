@@ -11,14 +11,23 @@ sap.ui.define([
 			this._oODataModel = oComponent.getModel();
 		},
 
+		// externer Aufruf 
+		triggerOutput: function(sVbeln, fnAfterTrigger, fnOutputFailed) {
+			var oOutputData = {
+				Vbeln: sVbeln
+			};
+			this._callFunctionImport("/TriggerOutput", oOutputData, fnAfterTrigger, "isBusySaving");
+			// this._submitChanges(fnOutputFailed, fnAfterTrigger);
+			this._submitChanges(null, null);
+		},
+		
 		// Saves Draft 
 		saveSignature: function (fnAfterSaved, fnSaveFailed, oSignData) {
-			if (typeof oSignData === "undefined") {
-				this._submitChanges(null, null);
-			} else {
+			if (typeof oSignData !== "undefined") {
 				this._callFunctionImport("/SaveSignature", oSignData, fnAfterSaved, fnSaveFailed);
-				this._submitChanges(fnSaveFailed, fnAfterSaved);
 			};
+			this._submitChanges(null, null);
+			// this._submitChanges(fnSaveFailed, fnAfterSaved);
 		},
 
 		_submitChanges: function (fnSaveFailed, fnAfterSaved) {

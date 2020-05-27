@@ -219,7 +219,7 @@ sap.ui.define([
 		_handleValueHelpClose: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem");
 			if (oSelectedItem) {
-				this._oSourceReleaser.field.setValue(oSelectedItem.getTitle()); // also sets JSON draft model property "/Releaser/Name" (two way binding)
+				this._oSourceReleaser.field.setValue(oSelectedItem.getTitle()); // also sets JSON draft model property "/Releaser/Name" (TwoWay binding)
 				this._validateSign(this._oSourceReleaser);
 			}
 			oEvent.getSource().getBinding("items").filter([]);
