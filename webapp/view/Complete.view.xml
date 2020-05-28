@@ -24,7 +24,10 @@
 		<footer>
 			<Bar id="wizardFooterBar" visible="true">
 				<contentLeft>
-					<Button id="showPopoverButton" icon="sap-icon://message-popup" type="Emphasized" text="{= ${message&gt;/}.length }"
+					<Button id="showPopoverButton" 
+						icon="sap-icon://message-popup" 
+						type="Emphasized" 
+						text="{= ${message&gt;/}.length }"
 						press=".handleMessagePopoverPress"/>
 				</contentLeft>
 			</Bar>

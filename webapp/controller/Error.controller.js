@@ -11,8 +11,10 @@ sap.ui.define([
 			this.getRouter().getRoute("error").attachPatternMatched(this._routePatternMatched, this);
 
 			this.initMessageManager(this);
-			this._oHelper = new Signature(this.getOwnerComponent());
-			this._oResourceBundle = this.getRessourceBundle(); // from BaseController
+
+			var oComponent = this.getOwnerComponent();
+			this._oHelper = new Signature(oComponent);
+			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 		},
 
 		_routePatternMatched: function (oEvent) {
@@ -21,29 +23,31 @@ sap.ui.define([
 		},
 
 		onActionPrint: function (oEvent) {
+			var that = this;
 			var fnAfterTrigger = function () {
-				MessageToast.show(this._oResourceBundle.getText("print.triggered"));
+				MessageToast.show(that._oResourceBundle.getText("print.triggered"));
 			};
 			var fnOutputFailed = function () {
-				MessageToast.show(this._oResourceBundle.getText("print.failed"));
+				MessageToast.show(that._oResourceBundle.getText("print.failed"));
 			};
 			var sVbeln = oEvent.getSource().getBindingContext().getProperty("VBELN");
-			this._oHelper.triggerOutput(sVbeln, fnAfterTrigger.bind(this), fnOutputFailed.bind(this));
+			this._oHelper.triggerOutput(sVbeln, fnAfterTrigger, fnOutputFailed);
 		},
 
 		onActionClose: function (oEvent) {
+			var that = this;
 			var sVbeln = oEvent.getSource().getBindingContext().getProperty("VBELN");
 
 			var fnAfterTrigger = function () {
-				MessageToast.show(sVbeln + " " + this._oResourceBundle.getText("close.completed"));
+				MessageToast.show(sVbeln + " " + that._oResourceBundle.getText("close.completed"));
 			};
 			var fnOutputFailed = function () {
-				MessageToast.show(sVbeln + " " + this._oResourceBundle.getText("close.failed"));
+				MessageToast.show(sVbeln + " " + that._oResourceBundle.getText("close.failed"));
 			};
 
 			var bActive = false;
 			this._oHelper.updateSignature(sVbeln, bActive,
-				fnAfterTrigger.bind(this), fnOutputFailed.bind(this));
+				fnAfterTrigger, fnOutputFailed);
 		}
 
 	});

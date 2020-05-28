@@ -1,7 +1,6 @@
 sap.ui.define([
 	"./BaseController",
 	"../model/Signature",
-	"../model/formatter",
 	"../util/messages",
 	"../util/controls",
 	"sap/ui/core/Fragment",
@@ -10,7 +9,6 @@ sap.ui.define([
 ], function (
 	BaseController,
 	Signature,
-	formatter,
 	Messages,
 	controls,
 	Fragment,
@@ -19,8 +17,6 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("Signature.controller.Sign", {
-
-		formatter: formatter,
 
 		exit: function () {
 			this._oHelper.destroy();

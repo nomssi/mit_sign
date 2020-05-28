@@ -6,12 +6,15 @@ sap.ui.define([
 	"sap/ui/core/routing/History",
 	"sap/m/MessagePopover",
 	"sap/m/MessageItem",
+	"../model/formatter",
 	"../util/messages"
-], function (Controller, Core, UIComponent, JSONModel, History, MessagePopover, MessageItem, Messages) {
+], function (Controller, Core, UIComponent, JSONModel, History, MessagePopover, MessageItem, formatter, Messages) {
 	"use strict";
 
 	return Controller.extend("Signature.controller.BaseController", {
-
+		
+		formatter: formatter,
+		
 		initMessageManager: function (that) {
 			that._oView = that.getView();
 			that._oLink = Messages.createDefaultLink();
@@ -21,8 +24,19 @@ sap.ui.define([
 			that._oMessageManager.registerObject(that._oView, true);
 			that._oProcessor = that._oMessageManager.getMessageModel();
 			that._oView.setModel(that._oProcessor, "message");
+
+			that._createMessagePopover();
+
+			//this._oMessagePopover.getBinding("items").attachChange(this._modelChanged.bind(this));
 		},
 
+		_modelChanged: function () {
+			this._oMessagePopover.navigateBack();
+			var oButton = this.getView().byId("showPopoverButton");
+			oButton.setType(this.formatter.buttonTypeFormatter().bind(this));
+			oButton.setIcon(this.formatter.buttonIconFormatter().bind(this));
+		},
+		
 		/**
 		 * Convenience method for accessing the router.
 		 * @public
@@ -117,6 +131,7 @@ sap.ui.define([
 					});
 				}
 			});
+
 		},
 
 		removeMessageFromTarget: function (sTarget) {
@@ -137,44 +152,35 @@ sap.ui.define([
 			if (!this._oMessagePopover) {
 				this._createMessagePopover();
 			};
-			this._oMessagePopover.navigateBack();
-			this._oMessagePopover.toggle(oEvent.getSource());		// this._oMessagePopover.openBy(oEvent.getSource());
+			this._oMessagePopover.toggle(oEvent.getSource()); // this._oMessagePopover.openBy(oEvent.getSource());
 		},
 
 		_createMessagePopover: function () {
+			var that = this;
 			/**
 			 * Gather information that will be visible on the MessagePopover
 			 */
-			this._oMessagePopover = new MessagePopover(this.createId("errorMessagePopover"), {
+			this._oMessagePopover = new MessagePopover({
 				items: {
 					path: "message>/",
 					template: new MessageItem({
-						type: "{message>type}",
 						title: "{message>message}",
-						active: "{message>active}",
+						type: "{message>type}",
+						activeTitle: "{message>activeTitle}",
+						description: "{message>description}",
 						subtitle: "{message>additionalText}",
 						groupName: "{message>message}",
-						activeTitle: "{message>activeTitle}",
-						description: "{message>description}"
+						markupDescription: true
 					})
 				},
-				groupItems: true,
-				afterClose: function () {
-					if (this._oMessagePopover) {
-						this._oMessagePopover.destroy();
-					}
-				}
+				groupItems: true
 			});
-			this._addDependent(this._oMessagePopover);
-
-			// this._oMessagePopover.getBinding("items").attachChange(function (oEvent) {
-			// 	this._oMessagePopover.navigateBack();
-			// }.bind(this));
+			this._addDependent(that._oMessagePopover);
 		},
 
 		// To be able to stub the addDependent function in unit test, we added it in a separate function
 		_addDependent: function (oMessagePopover) {
-			this.getView().addDependent(oMessagePopover);
+			this.getView().byId("showPopoverButton").addDependent(oMessagePopover);
 		},
 
 		/**

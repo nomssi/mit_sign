@@ -19,7 +19,7 @@ sap.ui.define([
 				VBELN: sVbeln,
 				Active: sActive
 			};
-			this._oDataModel.update(sObjectPath, oUpdateData, {success: fnAfterUpdate, 
+			this._oODataModel.update(sObjectPath, oUpdateData, {success: fnAfterUpdate, 
 																error: fnErrorHandler});
 			this._submitChanges(null, null);
 		},

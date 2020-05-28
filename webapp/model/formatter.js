@@ -52,9 +52,7 @@ sap.ui.define([
 				emailValid: bEmailValid
 			};
 			var oState = {
-				text: "",
-				icon: "sap-icon://status-error",
-				marker: ""
+				text: ""
 			};
 			var bemailSent = (oEvent.floeId && oEvent.floeId !== "0000000000");
 			if (oEvent.active) {
@@ -62,46 +60,36 @@ sap.ui.define([
 					if (oEvent.emailValid) {
 						if (bemailSent) {
 							oState.text = "versendet, Vorgang abgebrochen";
-							oState.icon = "sap-icon://warning";
 						} else {
 							oState.text = "Vorgang abgebrochen";
-							oState.icon = "sap-icon://status-in-process";
 						}
 					} else {
 						if (bemailSent) {
 							oState.text = "versendet, Empfänger E-Mail fehlt";
-							oState.icon = "sap-icon://status-error";
 						} else {
 							oState.text = "Empfänger E-Mail fehlt";
-							oState.icon = "sap-icon://status-in-process";
 						}
 					};
 				} else {
 					if (oEvent.emailValid) {
 						oState.text = "";
-						oState.icon = "sap-icon://start-event";
 					} else {
 						oState.text = "Empfänger E-Mail fehlt";
-						oState.icon = "sap-icon://error-start-event";
 					};
 				}
 			} else {
 				if (oEvent.saved) {
 					if (bemailSent) {
 						oState.text = "versendet";
-						oState.icon = "sap-icon://completed";
 					} else {
 						if (oEvent.emailValid) {
 							oState.text = "nicht versendet";
-							oState.icon = "sap-icon://sys-cancel";
 						} else {
 							oState.text = "Empfänger E-Mail fehlt";
-							oState.icon = "sap-icon://sys-error";
 						}
 					};
 				} else {
 					oState.text = "interner Fehler";
-					oState.icon = "sap-icon://sys-error";
 				}
 			};
 			return oState.text;
@@ -124,6 +112,59 @@ sap.ui.define([
 				};
 			};
 			return sState;
+		},
+
+		// Display the button type according to the message with the highest severity
+		// The priority of the message types are as follows: Error > Warning > Success > Info
+		// var aMessages = this._oProcessor.oData;
+		buttonTypeFormatter: function () {
+			var sHighestSeverity = "Emphasized";
+
+			var aMessages = this._oProcessor.oData;
+			aMessages.forEach(function (sMessage) {
+				switch (sMessage.type) {
+				case "Error":
+					sHighestSeverity = "Negative";
+					break;
+				case "Warning":
+					sHighestSeverity = sHighestSeverity === "Negative" ? sHighestSeverity : "Critical";
+					break;
+				case "Success":
+					sHighestSeverity = sHighestSeverity === "Negative" || sHighestSeverity === "Critical" ? sHighestSeverity : "Success";
+					break;
+				default:
+					sHighestSeverity = sHighestSeverity ? sHighestSeverity : "Neutral";
+					break;
+				}
+			});
+
+			return sHighestSeverity;
+		},
+
+		// Set the button icon according to the message with the highest severity
+		// var aMessages = this._oProcessor.oData;
+		buttonIconFormatter: function () {
+			var sIcon = "sap-icon://message-popup";
+
+			var aMessages = this._oProcessor.oData;
+			aMessages.forEach(function (sMessage) {
+				switch (sMessage.type) {
+				case "Error":
+					sIcon = "sap-icon://message-error";
+					break;
+				case "Warning":
+					sIcon = sIcon === "sap-icon://message-error" ? sIcon : "sap-icon://message-warning";
+					break;
+				case "Success":
+					sIcon = "sap-icon://message-error" && sIcon === "sap-icon://message-warning" ? sIcon : "sap-icon://message-success";
+					break;
+				default:
+					sIcon = sIcon ? sIcon : "sap-icon://message-information";
+					break;
+				}
+			});
+
+			return sIcon;
 		}
 
 	};

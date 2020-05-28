@@ -4,7 +4,7 @@
 		<headerContent>
 			<MenuButton id="homeIcon" icon="sap-icon://hint">
 				<Menu>
-					<MenuItem text="Version 0.9.1" />
+					<MenuItem text="Version 0.9.2" />
 				</Menu>				
 			</MenuButton>
 		</headerContent>
@@ -70,8 +70,11 @@
 				<footer>
 					<Bar id="homeFooterBar" visible="{= ${message>/}.length === 0 ? false : true}">
 						<contentLeft>
-							<Button id="showPopoverButton" icon="sap-icon://message-popup" type="Emphasized" text="{= ${message>/}.length }"
-								press=".handleMessagePopoverPress"/>
+						<Button id="showPopoverButton" 
+							icon="{ path: '/', formatter: '.formatter.buttonIconFormatter' }"
+							type="Emphasized" 							
+							text="{= ${message&gt;/}.length }"
+							press=".handleMessagePopoverPress"/>						
 						</contentLeft>
 					</Bar>
 				</footer>		

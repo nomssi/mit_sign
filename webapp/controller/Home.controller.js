@@ -1,7 +1,6 @@
 sap.ui.define([
 	"./BaseController",
 	"sap/ui/model/json/JSONModel",
-	"../model/formatter",
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
 	"sap/ui/model/Sorter",
@@ -9,7 +8,6 @@ sap.ui.define([
 ], function (
 	BaseController,
 	JSONModel,
-	formatter,
 	Fragment,
 	Filter,
 	Sorter,
@@ -17,7 +15,6 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("Signature.controller.Home", {
-		formatter: formatter,
 
 		onExit: function () {
 			this._disableAutoReload();
@@ -197,18 +194,6 @@ sap.ui.define([
 			var bDescending = mParams.sortDescending;
 			aSorters.push(new Sorter(sPath, bDescending));
 			oListBinding.sort(aSorters);
-		},
-
-		onSortVBELN: function () {
-			// reuse the current sorter
-			var oListBinding = this.getView().byId("eventsList").getBinding("items");
-			var aListSorters = oListBinding.aSorters;
-			var aSorter;
-			if (aListSorters.length > 0) {
-				aSorter = aListSorters[0];
-				aSorter.bDescending = !aSorter.bDescending;
-				oListBinding.sort(aSorter);
-			}
 		},
 
 		onReset: function () {
