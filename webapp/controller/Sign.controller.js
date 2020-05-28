@@ -36,7 +36,7 @@ sap.ui.define([
 			this._router = oComponent.getRouter();
 			this._router.getRoute("sign").attachPatternMatched(this._routePatternMatched, this);
 
-			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
+			this._oResourceBundle = this.getResourceBundle();	// inherit von BaseController
 			this._oHelper = new Signature(oComponent);
 
 			this.initDraftModel();
@@ -267,11 +267,6 @@ sap.ui.define([
 					this._oResourceBundle.getText("step.save"),
 					this._oResourceBundle.getText("pdf.Created") + " Datei {oData.PDFUrl}",
 					sap.ui.core.MessageType.Success,
-					null, this);
-
-				Messages.popoverMessage(this.sVbeln,
-					"EMail an {ReceiverName} per Mail mit Id {FloeId} versandt",
-					sap.ui.core.MessageType.Information,
 					null, this);
 
 				this._oBusyDialog.close();

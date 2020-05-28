@@ -2,7 +2,11 @@
 	controllerName="Signature.controller.Home">
 	<Page title="{viewProperties>/listTableTitle}">
 		<headerContent>
-			<Image id="einsIcon" src="https://www.eins.de/files/eins/layout/img/favicon.ico" decorative="true"/>
+			<MenuButton id="homeIcon" icon="sap-icon://hint">
+				<Menu>
+					<MenuItem text="Version 0.9.1" />
+				</Menu>				
+			</MenuButton>
 		</headerContent>
 		<content>
 			<PullToRefresh id="pullToRefresh" visible="{device>/support/touch}" refresh=".onRefresh"/>
@@ -17,8 +21,10 @@
 				growingThreshold="5" growingScrollToLoad="true" 
 				updateFinished=".onUpdateFinished">
 				<headerToolbar>
-					<Toolbar>
-						<ToggleButton id="autoSync" icon="sap-icon://synchronize" enabled="true" pressed="true" press="toggleAutoUpdate"/>
+					<OverflowToolbar>
+						<OverflowToolbarButton id="buttonSync" icon="sap-icon://synchronize" 
+								tooltip="{i18n>Synchronize}"
+								press="onDataReload"/>
 						<Title id="tableHeader" text="{viewProperties>/updateTime}" level="H3"/>
 						<ToolbarSpacer/>
 						<SearchField id="searchField" tooltip="{i18n>SearchTooltip}" maxLength="120" placeholder="{i18n>SearchRecipient}" search=".onFilterEvents"
@@ -30,7 +36,7 @@
 						<OverflowToolbarButton id="sortButton" press=".onOpenViewSettings" icon="sap-icon://sort" tooltip="{i18n>SortDialog}" type="Transparent"/>
 						<OverflowToolbarButton id="groupButton" press=".onGroupByEvent" icon="sap-icon://group-2" tooltip="{i18n>GroupDialog}" type="Transparent"/>
 						<OverflowToolbarButton id="resetButton" icon="sap-icon://reset" tooltip="{i18n>Reset}" type="Transparent" press="onReset"/>
-					</Toolbar>
+					</OverflowToolbar>
 				</headerToolbar>
 				<items>
 					<ObjectListItem type="Navigation"

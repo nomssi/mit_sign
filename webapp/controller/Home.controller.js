@@ -28,7 +28,7 @@ sap.ui.define([
 				// Create Trigger and register handler
 				this._intervalID = setInterval(function () {
 					this._reloadData();
-				}.bind(this), 20000);
+				}.bind(this), 240000);
 			}
 		},
 
@@ -42,10 +42,28 @@ sap.ui.define([
 		onInit: function () {
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
-	
+
 			this._enableAutoReload();
 			this._initViewPropertiesModel();
 			this.initMessageManager(this);
+		},
+
+		onRefresh: function () {
+			// trigger search again and hide pullToRefresh when data ready
+			var oBinding = this.byId("eventsList").getBinding("items");
+
+			var fnHandler = function () {
+				this.byId("pullToRefresh").hide();
+				oBinding.detachDataReceived(fnHandler);
+			}.bind(this);
+			oBinding.attachDataReceived(fnHandler);
+			this._reloadData();
+		},
+
+		onDataReload: function (oEvent) {
+			this._disableAutoReload();
+			this._reloadData();
+			this._enableAutoReload();
 		},
 
 		_reloadData: function () {
@@ -87,25 +105,14 @@ sap.ui.define([
 			this.getModel("viewProperties").setProperty("/listTableTitle", sTitle);
 		},
 
-		onRefresh: function () {
-			// trigger search again and hide pullToRefresh when data ready
-			var oEventsList = this.byId("eventsList");
-			var oBinding = oEventsList.getBinding("items");
-
-			var fnHandler = function () {
-				this.byId("pullToRefresh").hide();
-				oBinding.detachDataReceived(fnHandler);
-			}.bind(this);
-			oBinding.attachDataReceived(fnHandler);
-			this._reloadData();
-		},
-
 		onEventListItemPress: function (oEvent) {
-		 	this._oMessageManager.removeAllMessages(); // reset potential server-side messages
-				
+			this._oMessageManager.removeAllMessages(); // reset potential server-side messages
+
 			var oSelectedItem = oEvent.getSource();
 			var sId = oSelectedItem.getBindingContext().getProperty("VBELN");
-			this._router.navTo("sign", {id: sId});
+			this._router.navTo("sign", {
+				id: sId
+			});
 		},
 
 		onFilterEvents: function (oEvent) {
@@ -207,14 +214,7 @@ sap.ui.define([
 		onReset: function () {
 			var oListBinding = this.getView().byId("eventsList").getBinding("items");
 			oListBinding.sort([]);
-		},
-
-		toggleAutoUpdate: function (oEvent) {
-			if (oEvent.getSource().getPressed()) {
-				this._enableAutoReload();
-			} else {
-				this._disableAutoReload();
-			}
 		}
+
 	});
 });

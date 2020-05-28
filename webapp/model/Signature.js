@@ -11,7 +11,20 @@ sap.ui.define([
 			this._oODataModel = oComponent.getModel();
 		},
 
-		// externer Aufruf 
+		updateSignature: function(sVbeln, sActive, fnAfterUpdate, fnErrorHandler) {
+			var sObjectPath = "/" + this._oODataModel.createKey("Events", {
+					VBELN: sVbeln
+				});			
+			var oUpdateData = {
+				VBELN: sVbeln,
+				Active: sActive
+			};
+			this._oDataModel.update(sObjectPath, oUpdateData, {success: fnAfterUpdate, 
+																error: fnErrorHandler});
+			this._submitChanges(null, null);
+		},
+		
+		// externer Funktionsaufruf 
 		triggerOutput: function(sVbeln, fnAfterTrigger, fnOutputFailed) {
 			var oOutputData = {
 				Vbeln: sVbeln
