@@ -26,15 +26,6 @@ sap.ui.define([
 			that._oView.setModel(that._oProcessor, "message");
 
 			that._createMessagePopover();
-
-			//this._oMessagePopover.getBinding("items").attachChange(this._modelChanged.bind(this));
-		},
-
-		_modelChanged: function () {
-			this._oMessagePopover.navigateBack();
-			var oButton = this.getView().byId("showPopoverButton");
-			oButton.setType(this.formatter.buttonTypeFormatter().bind(this));
-			oButton.setIcon(this.formatter.buttonIconFormatter().bind(this));
 		},
 		
 		/**
@@ -143,6 +134,12 @@ sap.ui.define([
 			}.bind(this));
 		},
 
+		popoverModelDataChanged: function () {
+			if (this._oMessagePopover) {
+				this._oMessagePopover.navigateBack();
+			};
+		},
+		
 		/**
 		 * Only validation on client side, does not involve a back-end server.
 		 * @param {sap.ui.base.Event} oEvent Press event of the button to display the MessagePopover
@@ -152,7 +149,7 @@ sap.ui.define([
 			if (!this._oMessagePopover) {
 				this._createMessagePopover();
 			};
-			this._oMessagePopover.toggle(oEvent.getSource()); // this._oMessagePopover.openBy(oEvent.getSource());
+			this._oMessagePopover.toggle(oEvent.getSource()); //.openBy(oEvent.getSource());
 		},
 
 		_createMessagePopover: function () {
@@ -160,10 +157,7 @@ sap.ui.define([
 			/**
 			 * Gather information that will be visible on the MessagePopover
 			 */
-			this._oMessagePopover = new MessagePopover({
-				items: {
-					path: "message>/",
-					template: new MessageItem({
+			var oMessageTemplate = new MessageItem({
 						title: "{message>message}",
 						type: "{message>type}",
 						activeTitle: "{message>activeTitle}",
@@ -171,7 +165,12 @@ sap.ui.define([
 						subtitle: "{message>additionalText}",
 						groupName: "{message>message}",
 						markupDescription: true
-					})
+					});
+					
+			this._oMessagePopover = new MessagePopover({
+				items: {
+					path: "message>/",
+					template: oMessageTemplate
 				},
 				groupItems: true
 			});
@@ -180,6 +179,7 @@ sap.ui.define([
 
 		// To be able to stub the addDependent function in unit test, we added it in a separate function
 		_addDependent: function (oMessagePopover) {
+			this.getView().addDependent(oMessagePopover);
 			this.getView().byId("showPopoverButton").addDependent(oMessagePopover);
 		},
 
@@ -200,6 +200,7 @@ sap.ui.define([
 		 * @override
 		 */
 		onHome: function () {
+			this.popoverModelDataChanged();
 			this.getRouter().navTo("home");
 		}
 	});

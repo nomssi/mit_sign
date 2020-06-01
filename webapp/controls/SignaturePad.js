@@ -8,9 +8,6 @@ sap.ui.define([
 
 		return Control.extend("Signature.controls.SignaturePad", {
 
-			signCanvas: null,
-			signaturePad: null,
-
 			metadata: {
 				properties: {
 					/* other (configuration) properties */
@@ -89,6 +86,8 @@ sap.ui.define([
 
 			init: function () {
 				// var oControl = this;
+				this.signCanvas = null;
+				this.signaturePad = null;
 			},
 
 			renderer: {

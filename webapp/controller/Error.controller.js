@@ -11,6 +11,7 @@ sap.ui.define([
 			this.getRouter().getRoute("error").attachPatternMatched(this._routePatternMatched, this);
 
 			this.initMessageManager(this);
+			this._oMessagePopover.getBinding("items").attachChange(this.popoverModelDataChanged.bind(this));
 
 			var oComponent = this.getOwnerComponent();
 			this._oHelper = new Signature(oComponent);
@@ -20,6 +21,10 @@ sap.ui.define([
 		_routePatternMatched: function (oEvent) {
 			var sVbeln = oEvent.getParameter("arguments").id;
 			this.bindVbelnTo(this.getModel(), sVbeln, this);
+
+			if (this._oMessagePopover) {
+				this._oMessagePopover.navigateBack();
+			};
 		},
 
 		onActionPrint: function (oEvent) {

@@ -11,12 +11,12 @@
 				</headerContent>		
 			<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Error}" type="Error" showIcon="true"/>
 			<Button id="buttonPrint" 
-				text="Manueller Druck"
+				text="{i18n>trigger.Reprocessing}"
 				icon="sap-icon://print"
 				press="onActionPrint">
 			</Button>
 			<Button id="buttonClose" 
-				text="Abschluss erzwingen"
+				text="{i18n>set.Completed}"
 				icon="sap-icon://complete"
 				press="onActionClose">
 			</Button>			

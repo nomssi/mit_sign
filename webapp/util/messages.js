@@ -1,10 +1,11 @@
 sap.ui.define([
 		"sap/m/MessageBox",
 		"sap/ui/core/message/Message",
+		"sap/ui/core/HTML",		
 		"sap/ui/model/json/JSONModel",
 		"sap/m/Link",
 		"./controls"
-	], function(MessageBox, Message, JSONModel, Link, controls) {
+	], function(MessageBox, Message, HTML, JSONModel, Link, controls) {
 	"use strict";
 
 	function fnExtractErrorMessageFromDetails(sDetails) {
@@ -102,11 +103,14 @@ sap.ui.define([
 			);
 		},
 		
-		popoverHelpMessage: function (sMessage, oControl) {
-			var sHelpDescription = "<h2>Fehler beim Speichern</h2>" +
+		popoverHelpMessage: function (sMessage, oDetails, oControl) {
+			var oi18nModel = sap.ui.getCore().getModel("i18n");
+			var sTitle = oi18nModel ? oi18nModel.getResourceBundle().getText("step.save") : "Fehler beim Speichern";
+			var sHelpDescription = "<h2>" + sTitle + "</h2>" +
 				"<p>Der unterschriebene Beleg wurde nicht oder nicht vollständig bearbeitet.</p>" +
 				"<ul>" +
 				"	<li>Kein E-Mail-Empfänger: Beleg wurde möglicherweise erzeugt und konnte nicht versendet werden.</li>" +
+				"	<li>Einstellungen: Die E-Mail vom Empfänger ist möglicherweise nicht freigegeben.</li>" +
 				"	<li>Allgemeneine <a href=\"http://eins.de/\">Informationen.</a></li>" +
 				"</ul>" +
 				"<ol>" +
@@ -114,21 +118,29 @@ sap.ui.define([
 				"	<li>Mit Transaktion VL71 können Sie die Nachricht ZLD0 selektieren und den Beleg drucken</li>" +				
 				"</ol>";
 
+			var oError = oDetails.response ? oDetails.response : oDetails;
 			oControl._oMessageManager.addMessages(
 				new Message({
-					message: "Wie weiter verfahen?",
+					message: "Fehler in der Lieferschein-Verarbeitung " + sMessage,
 					type: sap.ui.core.MessageType.Information,
 					active: true,
-					description: sMessage,
-					technicalDetails: sHelpDescription,
-					technical: true,
-
-					additionalText: sHelpDescription,
+					description: sHelpDescription,
+					activeTitle: "Wie weiter verfahen?",
+					additionalText: oError.responseText || "",
 					target: this._oLink,
 					processor: oControl._oProcessor
 				})
-
 			);
+			
+            // if (!oControl._oHTML) {
+            //     var sId = oControl.createId("htmlHelpText");
+            //     oControl._oHTML = new HTML(sId, {
+            //         content: sHelpDescription,
+            //         sanitizeContent: true
+            //     });
+            // }
+            // oControl._oMessagePopover.addContent(oControl._oHTML);			
+			
 		},
 
 		popoverTechnicalMessage: function (sMessage, sText, sDetails, sType, sTarget, oControl) {

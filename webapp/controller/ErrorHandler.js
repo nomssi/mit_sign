@@ -25,8 +25,8 @@ sap.ui.define([
 
 			this._oModel.attachMetadataFailed(function (oEvent) {
 				var oParams = oEvent.getParameters();
-				this._showServiceError(oParams);
-			}, this);
+				this._showServiceError(oParams.getResponse);
+			}.bind(this), this);
 
 			this._oModel.attachRequestFailed(function (oEvent) {
 				var oParams = oEvent.getParameters();
@@ -35,9 +35,9 @@ sap.ui.define([
 				// A request that cannot be sent to the server is a technical error that we have to handle though
 				if (oParams.response.statusCode !== "404" || (oParams.response.statusCode === 404 && oParams.response.responseText.indexOf(
 						"Cannot POST") === 0)) {
-					this._showServiceError(oParams);
+					this._showServiceError(oParams.response || oParams);
 				}
-			}, this);
+			}.bind(this), this);
 		},
 
 		/**
@@ -46,8 +46,7 @@ sap.ui.define([
 		 * @param {string} sDetails a technical error to be displayed on request
 		 * @private
 		 */
-		_showServiceError: function (oParameter) {
-			var oError = oParameter.response ? oParameter.response : oParameter;
+		_showServiceError: function (oError) {
 			var sDetails = Messages.getErrorDetails(oError);
 			Messages.popoverTechnicalMessage(oError.message,  // Messages.getErrorContent(oParameter),
 				sDetails,

@@ -72,15 +72,6 @@ sap.ui.define([
 			this.getRouter().navTo("home");
 		},
 
-		_popoverInvalidField: function (oInput, sText, sTarget) {
-			var sMessage = this._oResourceBundle.getText(sText);
-			Messages.popoverMessage(sMessage,
-				oInput.getLabels()[0].getText(),
-				sap.ui.core.MessageType.Error,
-				sTarget, this);
-			return sMessage;
-		},
-
 		_isValidInput: function (sCurrentValue) {
 			var oState = {
 				valid: false,
@@ -118,12 +109,17 @@ sap.ui.define([
 						errorId: "missing.signature",
 						state: "Warning"
 					};
-					oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
 				} else {
 					oState.state = "None";
 				};
-			} else {
-				oInput.setValueStateText(this._popoverInvalidField(oInput, oState.errorId, sTarget));
+			};
+			if (!oState.valid) {
+				var sMessage = this._oResourceBundle.getText(oState.errorId);
+				Messages.popoverMessage(sMessage,
+					oInput.getLabels()[0].getText(),
+					sap.ui.core.MessageType.Error,
+					sTarget, this);
+				oInput.setValueStateText(sMessage);
 			};
 
 			oInput.setValueState(oState.state);
@@ -240,14 +236,7 @@ sap.ui.define([
 
 			var fnSaveError = function (oDetails) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
-				var oError = oDetails.response ? oDetails.response : oDetails;
-				Messages.popoverTechnicalMessage(this.sVbeln,
-					this._oResourceBundle.getText("step.save"),
-					oError.responseText,
-					sap.ui.core.MessageType.Information,
-					null, this);
-
-				Messages.popoverHelpMessage(this.sVbeln, this);
+				Messages.popoverHelpMessage(this.sVbeln, oDetails, this);
 				
 				this._oBusyDialog.close();
 
@@ -295,6 +284,7 @@ sap.ui.define([
 					this._oHelper.saveSignature(fnAfterSave.bind(this), fnSaveError.bind(this), oSignData);
 				}.bind(this));
 			};
+
 		},
 
 		onBusyDialogClosed: function (oEvent) {
