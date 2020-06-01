@@ -46,7 +46,6 @@
 						<firstStatus>
 							<ObjectStatus 
 									state="{parts:[{path: 'FloeId'},
-								          		{path: 'Saved'},
 								          		{path: 'Active'},
 								          		{path: 'EMailValid'}],
 										          formatter: '.formatter.formatState' }"

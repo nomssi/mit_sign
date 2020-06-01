@@ -29,8 +29,8 @@ sap.ui.define([
 			var oOutputData = {
 				Vbeln: sVbeln
 			};
-			this._callFunctionImport("/TriggerOutput", oOutputData, fnAfterTrigger, "isBusySaving");
-			// this._submitChanges(fnOutputFailed, fnAfterTrigger);
+			this._callFunctionImport("/TriggerOutput", oOutputData, fnAfterTrigger, fnOutputFailed);
+			// this._submitChanges(fnOutputFailed, fnAfterTrigger);  "isBusySaving"
 			this._submitChanges(null, null);
 		},
 		

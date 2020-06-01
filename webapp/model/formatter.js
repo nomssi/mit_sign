@@ -95,7 +95,7 @@ sap.ui.define([
 			return oState.text;
 		},
 
-		formatState: function (sFloeId, bSaved, bActive, bEmailValid) {
+		formatState: function (sFloeId, bActive, bEmailValid) {
 			var sState;
 
 			if (bActive) {

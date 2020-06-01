@@ -1,11 +1,10 @@
 sap.ui.define([
 		"sap/m/MessageBox",
 		"sap/ui/core/message/Message",
-		"sap/ui/core/HTML",		
 		"sap/ui/model/json/JSONModel",
 		"sap/m/Link",
 		"./controls"
-	], function(MessageBox, Message, HTML, JSONModel, Link, controls) {
+	], function(MessageBox, Message, JSONModel, Link, controls) {
 	"use strict";
 
 	function fnExtractErrorMessageFromDetails(sDetails) {
@@ -131,16 +130,7 @@ sap.ui.define([
 					processor: oControl._oProcessor
 				})
 			);
-			
-            // if (!oControl._oHTML) {
-            //     var sId = oControl.createId("htmlHelpText");
-            //     oControl._oHTML = new HTML(sId, {
-            //         content: sHelpDescription,
-            //         sanitizeContent: true
-            //     });
-            // }
-            // oControl._oMessagePopover.addContent(oControl._oHTML);			
-			
+
 		},
 
 		popoverTechnicalMessage: function (sMessage, sText, sDetails, sType, sTarget, oControl) {
