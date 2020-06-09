@@ -65,7 +65,7 @@
 											</layoutData>
 										</Label>
 										<Input id="sName" required="true"
-											value="{ path: 'draft>/Releaser/Name', 
+											value="{ path: 'draft>/Issuer', 
 													type: 'sap.ui.model.type.String', 
 													constraints: { maxLength: '80', 
 													               search: '^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\\- ]+$' } }"											
@@ -86,7 +86,7 @@
 												<layout:GridData span="L2 M2" linebreak="true"/>
 											</layoutData>
 										</Label>
-										<pad:SignaturePad id="signature-pad" value="{draft>/Releaser/Url}" onEndEvent="onSignChange" width="800px" height="200px"/>
+										<pad:SignaturePad id="signature-pad" value="{draft>/SignatureIssuer}" onEndEvent="onSignChange" width="800px" height="200px"/>
 										<Button icon="sap-icon://undo" text="{i18n&gt;Clear}" press="onClearButton" type="Transparent" id="btnClear">
 											<layoutData>
 												<layout:GridData span="L2 M2"/>
@@ -106,7 +106,7 @@
 											</layoutData>
 										</Label>
 										<Input id="sRecvName"
-											value="{ path: 'draft>/Receiver/Name', 
+											value="{ path: 'draft>/Receiver', 
 													type: 'sap.ui.model.type.String', 
 													constraints: { maxLength: '80', 
 													               search: '^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\\- ]+$' } }"													
@@ -120,7 +120,7 @@
 												<layout:GridData span="L2 M2" linebreak="true"/>
 											</layoutData>
 										</Label>
-										<pad:SignaturePad id="signature-pad2" value="{draft>/Receiver/Url}" onEndEvent="onSignChange"
+										<pad:SignaturePad id="signature-pad2" value="{draft>SignatureReceiver}" onEndEvent="onSignChange"
 															signcolor="mediumblue" width="800px" height="200px"/>
 										<Button icon="sap-icon://undo" text="{i18n&gt;Clear}" press="onClearButton" type="Transparent" id="btnClear2">
 											<layoutData>

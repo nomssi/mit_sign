@@ -110,22 +110,20 @@ sap.ui.define([
 				"<ul>" +
 				"	<li>Kein E-Mail-Empfänger: Beleg wurde möglicherweise erzeugt und konnte nicht versendet werden.</li>" +
 				"	<li>Einstellungen: Die E-Mail vom Empfänger ist möglicherweise nicht freigegeben.</li>" +
-				"	<li>Allgemeneine <a href=\"http://eins.de/\">Informationen.</a></li>" +
 				"</ul>" +
 				"<ol>" +
 				"	<li>Wenn der Beleg nicht mehr in der <a href=\"#\">Liste</a> erscheint, gilt er als  verarbeitet.</li>" +
 				"	<li>Mit Transaktion VL71 können Sie die Nachricht ZLD0 selektieren und den Beleg drucken</li>" +				
 				"</ol>";
 
-			var oError = oDetails.response ? oDetails.response : oDetails;
 			oControl._oMessageManager.addMessages(
 				new Message({
 					message: "Fehler in der Lieferschein-Verarbeitung " + sMessage,
 					type: sap.ui.core.MessageType.Information,
 					active: true,
 					description: sHelpDescription,
-					activeTitle: "Wie weiter verfahen?",
-					additionalText: oError.responseText || "",
+					activeTitle: "Hinweise",
+					additionalText: "Wie weiter verfahen?",
 					target: this._oLink,
 					processor: oControl._oProcessor
 				})

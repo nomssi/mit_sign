@@ -70,14 +70,10 @@ sap.ui.define([
 		initDraftModel: function () {
 			//  Model for Draft handling
 			var oData = {
-				Receiver: {
-					Name: "",
-					Url: ""
-				},
-				Releaser: {
-					Name: "",
-					Url: ""
-				},
+				Issuer: "",
+				Receiver: "",
+				SignatureIssuer: "",
+				SignatureReceiver: "",
 				Vbeln: ""
 			};
 			var oDraftModel = new JSONModel(oData); // binding is TwoWays

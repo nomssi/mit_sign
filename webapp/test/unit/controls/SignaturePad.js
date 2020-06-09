@@ -6,7 +6,10 @@ sap.ui.define([
 
 	QUnit.module("Signature Pad", {
 		beforeEach: function () {
-			this.oSignature = new Signature(this.getOwnerComponent());
+			// var oCanvas = document.querySelector("canvas[id=" + this.getId() + "]");
+			var oCanvas = document.querySelector("canvas");
+						
+			this.oSignature = new Signature(oCanvas);
 		},
 		afterEach: function () {
 			this.oSignature.destroy();

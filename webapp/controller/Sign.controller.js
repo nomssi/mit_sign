@@ -37,19 +37,19 @@ sap.ui.define([
 
 			this.initDraftModel();
 
-			this._oSourceReleaser = {
+			this._oReleaser = {
 				step: this.byId("signReleaserStep"),
 				pad: this.byId("signature-pad"), // Lager
 				field: this.byId("sName"),
 				button: this.byId("btnClear"),
-				property: "/Releaser/Url"
+				property: "/SignatureIssuer"
 			};
-			this._oSourceReceiver = {
+			this._oReceiver = {
 				step: this.byId("signReceiverStep"),
 				pad: this.byId("signature-pad2"), // Empfänger
 				field: this.byId("sRecvName"),
 				button: this.byId("btnClear2"),
-				property: "/Receiver/Url"
+				property: "/SignatureReceiver"
 			};
 
 		},
@@ -136,11 +136,11 @@ sap.ui.define([
 			var oSource; // undefined
 
 			switch (oEvent.getSource()) {
-			case this._oSourceReleaser.button:
-				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser/Url");
+			case this._oReleaser.button:
+				oSource = this._cloneSource(this._oReleaser, "/SignatureIssuer");
 				break;
-			case this._oSourceReceiver.button:
-				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver/Url");
+			case this._oReceiver.button:
+				oSource = this._cloneSource(this._oReceiver, "/SignatureReceiver");
 				break;
 			default:
 				return;
@@ -158,17 +158,17 @@ sap.ui.define([
 			var oSource; // undefined
 
 			switch (oEvent.getSource()) {
-			case this._oSourceReleaser.field:
-				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser/Name");
+			case this._oReleaser.field:
+				oSource = this._cloneSource(this._oReleaser, "/Issuer");
 				break;
-			case this._oSourceReceiver.field:
-				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver/Name");
+			case this._oReceiver.field:
+				oSource = this._cloneSource(this._oReceiver, "/Receiver");
 				break;
-			case this._oSourceReleaser.pad:
-				oSource = this._cloneSource(this._oSourceReleaser, "/Releaser/Url");
+			case this._oReleaser.pad:
+				oSource = this._cloneSource(this._oReleaser, "/SignatureIssuer");
 				break;
-			case this._oSourceReceiver.pad:
-				oSource = this._cloneSource(this._oSourceReceiver, "/Receiver/Url");
+			case this._oReceiver.pad:
+				oSource = this._cloneSource(this._oReceiver, "/SignatureReceiver");
 				break;
 			default:
 				return;
@@ -211,20 +211,21 @@ sap.ui.define([
 		_handleValueHelpClose: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem");
 			if (oSelectedItem) {
-				this._oSourceReleaser.field.setValue(oSelectedItem.getTitle()); // also sets JSON draft model property "/Releaser/Name" (TwoWay binding)
-				this._validateSign(this._oSourceReleaser);
+				this._oReleaser.field.setValue(oSelectedItem.getTitle()); // also sets JSON draft model property "/Issuer" (TwoWay binding)
+				this._validateSign(this._oReleaser);
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		},
 
 		_getDraftData: function (oModel) {
-			var oData = {
+/*			var oData = {
 				Vbeln: oModel.getProperty("/Vbeln"),
-				Issuer: oModel.getProperty("/Releaser/Name"), // Klartext Name Lager
-				Receiver: oModel.getProperty("/Receiver/Name"), // Klartext Name Abholer
-				SignatureIssuer: oModel.getProperty("/Releaser/Url"), // Signatur Lager
-				SignatureReceiver: oModel.getProperty("/Receiver/Url") // Signatur Abholer
-			};
+				Issuer: oModel.getProperty("/Issuer"), // Klartext Name Lager
+				Receiver: oModel.getProperty("/Receiver"), // Klartext Name Abholer
+				SignatureIssuer: oModel.getProperty("/SignatureIssuer"), // Unterschrift Lager
+				SignatureReceiver: oModel.getProperty("/SignatureReceiver") // Unterschrift Abholer
+			};*/
+			var oData = oModel.getProperty("/");	// read JSON Model
 
 			if (typeof oData.Issuer !== "undefined" && typeof oData.Receiver !== "undefined" &&
 				typeof oData.SignatureIssuer !== "undefined" && typeof oData.SignatureReceiver !== "undefined") {
@@ -263,8 +264,8 @@ sap.ui.define([
 
 			var oModel = this.getModel("draft");
 			// maintain signatures in the draft model now
-			oModel.setProperty("/Releaser/Url", this._oSourceReleaser.pad.export()); // Signatur Lager
-			oModel.setProperty("/Receiver/Url", this._oSourceReceiver.pad.export()); // Signatur Abholer
+			oModel.setProperty("/SignatureIssuer", this._oReleaser.pad.export()); // Signatur Lager
+			oModel.setProperty("/SignatureReceiver", this._oReceiver.pad.export()); // Signatur Abholer
 
 			// save draft to oData model
 			var oSignData = this._getDraftData(oModel);

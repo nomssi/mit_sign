@@ -22,7 +22,7 @@
 				updateFinished=".onUpdateFinished">
 				<headerToolbar>
 					<OverflowToolbar>
-						<OverflowToolbarButton id="buttonSync" icon="sap-icon://synchronize" 
+						<OverflowToolbarButton id="buttonSync" icon="sap-icon://refresh" 
 								tooltip="{i18n>Synchronize}"
 								press="onDataReload"/>
 						<Title id="tableHeader" text="{viewProperties>/updateTime}" level="H3"/>

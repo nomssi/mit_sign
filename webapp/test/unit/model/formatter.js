@@ -1,3 +1,5 @@
+/*global QUnit*/
+
 sap.ui.define([
 		"Signature/model/formatter"
 	//	"test/unit/helper/FakeI18nModel",
