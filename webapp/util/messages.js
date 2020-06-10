@@ -1,10 +1,10 @@
 sap.ui.define([
-		"sap/m/MessageBox",
-		"sap/ui/core/message/Message",
-		"sap/ui/model/json/JSONModel",
-		"sap/m/Link",
-		"./controls"
-	], function(MessageBox, Message, JSONModel, Link, controls) {
+	"sap/m/MessageBox",
+	"sap/ui/core/message/Message",
+	"sap/ui/model/json/JSONModel",
+	"sap/m/Link",
+	"./controls"
+], function (MessageBox, Message, JSONModel, Link, controls) {
 	"use strict";
 
 	function fnExtractErrorMessageFromDetails(sDetails) {
@@ -18,25 +18,31 @@ sap.ui.define([
 	}
 
 	function fnParseError(oParameter) {
-		var oError = {},
+		var oError = { sDetails: "",
+			           sMessage: ""
+			},
 			oParameters = null,
 			oResponse = null;
+		try {
+			// "getParameters": for the case of catching oDataModel "requestFailed" event
+			oParameters = oParameter.getParameters ? oParameter.getParameters() : null;
+			// "oParameters.response": V2 interface, response object is under the getParameters()
+			// "oParameters": V1 interface, response is directly in the getParameters()
+			// "oParameter" for the case of catching request "onError" event
+			oResponse = oParameters ? (oParameters.response || oParameters) : oParameter;
+			oError.sDetails = oResponse.responseText || oResponse.body || (oResponse.response && oResponse.response.body) || ""; //"onError" Event: V1 uses response and response.body
+			oError.sMessage = fnExtractErrorMessageFromDetails(oError.sDetails) || oResponse.message || (oParameters && oParameters.message);
 
-		// "getParameters": for the case of catching oDataModel "requestFailed" event
-		oParameters = oParameter.getParameters ? oParameter.getParameters() : null;
-		// "oParameters.response": V2 interface, response object is under the getParameters()
-		// "oParameters": V1 interface, response is directly in the getParameters()
-		// "oParameter" for the case of catching request "onError" event
-		oResponse = oParameters ? (oParameters.response || oParameters) : oParameter;
-		oError.sDetails = oResponse.responseText || oResponse.body || (oResponse.response && oResponse.response.body) || ""; //"onError" Event: V1 uses response and response.body
-		oError.sMessage = fnExtractErrorMessageFromDetails(oError.sDetails) || oResponse.message || (oParameters && oParameters.message);
+		} catch (e) {
+			// Anweisungen für jeden Fehler
+		}
 		return oError;
 	}
 
 	return {
 		// Show an error dialog with information from the oData response object.
 		// oParameter - The object containing error information
-		showErrorMessage: function(oParameter, fnOnClose) {
+		showErrorMessage: function (oParameter, fnOnClose) {
 			var oErrorDetails = fnParseError(oParameter);
 			var oBundle = sap.ui.getCore().getModel("i18n").getResourceBundle();
 
@@ -50,19 +56,19 @@ sap.ui.define([
 			});
 		},
 
-		getErrorContent: function(oParameter) {
+		getErrorContent: function (oParameter) {
 			return fnParseError(oParameter).sMessage;
 		},
 
-		getErrorDetails: function(oParameter) {
+		getErrorDetails: function (oParameter) {
 			return fnParseError(oParameter).sDetails;
 		},
 
-		extractErrorMessageFromDetails: function(sDetails) {
+		extractErrorMessageFromDetails: function (sDetails) {
 			return fnExtractErrorMessageFromDetails(sDetails);
 		},
-		
-		createDefaultLink: function() {
+
+		createDefaultLink: function () {
 			if (!this._oLink) {
 				this._oLink = new Link({
 					text: "Allgemeine Informationen anzeigen",
@@ -88,7 +94,7 @@ sap.ui.define([
 				})
 			);
 		},
-		
+
 		popoverMessage: function (sMessage, sText, sType, sTarget, oControl) {
 			oControl._oMessageManager.addMessages(
 				new Message({
@@ -101,7 +107,7 @@ sap.ui.define([
 				})
 			);
 		},
-		
+
 		popoverHelpMessage: function (sMessage, oDetails, oControl) {
 			var oi18nModel = sap.ui.getCore().getModel("i18n");
 			var sTitle = oi18nModel ? oi18nModel.getResourceBundle().getText("step.save") : "Fehler beim Speichern";
@@ -113,7 +119,7 @@ sap.ui.define([
 				"</ul>" +
 				"<ol>" +
 				"	<li>Wenn der Beleg nicht mehr in der <a href=\"#\">Liste</a> erscheint, gilt er als  verarbeitet.</li>" +
-				"	<li>Mit Transaktion VL71 können Sie die Nachricht ZLD0 selektieren und den Beleg drucken</li>" +				
+				"	<li>Mit Transaktion VL71 können Sie die Nachricht ZLD0 selektieren und den Beleg drucken</li>" +
 				"</ol>";
 
 			oControl._oMessageManager.addMessages(
@@ -145,6 +151,6 @@ sap.ui.define([
 				})
 			);
 		}
-		
+
 	};
 });

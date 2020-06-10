@@ -2,10 +2,10 @@
 sap.ui.define([
 		"./signature_pad",
 		"sap/ui/core/Core",
-		"sap/ui/core/theming/Parameters",
-		"sap/ui/core/Control"
+		"sap/ui/core/Control",
+		"sap/ui/core/theming/Parameters"
 	],
-	function (Pad, Core, Theme, Control) {
+	function (Pad, Core, Control, ThemingParams) {
 		"use strict";
 
 		return Control.extend("Signature.controls.SignaturePad", {
@@ -14,11 +14,11 @@ sap.ui.define([
 				properties: {
 					/* other (configuration) properties */
 					"width": {
-						"type": "Core.CSSSize",
+						"type": "sap.ui.core.CSSSize",
 						"defaultValue": "auto"
 					},
 					"height": {
-						"type": "Core.CSSSize",
+						"type": "sap.ui.core.CSSSize",
 						"defaultValue": "auto"
 					},
 					"thickness": {
@@ -26,15 +26,15 @@ sap.ui.define([
 						defaultValue: 3
 					},
 					"borderColor": {
-						"type": "Core.CSSColor",
+						"type": "sap.ui.core.CSSColor",
 						"defaultValue": "#000000"
 					},
 					"bgColor": {
-						"type": "Core.CSSColor",
-						"defaultValue": Theme.get("sapUiButtonHoverBackground")
+						"type": "sap.ui.core.CSSColor",
+						"defaultValue": ThemingParams.get("sapUiButtonHoverBackground")
 					},
 					"signcolor": {
-						type: "Core.CSSColor",
+						type: "sap.ui.core.CSSColor",
 						defaultValue: "black"
 					},
 					"value": "string",
@@ -178,7 +178,7 @@ sap.ui.define([
 					that.signaturePad = new SignaturePad(that.signCanvas, oOptions);
 
 					// make the control resizable and redraw when something changed
-					Core.ResizeHandler.register(that, that._resizeCanvas.bind(that));
+					sap.ui.core.ResizeHandler.register(that, that._resizeCanvas.bind(that));
 
 					that._resizeCanvas(that);
 				};
@@ -186,8 +186,8 @@ sap.ui.define([
 
 			onAfterRendering: function () {
 
-				if (sap.ui.core.Control.prototype.onAfterRendering) {
-					sap.ui.core.Control.prototype.onAfterRendering.apply(this, arguments); // super class
+				if (Control.prototype.onAfterRendering) {
+					Control.prototype.onAfterRendering.apply(this, arguments); // super class
 
 					var oCanvas = document.querySelector("canvas[id=" + this.getId() + "]");
 

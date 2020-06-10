@@ -25,7 +25,7 @@ sap.ui.define([
 
 			this._oModel.attachMetadataFailed(function (oEvent) {
 				var oParams = oEvent.getParameters();
-				this._showServiceError(oParams.getResponse);
+				this._showServiceError(oParams.getResponse || oParams);
 			}.bind(this), this);
 
 			this._oModel.attachRequestFailed(function (oEvent) {
