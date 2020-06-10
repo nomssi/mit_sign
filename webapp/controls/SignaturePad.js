@@ -1,9 +1,11 @@
 /* global SignaturePad:true */
 sap.ui.define([
 		"./signature_pad",
+		"sap/ui/core/Core",
+		"sap/ui/core/theming/Parameters",
 		"sap/ui/core/Control"
 	],
-	function (Pad, Control) {
+	function (Pad, Core, Theme, Control) {
 		"use strict";
 
 		return Control.extend("Signature.controls.SignaturePad", {
@@ -12,11 +14,11 @@ sap.ui.define([
 				properties: {
 					/* other (configuration) properties */
 					"width": {
-						"type": "sap.ui.core.CSSSize",
+						"type": "Core.CSSSize",
 						"defaultValue": "auto"
 					},
 					"height": {
-						"type": "sap.ui.core.CSSSize",
+						"type": "Core.CSSSize",
 						"defaultValue": "auto"
 					},
 					"thickness": {
@@ -24,15 +26,15 @@ sap.ui.define([
 						defaultValue: 3
 					},
 					"borderColor": {
-						"type": "sap.ui.core.CSSColor",
+						"type": "Core.CSSColor",
 						"defaultValue": "#000000"
 					},
 					"bgColor": {
-						"type": "sap.ui.core.CSSColor",
-						"defaultValue": sap.ui.core.theming.Parameters.get("sapUiButtonHoverBackground")
+						"type": "Core.CSSColor",
+						"defaultValue": Theme.get("sapUiButtonHoverBackground")
 					},
 					"signcolor": {
-						type: "sap.ui.core.CSSColor",
+						type: "Core.CSSColor",
 						defaultValue: "black"
 					},
 					"value": "string",
@@ -102,20 +104,20 @@ sap.ui.define([
 					// var iThickness = parseInt(oSignPad.getProperty("thickness"), 10);
 
 					oRm.openStart("div", oSignPad).
-						style("width", oSignPad.getWidth()).
-						style("height", oSignPad.getHeight()).
-						openEnd();
+					style("width", oSignPad.getWidth()).
+					style("height", oSignPad.getHeight()).
+					openEnd();
 
 					oRm.openStart("canvas", oSignPad).
-						style("width", oSignPad.getWidth()).
-						style("height", oSignPad.getHeight()).
+					style("width", oSignPad.getWidth()).
+					style("height", oSignPad.getHeight()).
 						//	   writeControlData(oSignPad). // e.g id='signature-pad'
-						class("m-signature-pad").
+					class("m-signature-pad").
 
-						style("background-color", oSignPad.getProperty("bgColor")).
+					style("background-color", oSignPad.getProperty("bgColor")).
 						// style("border", oSignPad.getBorderSize() + " " + oSignPad.getBorderStyle() + " " + oSignPad.getBorderColor()).
 						// writeClasses().
-						openEnd();
+					openEnd();
 
 					oRm.close("canvas");
 
@@ -152,7 +154,7 @@ sap.ui.define([
 
 					this.signaturePad.clear(); // otherwise isEmpty() might return incorrect value	
 					this.signaturePad.off();
-					this.signaturePad.on();   // fix?
+					this.signaturePad.on(); // fix?
 				}
 			},
 
@@ -176,7 +178,7 @@ sap.ui.define([
 					that.signaturePad = new SignaturePad(that.signCanvas, oOptions);
 
 					// make the control resizable and redraw when something changed
-					sap.ui.core.ResizeHandler.register(that, that._resizeCanvas.bind(that));
+					Core.ResizeHandler.register(that, that._resizeCanvas.bind(that));
 
 					that._resizeCanvas(that);
 				};

@@ -1,7 +1,6 @@
 sap.ui.define([
-	"sap/ui/core",
 	"Signature/controls/SignaturePad"
-], function (Core, Signature) {
+], function (Signature) {
 	"use strict";
 
 	QUnit.module("Signature Pad", {
@@ -17,8 +16,8 @@ sap.ui.define([
 	});
 
 	QUnit.test(" Should see a Signature canvas", function (assert) {
-		var oSignature = sap.ui.getCore().byId("signature-pad");
-		assert.ok(oSignature, "SignaturePad Instance was created");
+	//	var oSignature = sap.ui.getCore().byId("signature-pad");
+		assert.ok(this.oSignature, "SignaturePad Instance was created");
 	});
 
 });

@@ -3,6 +3,7 @@ sap.ui.define([
 	"../model/Signature",
 	"../util/messages",
 	"../util/controls",
+	"sap/ui/core/Core",	
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
 	"sap/m/MessageToast"
@@ -11,6 +12,7 @@ sap.ui.define([
 	Signature,
 	Messages,
 	controls,
+	Core,
 	Fragment,
 	Filter,
 	MessageToast) {
@@ -252,7 +254,7 @@ sap.ui.define([
 				Messages.popoverTechnicalMessage(this.sVbeln,
 					this._oResourceBundle.getText("step.save"),
 					this._oResourceBundle.getText("pdf.Created") + " Datei {oData.PDFUrl}",
-					sap.ui.core.MessageType.Success,
+					Core.MessageType.Success,
 					null, this);
 
 				this._oBusyDialog.close();

@@ -1,11 +1,10 @@
 /*global QUnit */
 
 sap.ui.define([
-	"sap/ui/core"
 ], function (Core) {
 	"use strict";
 
-        QUnit.module("Module Sign"); 
+        QUnit.module("Module Sign Controller"); 
 
         QUnit.test("1. a basic Sign  example", 2, function (assert) {
                 assert.ok(true, "this Sign test is fine"); 
