@@ -5,7 +5,7 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/routing/History",
 	"sap/m/MessagePopover",
-	"sap/m/MessageItem",
+	"sap/m/MessagePopoverItem",
 	"../model/formatter",
 	"../util/messages"
 ], function (Controller, Core, UIComponent, JSONModel, History, MessagePopover, MessageItem, formatter, Messages) {

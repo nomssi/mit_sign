@@ -1,6 +1,7 @@
 sap.ui.define([
 	"./BaseController",
 	"../model/Signature",
+	"../model/formatter",	
 	"../util/messages",
 	"../util/controls",
 	"sap/ui/core/Core",	
@@ -10,6 +11,7 @@ sap.ui.define([
 ], function (
 	BaseController,
 	Signature,
+	formatter,
 	Messages,
 	controls,
 	Core,
@@ -74,28 +76,6 @@ sap.ui.define([
 			this.getRouter().navTo("home");
 		},
 
-		_isValidInput: function (sCurrentValue) {
-			var oState = {
-				valid: false,
-				errorId: "",
-				state: "Error"
-			};
-
-			if (sCurrentValue) {
-				var isValidEntry = (/^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\- ]+$/).test(sCurrentValue); // RegEx: Letters, no number, Umlaut, space, .
-
-				if (isValidEntry) {
-					oState.valid = true;
-					oState.state = "None";
-				} else {
-					oState.errorId = "invalid.Chars";
-				}
-			} else {
-				oState.errorId = "mandatory.field";
-			};
-			return oState;
-		},
-
 		_validateSign: function (oSource) {
 			var oInput = oSource.field; // First check Input field	
 			var sPath = "draft>"; // oInput.getBindingContext().getPath() + "/";
@@ -103,7 +83,7 @@ sap.ui.define([
 
 			this.removeMessageFromTarget(sTarget);
 
-			var oState = this._isValidInput(oInput.getValue());
+			var oState = formatter.validateInput(oInput.getValue());
 			if (oState.valid) {
 				if (oSource.pad.isEmpty()) { // Then check SignPad
 					oState = {
@@ -219,14 +199,12 @@ sap.ui.define([
 			oEvent.getSource().getBinding("items").filter([]);
 		},
 
-		_getDraftData: function (oModel) {
-/*			var oData = {
-				Vbeln: oModel.getProperty("/Vbeln"),
-				Issuer: oModel.getProperty("/Issuer"), // Klartext Name Lager
-				Receiver: oModel.getProperty("/Receiver"), // Klartext Name Abholer
-				SignatureIssuer: oModel.getProperty("/SignatureIssuer"), // Unterschrift Lager
-				SignatureReceiver: oModel.getProperty("/SignatureReceiver") // Unterschrift Abholer
-			};*/
+		_getDraftData: function (oControl) {
+			var oModel = oControl.getModel("draft"); // Vbeln, Issuer, Receiver, SignatureIssuer, SignatureReceiver
+			// maintain signatures in the draft model now
+			oModel.setProperty("/SignatureIssuer", oControl._oReleaser.pad.export()); // Signatur Lager
+			oModel.setProperty("/SignatureReceiver", oControl._oReceiver.pad.export()); // Signatur Abholer
+			
 			var oData = oModel.getProperty("/");	// read JSON Model
 
 			if (typeof oData.Issuer !== "undefined" && typeof oData.Receiver !== "undefined" &&
@@ -264,13 +242,8 @@ sap.ui.define([
 				});
 			};
 
-			var oModel = this.getModel("draft");
-			// maintain signatures in the draft model now
-			oModel.setProperty("/SignatureIssuer", this._oReleaser.pad.export()); // Signatur Lager
-			oModel.setProperty("/SignatureReceiver", this._oReceiver.pad.export()); // Signatur Abholer
-
 			// save draft to oData model
-			var oSignData = this._getDraftData(oModel);
+			var oSignData = this._getDraftData(this);
 
 			if (this._oBusyDialog) {
 				this._oBusyDialog.open();

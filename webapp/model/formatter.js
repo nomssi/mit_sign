@@ -44,6 +44,29 @@ sap.ui.define([
 			return "";
 		},
 
+		validateInput: function (sCurrentValue) {
+			
+			var oState = {
+				valid: false,
+				errorId: "",
+				state: "Error"
+			};
+
+			if (sCurrentValue) {
+				var isValidEntry = (/^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\- ]+$/).test(sCurrentValue); // RegEx: Letters, no number, Umlaut, space, .
+
+				if (isValidEntry) {
+					oState.valid = true;
+					oState.state = "None";
+				} else {
+					oState.errorId = "invalid.Chars";
+				}
+			} else {
+				oState.errorId = "mandatory.field";
+			};
+			return oState;
+		},
+
 		formatObject: function (sFloeId, bSaved, bActive, bEmailValid) {
 			var oEvent = {
 				floeId: sFloeId,
