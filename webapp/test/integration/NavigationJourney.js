@@ -16,7 +16,7 @@ sap.ui.require([
 
 	QUnit.module("Navigation");
 
-    sap.ui.test.Opa5.extendConfig({ ... });
+    sap.ui.test.Opa5.extendConfig({  });
     
     // second we will write opaTests
 	opaTest("Should open the Home page", function (Given, When, Then) {

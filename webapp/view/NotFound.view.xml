@@ -1,4 +1,4 @@
-<mvc:View id="EmptyPageView" controllerName="Signature.controller.BaseController"
+<mvc:View id="EmptyPageView" controllerName="Signature.controller.NotFound"
  height="100%"
 xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
 <MessagePage 

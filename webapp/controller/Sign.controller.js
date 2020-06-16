@@ -226,12 +226,12 @@ sap.ui.define([
 				});
 			};
 
-			var fnAfterSave = function (oData, oResponse) {
+			var fnAfterSave = function (oData) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
 
 				Messages.popoverTechnicalMessage(this.sVbeln,
 					this._oResourceBundle.getText("step.save"),
-					this._oResourceBundle.getText("pdf.Created") + " Datei {oData.PDFUrl}",
+					this._oResourceBundle.getText("pdf.Created"),
 					Core.MessageType.Success,
 					null, this);
 

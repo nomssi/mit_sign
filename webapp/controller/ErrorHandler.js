@@ -48,11 +48,12 @@ sap.ui.define([
 		 */
 		_showServiceError: function (oError) {
 			var sDetails = Messages.getErrorDetails(oError);
+			
 			Messages.popoverTechnicalMessage(oError.message,  // Messages.getErrorContent(oParameter),
 				sDetails,
 				oError.responseText || "",
 				sap.ui.core.MessageType.Error,
-				null,
+				null,										// Target
 				this);
 		}
 

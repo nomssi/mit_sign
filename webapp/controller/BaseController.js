@@ -5,10 +5,9 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/routing/History",
 	"sap/m/MessagePopover",
-	"sap/m/MessagePopoverItem",
-	"../model/formatter",
-	"../util/messages"
-], function (Controller, Core, UIComponent, JSONModel, History, MessagePopover, MessageItem, formatter, Messages) {
+	"sap/m/MessageItem",
+	"../model/formatter"
+], function (Controller, Core, UIComponent, JSONModel, History, MessagePopover, MessageItem, formatter) {
 	"use strict";
 
 	return Controller.extend("Signature.controller.BaseController", {
@@ -17,7 +16,6 @@ sap.ui.define([
 		
 		initMessageManager: function (that) {
 			that._oView = that.getView();
-			that._oLink = Messages.createDefaultLink();
 
 			// create a message manager and register the message model
 			that._oMessageManager = Core.getMessageManager();
@@ -149,7 +147,6 @@ sap.ui.define([
 		},
 
 		_createMessagePopover: function () {
-			var that = this;
 			/**
 			 * Gather information that will be visible on the MessagePopover
 			 */
@@ -170,12 +167,11 @@ sap.ui.define([
 				},
 				groupItems: true
 			});
-			this._addDependent(that._oMessagePopover);
+			this._addDependent(this._oMessagePopover);
 		},
 
 		// To be able to stub the addDependent function in unit test, we added it in a separate function
 		_addDependent: function (oMessagePopover) {
-			this.getView().addDependent(oMessagePopover);
 			this.getView().byId("showPopoverButton").addDependent(oMessagePopover);
 		},
 

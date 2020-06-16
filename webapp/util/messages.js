@@ -69,30 +69,11 @@ sap.ui.define([
 		},
 
 		createDefaultLink: function () {
-			if (!this._oLink) {
-				this._oLink = new Link({
+			return new Link({
 					text: "Allgemeine Informationen anzeigen",
 					href: "https://eins.de",
 					target: "_blank"
 				});
-			};
-			return this._oLink;
-		},
-
-		// Not used yet
-		newPopoverMessage: function (oControl, oTarget, sType, sTitle, sDescription, sLongText, sDetails) {
-			oControl._oMessageManager.addMessages(
-				new Message({
-					type: sType,
-					message: sTitle,
-					description: sDescription,
-					additionalText: sLongText,
-					technical: true,
-					technicalDetails: sDetails,
-					target: oTarget ? oTarget : this._oLink,
-					processor: oControl._oProcessor
-				})
-			);
 		},
 
 		popoverMessage: function (sMessage, sText, sType, sTarget, oControl) {
@@ -102,13 +83,13 @@ sap.ui.define([
 					type: sType,
 					description: sText,
 					additionalText: sText,
-					target: sTarget ? sTarget : this._oLink,
+					target: sTarget,
 					processor: oControl._oProcessor
 				})
 			);
 		},
 
-		popoverHelpMessage: function (sMessage, oDetails, oControl) {
+		popoverHelpMessage: function (sMessage, oDetails, sTarget, oControl) {
 			var oi18nModel = sap.ui.getCore().getModel("i18n");
 			var sTitle = oi18nModel ? oi18nModel.getResourceBundle().getText("step.save") : "Fehler beim Speichern";
 			var sHelpDescription = "<h2>" + sTitle + "</h2>" +
@@ -130,7 +111,7 @@ sap.ui.define([
 					description: sHelpDescription,
 					activeTitle: "Hinweise",
 					additionalText: "Wie weiter verfahen?",
-					target: this._oLink,
+					target: sTarget,
 					processor: oControl._oProcessor
 				})
 			);
@@ -146,7 +127,7 @@ sap.ui.define([
 					technicalDetails: sDetails,
 					technical: true,
 					additionalText: sText,
-					target: sTarget ? sTarget : this._oLink,
+					target: sTarget,
 					processor: oControl._oProcessor
 				})
 			);

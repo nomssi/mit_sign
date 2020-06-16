@@ -5,9 +5,9 @@ sap.ui.define([
 
 	var formatter = {
 		/**
-		 * Formats the price
-		 * @param {string} sValue model price value
-		 * @return {string} formatted price
+		 * Formats the quantity
+		 * @param {string} sValue model quantity value
+		 * @return {string} formatted quantity
 		 */
 		float: function (sValue) {
 			var numberFormat = NumberFormat.getFloatInstance({
@@ -67,55 +67,84 @@ sap.ui.define([
 			return oState;
 		},
 
-		formatObject: function (sFloeId, bSaved, bActive, bEmailValid) {
+		formatStateText: function (sFloeId, bSaved, bActive, bEmailValid) {
 			var oEvent = {
 				floeId: sFloeId,
 				saved: bSaved,
 				active: bActive,
 				emailValid: bEmailValid
 			};
-			var oState = {
-				text: ""
-			};
+			
+			var sState = "";
 			var bemailSent = (oEvent.floeId && oEvent.floeId !== "0000000000");
 			if (oEvent.active) {
 				if (oEvent.saved) {
 					if (oEvent.emailValid) {
 						if (bemailSent) {
-							oState.text = "versendet, Vorgang abgebrochen";
+							sState = "os_sent_cancelled";
 						} else {
-							oState.text = "Vorgang abgebrochen";
+							sState = "os_cancelled";
 						}
 					} else {
 						if (bemailSent) {
-							oState.text = "versendet, Empfänger E-Mail fehlt";
+							sState = "os_sent_no_recipient";
 						} else {
-							oState.text = "Empfänger E-Mail fehlt";
+							sState = "os_no_recipient";
 						}
 					};
 				} else {
 					if (oEvent.emailValid) {
-						oState.text = "";
+						sState = "os_none";
 					} else {
-						oState.text = "Empfänger E-Mail fehlt";
+						sState = "os_no_recipient";
 					};
 				}
 			} else {
 				if (oEvent.saved) {
 					if (bemailSent) {
-						oState.text = "versendet";
+						sState = "os_sent";
 					} else {
 						if (oEvent.emailValid) {
-							oState.text = "nicht versendet";
+							sState = "os_not_sent";
 						} else {
-							oState.text = "Empfänger E-Mail fehlt";
+							sState = "os_no_recipient";
 						}
 					};
 				} else {
-					oState.text = "interner Fehler";
+					sState = "os_internal_error";
 				}
 			};
-			return oState.text;
+			
+			var sText;
+			switch (sState) {
+			  case "os_sent_cancelled":
+			    sText = "versendet, Vorgang abgebrochen";
+			    break;
+			  case "os_cancelled":
+			    sText = "Vorgang abgebrochen";
+			    break;
+			  case "os_sent":
+			    sText = "versendet";
+			    break;
+			  case "os_not_sent":
+			    sText = "nicht versendet";
+			    break;
+			  case "os_no_recipient":
+			    sText = "Empfänger E-Mail fehlt";
+			    break;
+			  case "os_sent_no_recipient":
+			    sText = "versendet, Empfänger E-Mail fehlt";
+			    break;
+			  case "os_internal_error":
+			    sText = "interner Fehler";
+			    break;
+			  case "os_none":
+			    sText = "";
+			    break;
+			  default:
+			    sText = "";
+			};	
+			return sText;
 		},
 
 		formatState: function (sFloeId, bActive, bEmailValid) {

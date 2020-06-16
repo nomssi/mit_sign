@@ -2,9 +2,9 @@
 	controllerName="Signature.controller.Home">
 	<Page id="homePage" title="{viewProperties>/listTableTitle}">
 		<headerContent>
-			<MenuButton id="homeIcon" icon="sap-icon://hint">
+			<MenuButton id="homeIcon" tooltip="{i18n>Version}" icon="sap-icon://hint">
 				<Menu>
-					<MenuItem text="Version 0.9.3" />
+					<MenuItem text="Version 0.9.4" />
 				</Menu>				
 			</MenuButton>
 		</headerContent>
@@ -53,7 +53,7 @@
 								          		{path: 'Saved'},
 								          		{path: 'Active'},
 								          		{path: 'EMailValid'}],
-										          formatter: '.formatter.formatObject' }"/>
+										          formatter: '.formatter.formatStateText' }"/>
 						</firstStatus>
 						<secondStatus>
 							<ObjectStatus visible="{= ${Saved}}"
