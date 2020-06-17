@@ -1,6 +1,7 @@
 sap.ui.define([
-	"sap/ui/core/format/NumberFormat"
-], function (NumberFormat) {
+	"sap/ui/core/format/NumberFormat",
+	"sap/ui/core/format/DateFormat"
+], function (NumberFormat, DateFormat) {
 	"use strict";
 
 	var formatter = {
@@ -217,6 +218,11 @@ sap.ui.define([
 			});
 
 			return sIcon;
+		},
+		
+		formatDate: function (oDate) {
+			var dateFormat = DateFormat.getDateInstance({pattern : "dd.MM.yyyy" });
+			return dateFormat.format(new Date(oDate));
 		}
 
 	};

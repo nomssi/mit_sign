@@ -1,13 +1,18 @@
 sap.ui.define([
 	"./BaseController",
 	"../model/Signature",
-	"../model/formatter",	
+	"../model/formatter",
 	"../util/messages",
 	"../util/controls",
-	"sap/ui/core/Core",	
+	"sap/ui/core/Core",
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
-	"sap/m/MessageToast"
+	"sap/m/MessageToast",
+	"sap/m/library",
+	"sap/m/Text",
+	"sap/m/Button",
+	"sap/m/Dialog",
+	"sap/ui/core/IconPool"
 ], function (
 	BaseController,
 	Signature,
@@ -17,9 +22,20 @@ sap.ui.define([
 	Core,
 	Fragment,
 	Filter,
-	MessageToast) {
+	MessageToast,
+	mobileLibrary,
+	Text,
+	Button,
+	Dialog,
+	IconPool) {
 	"use strict";
 
+	// shortcut for sap.m.DialogType
+	var DialogType = mobileLibrary.DialogType;
+
+	// shortcut for sap.m.ButtonType
+	var ButtonType = mobileLibrary.ButtonType;
+	
 	return BaseController.extend("Signature.controller.Sign", {
 
 		exit: function () {
@@ -28,6 +44,7 @@ sap.ui.define([
 
 		onInit: function () {
 
+			this._confirmEscapeDialog = null;
 			this._wizard = this.byId("signWizard");
 
 			this.initMessageManager(this);
@@ -36,7 +53,7 @@ sap.ui.define([
 			this._router = oComponent.getRouter();
 			this._router.getRoute("sign").attachPatternMatched(this._routePatternMatched, this);
 
-			this._oResourceBundle = this.getResourceBundle();	// inherit von BaseController
+			this._oResourceBundle = this.getResourceBundle(); // inherit von BaseController
 			this._oHelper = new Signature(oComponent);
 
 			this.initDraftModel();
@@ -199,13 +216,17 @@ sap.ui.define([
 			oEvent.getSource().getBinding("items").filter([]);
 		},
 
-		_getDraftData: function (oControl) {
+		_readDraftModel: function (oControl) {
 			var oModel = oControl.getModel("draft"); // Vbeln, Issuer, Receiver, SignatureIssuer, SignatureReceiver
 			// maintain signatures in the draft model now
 			oModel.setProperty("/SignatureIssuer", oControl._oReleaser.pad.export()); // Signatur Lager
 			oModel.setProperty("/SignatureReceiver", oControl._oReceiver.pad.export()); // Signatur Abholer
-			
-			var oData = oModel.getProperty("/");	// read JSON Model
+
+			return oModel.getProperty("/"); // read JSON Model
+		},
+
+		_getDraftData: function (oControl) {
+			var oData = this._readDraftModel(oControl);
 
 			if (typeof oData.Issuer !== "undefined" && typeof oData.Receiver !== "undefined" &&
 				typeof oData.SignatureIssuer !== "undefined" && typeof oData.SignatureReceiver !== "undefined") {
@@ -218,7 +239,7 @@ sap.ui.define([
 			var fnSaveError = function (oDetails) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
 				Messages.popoverHelpMessage(this.sVbeln, oDetails, this);
-				
+
 				this._oBusyDialog.close();
 
 				this.getRouter().navTo("error", {
@@ -267,6 +288,52 @@ sap.ui.define([
 			if (oEvent.getParameter("cancelPressed")) {
 				MessageToast.show(this._oResourceBundle.getText("save.cancelled"));
 			};
+		},
+
+		_draftExists: function (oControl) {
+			var oModel = oControl.getModel("draft"); // Vbeln, Issuer, Receiver, SignatureIssuer, SignatureReceiver
+			var oData = oModel.getProperty("/"); // read JSON Model, SignatureIssuer, SignatureReceiver not maintained
+
+			return ((typeof oData.Issuer !== "undefined" && oData.Issuer !== "") ||
+				(typeof oData.Receiver !== "undefined" && oData.Receiver !== "") ||
+				!oControl._oReleaser.pad.isEmpty() ||
+				!oControl._oReceiver.pad.isEmpty());
+		},
+
+		_createConfirmationDialog: function () {
+			this._confirmEscapeDialog = new Dialog({
+				icon: IconPool.getIconURI("message-warning"),
+				title: this.getResourceBundle().getText("confirm.Title"),
+				content: new Text({ text: this.getResourceBundle().getText("confirm.Content") }),
+				type: DialogType.Message,
+				beginButton: new Button({
+						icon: IconPool.getIconURI("home"),
+						text: this.getResourceBundle().getText("confirm.Yes"),
+						press: function () {
+							this._confirmEscapeDialog.close();
+							this.onBack();
+						}.bind(this)
+					}),
+				endButton: new Button({
+						type: ButtonType.Emphasized,
+						text: this.getResourceBundle().getText("confirm.No"),
+						press: function () {
+							this._confirmEscapeDialog.close();
+							// reject();
+						}.bind(this)
+					})
+			});
+		},
+
+		confirmBack: function () {
+			if (this._draftExists(this)) {
+				if (!this._confirmEscapeDialog) {
+					this._createConfirmationDialog();
+				};
+				this._confirmEscapeDialog.open();
+			} else {
+				this.onBack();
+			}
 		}
 
 	});

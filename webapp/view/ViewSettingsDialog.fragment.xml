@@ -7,6 +7,9 @@
 		confirm=".onConfirmViewSettingsDialog">
 		<sortItems>
 			<ViewSettingsItem
+				text="{i18n>CreateDate}"
+				key="CreateDate"/>
+			<ViewSettingsItem
 				text="{i18n>CreatedBy}"
 				key="CreatedBy"/>
 			<ViewSettingsItem
@@ -16,6 +19,9 @@
 			<ViewSettingsItem
 				text="{i18n>Deliveries}"
 				key="VBELN"/>
+			<ViewSettingsItem
+				text="{i18n>Warehouse}"
+				key="Warehouse"/>
 		</sortItems>
 
 	</ViewSettingsDialog>

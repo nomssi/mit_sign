@@ -22,7 +22,9 @@
 	"ReceiverPartner": "Servicebereich Vogtland/Plauen",
 	"CreatedBy": "Herbert Grönemeyer",
 	"Active": true,
-	"EMailValid": true
+	"EMailValid": true,
+	"Warehouse": "110",
+	"CreateDate": "/Date(1590962400000)/"
 }, {
 	"VBELN": "0080054160",
 	"SignatureReleaser": "SignatureReleaser2",
@@ -46,7 +48,9 @@
 	},
 	"ReceiverPartner": "Service Annaberg",
 	"CreatedBy": "Christopher Hermann",
-	"Active": true
+	"Active": true,
+	"Warehouse": "110",
+	"CreateDate": "/Date(1589234400000)/"
 }, {
 	"VBELN": "0080055880",
 	"SignatureReleaser": "SignatureReleaser3",
@@ -56,7 +60,9 @@
 	"ReceiverName": "Jacques Nomssi Receiver3",
 	"CreatedBy": "Conny Richter",
 	"ReceiverPartner": "HKW Arbeitsvorb. Werkstatt Mechanik",
-	"Active": true
+	"Active": true,
+	"Warehouse": "160",
+	"CreateDate": "/Date(1590444000000)/"
 }, {
 	"VBELN": "0080055813",
 	"SignatureReleaser": "SignatureReleaser4",
@@ -66,7 +72,9 @@
 	"PDFUrl": "PDFUrl4",
 	"CreatedBy": "Conny Richter",
 	"ReceiverPartner": "Servicebereich Vogtland/Plauen",
-	"Active": true
+	"Active": true,
+	"Warehouse": "110",
+	"CreateDate": "/Date(1590876000000)/"
 }, {
 	"VBELN": "0080054199",
 	"SignatureReleaser": "SignatureReleaser5",
@@ -76,7 +84,9 @@
 	"ReceiverName": "Receiver5",
 	"CreatedBy": "Conny Richter",
 	"ReceiverPartner": "HKW Arbeitsvorb. Werkstatt Mechanik",
-	"Active": true
+	"Active": true,
+	"Warehouse": "110",
+	"CreateDate": "/Date(1587333600000)/"
 }, {
 	"VBELN": "0080057046",
 	"SignatureReleaser": "SignatureReleaser6",
@@ -86,14 +96,16 @@
 	"ReceiverName": "Servicebereich Erzgebirge",
 	"CreatedBy": "Conny Richter",
 	"ReceiverPartner": "Strieter Elektronanlagenbau GmbH",
-	"Active": true
+	"Active": true,
+	"Warehouse": "110"
 }, {
 	"VBELN": "0080VBELN7",
 	"PDFUrl": "PDFUrl7",
 	"SignerName": "Signer07",
 	"ReceiverName": "Receiver06",
 	"CreatedBy": "Conny Richter",
-	"ReceiverPartner": "Servicebereich Vogtland/Plauen"
+	"ReceiverPartner": "Servicebereich Vogtland/Plauen",
+	"Warehouse": "110"
 }, {
 	"VBELN": "0080VBELN8",
 	"PDFUrl": "PDFUrl8",
@@ -103,7 +115,8 @@
 	"ReceiverPartner": "Gunter Hüttner + Co. GmbH",
 	"Saved": true,
 	"SignatureReceiver": "TestSignatureRecv8",
-	"FloeId": "Floe13444"
+	"FloeId": "Floe13444",
+	"Warehouse": "110"
 }, {
 	"VBELN": "0080VBELN9",
 	"PDFUrl": "PDFUrl9",
@@ -111,14 +124,16 @@
 	"ReceiverName": "Empfänger09",
 	"CreatedBy": "Felix Lemke",
 	"ReceiverPartner": "Servicebereich Vogtland/Plauen",
-	"Active": true
+	"Active": true,
+	"Warehouse": "110"
 }, {
 	"VBELN": "008VBELN10",
 	"PDFUrl": "PDFUrl10",
 	"SignerName": "Signer10",
 	"ReceiverName": "Empfänger10",
 	"CreatedBy": "Felix Lemke",
-	"ReceiverPartner": "Strieter Elektronanlagenbau GmbH"
+	"ReceiverPartner": "Strieter Elektronanlagenbau GmbH",
+	"Warehouse": "110"
 }, {
 	"VBELN": "0080VBELN8",
 	"PDFUrl": "PDFUrl8b",

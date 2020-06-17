@@ -17,7 +17,11 @@
 					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="ReceiverName" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="CreateDate" Type="Edm.DateTime" Precision="0" sap:unicode="false" sap:label="Zeitstempel" sap:creatable="false"
+					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
 				<Property Name="CreatedBy" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Warehouse" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="SignatureReceiver" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
@@ -116,9 +120,6 @@
 					<End EntitySet="Events" Role="FromRole_EventPosition"/>
 					<End EntitySet="Positions" Role="ToRole_EventPosition"/>
 				</AssociationSet>
-				<FunctionImport Name="TriggerOutput" ReturnType="MAK.SIGNATURE_SRV.Event" EntitySet="Events" m:HttpMethod="POST">
-					<Parameter Name="Vbeln" Type="Edm.String" Mode="In"/>
-				</FunctionImport>
 				<FunctionImport Name="SaveSignature" ReturnType="MAK.SIGNATURE_SRV.Event" EntitySet="Events" m:HttpMethod="POST">
 					<Parameter Name="SignatureReceiver" Type="Edm.String" Mode="In"/>
 					<Parameter Name="Vbeln" Type="Edm.String" Mode="In"/>
@@ -126,10 +127,12 @@
 					<Parameter Name="Receiver" Type="Edm.String" Mode="In"/>
 					<Parameter Name="SignatureIssuer" Type="Edm.String" Mode="In"/>
 				</FunctionImport>
+				<FunctionImport Name="TriggerOutput" ReturnType="MAK.SIGNATURE_SRV.Event" EntitySet="Events" m:HttpMethod="POST">
+					<Parameter Name="Vbeln" Type="Edm.String" Mode="In"/>
+				</FunctionImport>
 			</EntityContainer>
-			<atom:link rel="self" href="http://OBELIX3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
-			<atom:link rel="latest-version" href="http://OBELIX3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata"
-				xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="self" href="OBELIX3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="OBELIX3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>

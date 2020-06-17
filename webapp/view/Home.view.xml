@@ -2,9 +2,9 @@
 	controllerName="Signature.controller.Home">
 	<Page id="homePage" title="{viewProperties>/listTableTitle}">
 		<headerContent>
-			<MenuButton id="homeIcon" tooltip="{i18n>Version}" icon="sap-icon://hint">
+			<MenuButton id="homeIcon" icon="sap-icon://hint" tooltip="{i18n>Version}">
 				<Menu>
-					<MenuItem text="Version 0.9.4" />
+					<MenuItem text="Version 0.9.5" />
 				</Menu>				
 			</MenuButton>
 		</headerContent>
@@ -61,7 +61,10 @@
 										text="{ReceiverName} {path: 'FloeId', 
 											                formatter: '.formatter.formatFloeId' }"/>
 						</secondStatus>
+						<ObjectAttribute text="{path: 'CreateDate',
+												formatter: '.formatter.formatDate'}"/>
 						<ObjectAttribute text="{CreatedBy}"/>
+						<ObjectAttribute text="{Warehouse}"/>
 					</ObjectListItem>
 				</items>
 			</List>
