@@ -21,10 +21,6 @@ sap.ui.define([
 		_routePatternMatched: function (oEvent) {
 			var sVbeln = oEvent.getParameter("arguments").id;
 			this.bindVbelnTo(this.getModel(), sVbeln, this);
-
-			if (this._oMessagePopover) {
-				this._oMessagePopover.navigateBack();
-			};
 		},
 
 		onActionPrint: function (oEvent) {

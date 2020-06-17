@@ -192,7 +192,6 @@ sap.ui.define([
 		 * @override
 		 */
 		onHome: function () {
-			this.popoverModelDataChanged();
 			this.getRouter().navTo("home");
 		}
 	});
