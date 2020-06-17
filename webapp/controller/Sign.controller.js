@@ -35,7 +35,7 @@ sap.ui.define([
 
 	// shortcut for sap.m.ButtonType
 	var ButtonType = mobileLibrary.ButtonType;
-	
+
 	return BaseController.extend("Signature.controller.Sign", {
 
 		exit: function () {
@@ -62,17 +62,21 @@ sap.ui.define([
 				step: this.byId("signReleaserStep"),
 				pad: this.byId("signature-pad"), // Lager
 				field: this.byId("sName"),
-				button: this.byId("btnClear"),
-				property: "/SignatureIssuer"
+				button: this.byId("btnClear")
 			};
+
+			this._oReleaserSign = Object.assign({property: "/SignatureIssuer"}, this._oReleaser);
+			this._oReleaserName = Object.assign({property: "/Issuer"}, this._oReleaser);
+
 			this._oReceiver = {
 				step: this.byId("signReceiverStep"),
 				pad: this.byId("signature-pad2"), // Empfänger
 				field: this.byId("sRecvName"),
-				button: this.byId("btnClear2"),
-				property: "/SignatureReceiver"
+				button: this.byId("btnClear2")
 			};
 
+			this._oReceiverSign = Object.assign({property: "/SignatureReceiver"}, this._oReceiver);
+			this._oReceiverName = Object.assign({property: "/Receiver"}, this._oReceiver);
 		},
 
 		_routePatternMatched: function (oEvent) {
@@ -83,14 +87,6 @@ sap.ui.define([
 			this._oMessageManager.removeAllMessages(); // reset potential server-side messages
 
 			this._wizard.setCurrentStep(this.byId("contentStep"));
-		},
-
-		/**
-		 * Always navigates back to home
-		 * @override
-		 */
-		onBack: function () {
-			this.getRouter().navTo("home");
 		},
 
 		_validateSign: function (oSource) {
@@ -125,21 +121,15 @@ sap.ui.define([
 			oSource.step.setValidated(oState.valid);
 		},
 
-		_cloneSource: function (oOriginalSource, sProperty) {
-			var oSource = Object.create(oOriginalSource); // clone step, pad, field, button, property
-			oSource.property = sProperty;
-			return oSource;
-		},
-
 		onClearButton: function (oEvent) {
 			var oSource; // undefined
 
 			switch (oEvent.getSource()) {
 			case this._oReleaser.button:
-				oSource = this._cloneSource(this._oReleaser, "/SignatureIssuer");
+				oSource = this._oReleaserSign;
 				break;
 			case this._oReceiver.button:
-				oSource = this._cloneSource(this._oReceiver, "/SignatureReceiver");
+				oSource = this._oReceiverSign;
 				break;
 			default:
 				return;
@@ -158,16 +148,16 @@ sap.ui.define([
 
 			switch (oEvent.getSource()) {
 			case this._oReleaser.field:
-				oSource = this._cloneSource(this._oReleaser, "/Issuer");
+				oSource = this._oReleaserName;
 				break;
 			case this._oReceiver.field:
-				oSource = this._cloneSource(this._oReceiver, "/Receiver");
+				oSource = this._oReceiverName;
 				break;
 			case this._oReleaser.pad:
-				oSource = this._cloneSource(this._oReleaser, "/SignatureIssuer");
+				oSource = this._oReleaserSign;
 				break;
 			case this._oReceiver.pad:
-				oSource = this._cloneSource(this._oReceiver, "/SignatureReceiver");
+				oSource = this._oReceiverSign;
 				break;
 			default:
 				return;
@@ -211,7 +201,7 @@ sap.ui.define([
 			var oSelectedItem = oEvent.getParameter("selectedItem");
 			if (oSelectedItem) {
 				this._oReleaser.field.setValue(oSelectedItem.getTitle()); // also sets JSON draft model property "/Issuer" (TwoWay binding)
-				this._validateSign(this._oReleaser);
+				this._validateSign(this._oReleaserName);
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 		},
@@ -290,6 +280,14 @@ sap.ui.define([
 			};
 		},
 
+		/**
+		 * Always navigates back to home
+		 * @override
+		 */
+		onBack: function () {
+			this.getRouter().navTo("home");
+		},
+
 		_draftExists: function (oControl) {
 			var oModel = oControl.getModel("draft"); // Vbeln, Issuer, Receiver, SignatureIssuer, SignatureReceiver
 			var oData = oModel.getProperty("/"); // read JSON Model, SignatureIssuer, SignatureReceiver not maintained
@@ -304,24 +302,26 @@ sap.ui.define([
 			this._confirmEscapeDialog = new Dialog({
 				icon: IconPool.getIconURI("message-warning"),
 				title: this.getResourceBundle().getText("confirm.Title"),
-				content: new Text({ text: this.getResourceBundle().getText("confirm.Content") }),
+				content: new Text({
+					text: this.getResourceBundle().getText("confirm.Content")
+				}),
 				type: DialogType.Message,
 				beginButton: new Button({
-						icon: IconPool.getIconURI("home"),
-						text: this.getResourceBundle().getText("confirm.Yes"),
-						press: function () {
-							this._confirmEscapeDialog.close();
-							this.onBack();
-						}.bind(this)
-					}),
+					icon: IconPool.getIconURI("home"),
+					text: this.getResourceBundle().getText("confirm.Yes"),
+					press: function () {
+						this._confirmEscapeDialog.close();
+						this.onBack();
+					}.bind(this)
+				}),
 				endButton: new Button({
-						type: ButtonType.Emphasized,
-						text: this.getResourceBundle().getText("confirm.No"),
-						press: function () {
-							this._confirmEscapeDialog.close();
-							// reject();
-						}.bind(this)
-					})
+					type: ButtonType.Emphasized,
+					text: this.getResourceBundle().getText("confirm.No"),
+					press: function () {
+						this._confirmEscapeDialog.close();
+						// reject();
+					}.bind(this)
+				})
 			});
 		},
 
