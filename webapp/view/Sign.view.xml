@@ -18,6 +18,7 @@
 					<Wizard id="signWizard" complete="onWizardCompleted" finishButtonText="{i18n&gt;checkoutWizardReviewbtn}">
 						<steps>
 							<WizardStep id="contentStep" nextStep="signReleaserStep" icon="sap-icon://detail-view" validated="true"
+								complete="onReviewCompleted"
 								title="{i18n&gt;contentTitle} {VBELN}">
 								<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Review}" showIcon="true"/>
 								<Table id="lDelPos" inset="false" alternateRowColors="true" noDataText="{i18n&gt;homeNoData}" busyIndicatorDelay="0"

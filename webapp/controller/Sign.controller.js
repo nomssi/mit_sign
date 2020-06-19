@@ -87,10 +87,30 @@ sap.ui.define([
 
 			this._oMessageManager.removeAllMessages(); // reset potential server-side messages
 
-			this._wizard.setCurrentStep(this.byId("contentStep"));
+			var oStep = this.byId("contentStep");
+			this._wizard.setCurrentStep(oStep);
+			oStep.setValidated(true);
 			
+			var oSegmBtn = this.byId("signScenario");
+			oSegmBtn.setSelectedKey("normal");
 		},
 
+		onReviewCompleted: function (oEvent) {
+			// Check if scenario without signature is active (Blanko, nur Drucken und abschliessen)
+			var oSegmBtn = this.byId("signScenario");
+			var oSelectedKey = oSegmBtn.getSelectedKey();
+			
+			if (oSelectedKey === "blanko") {
+				MessageToast.show(this._oResourceBundle.getText("blank.output"));
+				
+				//var sVbeln = oEvent.getSource().getBindingContext().getProperty("VBELN");
+				
+				this.getRouter().navTo("blanko", {
+					id: this.sVbeln
+				});				
+			};
+		},
+		
 		_validateSign: function (oSource) {
 			var oInput = oSource.field; // First check Input field	
 			var sPath = "draft>"; // oInput.getBindingContext().getPath() + "/";

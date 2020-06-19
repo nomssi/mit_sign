@@ -76,8 +76,8 @@
 											                formatter: '.formatter.formatFloeId' }"/>
 						</secondStatus>
 						<ObjectAttribute text="{path: 'CreateDate',
-												formatter: '.formatter.formatDate'}"/>
-						<ObjectAttribute text="{CreatedBy} / {Warehouse}"/>
+												formatter: '.formatter.formatDate'} / {Warehouse}"/>
+						<ObjectAttribute text="{CreatedBy}"/>
 					</ObjectListItem>
 				</items>
 			</List>

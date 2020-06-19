@@ -124,10 +124,15 @@
 					"target": "complete"
 				},
 				{
+					"name": "blanko",
+					"pattern": "blanko/{id}",
+					"target": "blanko"
+				},
+				{
 					"name": "error",
 					"pattern": "error/:id:",
 					"target": "error"
-				}
+				}				
 			],
 			"targets": {
 				"home": {
@@ -150,6 +155,11 @@
 					"viewName": "Error",
 					"viewLevel": 3,
 					"viewId": "signError"
+				},
+				"blanko": {
+					"viewName": "Blanko",
+					"viewLevel": 3,
+					"viewId": "signBlanko"
 				},
 				"notFound": {
 					"viewName": "NotFound",
