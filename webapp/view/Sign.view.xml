@@ -56,6 +56,12 @@
 										</ColumnListItem>
 									</items>
 								</Table>
+								<SegmentedButton selectedKey="normal" class="sapUiSmallMarginBottom">
+									<items>
+										<SegmentedButtonItem text="unterschreiben" key="normal" />
+										<SegmentedButtonItem text="Blanko" key="blanko"/>
+									</items>
+								</SegmentedButton>
 							</WizardStep>
 							<WizardStep id="signReleaserStep" nextStep="signReceiverStep" title="{i18n&gt;SignPad1Title}" icon="sap-icon://signature" validated="false">
 								<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.ReleaseStorage}" showIcon="true"/>

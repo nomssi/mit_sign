@@ -35,20 +35,8 @@
 					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="EMailValid" Type="Edm.Boolean" Nullable="false" sap:unicode="false" sap:label="Flag" sap:creatable="false"
 					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-				<NavigationProperty Name="EventHead" Relationship="MAK.SIGNATURE_SRV.EventHead" FromRole="FromRole_EventHead" ToRole="ToRole_EventHead"/>
 				<NavigationProperty Name="EventPositions" Relationship="MAK.SIGNATURE_SRV.EventPosition" FromRole="FromRole_EventPosition"
 					ToRole="ToRole_EventPosition"/>
-			</EntityType>
-			<EntityType Name="Head" sap:content-version="1">
-				<Key>
-					<PropertyRef Name="Vbeln"/>
-				</Key>
-				<Property Name="Vbeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Lieferung" sap:creatable="false"
-					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-				<Property Name="Kunnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Warenempfänger"
-					sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-				<Property Name="Name1" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
 			</EntityType>
 			<EntityType Name="Position" sap:content-version="1">
 				<Key>
@@ -77,6 +65,29 @@
 				<Property Name="Name" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
 			</EntityType>
+			<EntityType Name="Warehouse" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="LGNUM"/>
+				</Key>
+				<Property Name="LGNUM" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Name" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<NavigationProperty Name="WarehouseEvents" Relationship="MAK.SIGNATURE_SRV.WarehouseEvent" FromRole="FromRole_WarehouseEvent"
+					ToRole="ToRole_WarehouseEvent"/>
+			</EntityType>
+			<Association Name="WarehouseEvent" sap:content-version="1">
+				<End Type="MAK.SIGNATURE_SRV.Warehouse" Multiplicity="1" Role="FromRole_WarehouseEvent"/>
+				<End Type="MAK.SIGNATURE_SRV.Event" Multiplicity="*" Role="ToRole_WarehouseEvent"/>
+				<ReferentialConstraint>
+					<Principal Role="FromRole_WarehouseEvent">
+						<PropertyRef Name="LGNUM"/>
+					</Principal>
+					<Dependent Role="ToRole_WarehouseEvent">
+						<PropertyRef Name="Warehouse"/>
+					</Dependent>
+				</ReferentialConstraint>
+			</Association>
 			<Association Name="EventPosition" sap:content-version="1">
 				<End Type="MAK.SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_EventPosition"/>
 				<End Type="MAK.SIGNATURE_SRV.Position" Multiplicity="*" Role="ToRole_EventPosition"/>
@@ -89,31 +100,19 @@
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
-			<Association Name="EventHead" sap:content-version="1">
-				<End Type="MAK.SIGNATURE_SRV.Event" Multiplicity="1" Role="FromRole_EventHead"/>
-				<End Type="MAK.SIGNATURE_SRV.Head" Multiplicity="1" Role="ToRole_EventHead"/>
-				<ReferentialConstraint>
-					<Principal Role="FromRole_EventHead">
-						<PropertyRef Name="VBELN"/>
-					</Principal>
-					<Dependent Role="ToRole_EventHead">
-						<PropertyRef Name="Vbeln"/>
-					</Dependent>
-				</ReferentialConstraint>
-			</Association>
 			<EntityContainer Name="MAK_SIGNATURE_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
 				<EntitySet Name="Events" EntityType="MAK.SIGNATURE_SRV.Event" sap:creatable="false" sap:updatable="false" sap:deletable="false"
-					sap:pageable="false" sap:content-version="1"/>
-				<EntitySet Name="Heads" EntityType="MAK.SIGNATURE_SRV.Head" sap:creatable="false" sap:updatable="false" sap:deletable="false"
 					sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="Positions" EntityType="MAK.SIGNATURE_SRV.Position" sap:creatable="false" sap:updatable="false" sap:deletable="false"
 					sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="Users" EntityType="MAK.SIGNATURE_SRV.User" sap:label="Lager Mitarbeiter" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-				<AssociationSet Name="EventHeadSet" Association="MAK.SIGNATURE_SRV.EventHead" sap:creatable="false" sap:updatable="false"
+				<EntitySet Name="Warehouses" EntityType="MAK.SIGNATURE_SRV.Warehouse" sap:label="Lager" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<AssociationSet Name="WarehouseEvents" Association="MAK.SIGNATURE_SRV.WarehouseEvent" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:content-version="1">
-					<End EntitySet="Events" Role="FromRole_EventHead"/>
-					<End EntitySet="Heads" Role="ToRole_EventHead"/>
+					<End EntitySet="Warehouses" Role="FromRole_WarehouseEvent"/>
+					<End EntitySet="Events" Role="ToRole_WarehouseEvent"/>
 				</AssociationSet>
 				<AssociationSet Name="EventPositions" Association="MAK.SIGNATURE_SRV.EventPosition" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:content-version="1">
@@ -131,8 +130,9 @@
 					<Parameter Name="Vbeln" Type="Edm.String" Mode="In"/>
 				</FunctionImport>
 			</EntityContainer>
-			<atom:link rel="self" href="OBELIX3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
-			<atom:link rel="latest-version" href="OBELIX3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="self" href="http://OBELIX3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata" xmlns:atom="http://www.w3.org/2005/Atom"/>
+			<atom:link rel="latest-version" href="http://OBELIX3:8002/sap/opu/odata/MAK/SIGNATURE_SRV/$metadata"
+				xmlns:atom="http://www.w3.org/2005/Atom"/>
 		</Schema>
 	</edmx:DataServices>
 </edmx:Edmx>

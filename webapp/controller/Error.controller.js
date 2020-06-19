@@ -11,7 +11,7 @@ sap.ui.define([
 			this.getRouter().getRoute("error").attachPatternMatched(this._routePatternMatched, this);
 
 			this.initMessageManager(this);
-			this._oMessagePopover.getBinding("items").attachChange(this.popoverModelDataChanged.bind(this));
+			// this._oMessagePopover.getBinding("items").attachChange(this.popoverModelDataChanged.bind(this));
 
 			var oComponent = this.getOwnerComponent();
 			this._oHelper = new Signature(oComponent);

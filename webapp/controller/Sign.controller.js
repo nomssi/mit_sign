@@ -36,6 +36,9 @@ sap.ui.define([
 	// shortcut for sap.m.ButtonType
 	var ButtonType = mobileLibrary.ButtonType;
 
+	// shortcut for sap.ui.core.MessageType
+	var MessageType = sap.ui.core.MessageType;
+
 	return BaseController.extend("Signature.controller.Sign", {
 
 		exit: function () {
@@ -64,7 +67,6 @@ sap.ui.define([
 				field: this.byId("sName"),
 				button: this.byId("btnClear")
 			};
-
 			this._oReleaserSign = Object.assign({property: "/SignatureIssuer"}, this._oReleaser);
 			this._oReleaserName = Object.assign({property: "/Issuer"}, this._oReleaser);
 
@@ -74,7 +76,6 @@ sap.ui.define([
 				field: this.byId("sRecvName"),
 				button: this.byId("btnClear2")
 			};
-
 			this._oReceiverSign = Object.assign({property: "/SignatureReceiver"}, this._oReceiver);
 			this._oReceiverName = Object.assign({property: "/Receiver"}, this._oReceiver);
 		},
@@ -87,6 +88,7 @@ sap.ui.define([
 			this._oMessageManager.removeAllMessages(); // reset potential server-side messages
 
 			this._wizard.setCurrentStep(this.byId("contentStep"));
+			
 		},
 
 		_validateSign: function (oSource) {
@@ -112,7 +114,7 @@ sap.ui.define([
 				var sMessage = this._oResourceBundle.getText(oState.errorId);
 				Messages.popoverMessage(sMessage,
 					oInput.getLabels()[0].getText(),
-					sap.ui.core.MessageType.Error,
+					MessageType.Error,
 					sTarget, this);
 				oInput.setValueStateText(sMessage);
 			};
@@ -243,7 +245,7 @@ sap.ui.define([
 				Messages.popoverTechnicalMessage(this.sVbeln,
 					this._oResourceBundle.getText("step.save"),
 					this._oResourceBundle.getText("pdf.Created"),
-					Core.MessageType.Success,
+					MessageType.Success,
 					null, this);
 
 				this._oBusyDialog.close();

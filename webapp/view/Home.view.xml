@@ -22,6 +22,20 @@
 				updateFinished=".onUpdateFinished">
 				<headerToolbar>
 					<OverflowToolbar>
+						<Select id="lagerSelect"
+								icon="sap-icon://filter"
+								forceSelection="false"
+								enabled="true"
+								valueState="Error"
+								valueStateText="Bitte Lager auswählen!"
+								selectedKey="{/viewProperties>SelectedLGNUM}"
+								change="onLagerSelected"
+								items="{
+									path: '/Warehouses',
+									sorter: { path: 'Name' }
+								}">
+							<core:Item key="{LGNUM}" text="{Name}" />
+						</Select>						
 						<OverflowToolbarButton id="buttonSync" icon="sap-icon://refresh" 
 								tooltip="{i18n>Synchronize}"
 								press="onDataReload"/>

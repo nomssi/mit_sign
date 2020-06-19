@@ -40,7 +40,6 @@ sap.ui.define([
 			var oComponent = this.getOwnerComponent();
 			this._router = oComponent.getRouter();
 
-			this._enableAutoReload();
 			this._initViewPropertiesModel();
 			this.initMessageManager(this);
 		},
@@ -74,7 +73,8 @@ sap.ui.define([
 			var date = new Date();
 			this._oViewProperties = new JSONModel({
 				updateTime: date.toLocaleTimeString("de-DE"),
-				listTableTitle: this.getResourceBundle().getText("ReceiverName")
+				listTableTitle: this.getResourceBundle().getText("ReceiverName"),
+				SelectedLGNUM: "Zentrallager eins HKW"
 			});
 			this.setModel(this._oViewProperties, "viewProperties");
 		},
@@ -114,6 +114,8 @@ sap.ui.define([
 
 		onFilterEvents: function (oEvent) {
 			var aTabFilters = []; // reset current filters
+			aTabFilters.push(new Filter("Warehouse", FilterOperator.EQ, this.getSelectedWarehouse()));
+			
 			var sQuery = oEvent.getParameter("query");
 			if (sQuery) {
 				aTabFilters.push(new Filter("ReceiverPartner", FilterOperator.Contains, sQuery));
@@ -199,6 +201,52 @@ sap.ui.define([
 		onReset: function () {
 			var oListBinding = this.getView().byId("eventsList").getBinding("items");
 			oListBinding.sort([]);
+		},
+
+		selectWarehouseDialog: function () {
+			if (this._oWarehouseDialog) {
+				this._warehouseDialog(this._oWarehouseDialog);
+			} else {
+				Fragment.load({
+					name: "Signature.view.SelectWarehousDialog",
+					controller: this
+				}).then(function (oDialog) {
+					this._oWarehouseDialog = oDialog;
+					this._oWarehouseDialog.setModel(this.getView().getModel());
+					this._warehouseDialog(this._oWarehouseDialog);
+				}.bind(this));
+			}
+		},
+	
+		_configWarehouseDialog: function(oDialog) {
+			// Multi-select if required
+			oDialog.setMultiSelect(false);
+			oDialog.setConfirmButtonText("Auswählen");
+			oDialog.setRememberSelections(true);
+			oDialog.setShowClearButton(false);
+			oDialog.setGrowing(false);
+
+			// clear the old search filter
+			// oDialog.getBinding("items").filter([]);
+		    oDialog.open();
+		},
+
+		getSelectedWarehouse: function() {
+			var oModel = this.getView().getModel("viewProperties");
+			return oModel.getProperty("/SelectedLGNUM");
+		},
+		
+		onLagerSelected: function(oEvent) {
+			var oSource = oEvent.getSource();
+			
+			if (oSource && this.getSelectedWarehouse()) {	
+				oSource.setEditable(false);
+				oSource.setValueState("None");
+				oSource.setValueStateText("");
+				//
+				this._reloadData();
+				this._enableAutoReload();
+			};
 		}
 
 	});

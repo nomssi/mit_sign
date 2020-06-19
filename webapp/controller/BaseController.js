@@ -140,9 +140,9 @@ sap.ui.define([
 		 * From: openui5/src/sap.m/test/sap/m/demokit/cart/webapp/
 		 */
 		handleMessagePopoverPress: function (oEvent) {
-			if (!this._oMessagePopover) {
-				this._createMessagePopover();
-			};
+			// if (!this._oMessagePopover) {
+			// 	this._createMessagePopover();
+			// };
 			this._oMessagePopover.toggle(oEvent.getSource()); //.openBy(oEvent.getSource());
 		},
 
@@ -192,6 +192,7 @@ sap.ui.define([
 		 * @override
 		 */
 		onHome: function () {
+			this.popoverModelDataChanged();
 			this.getRouter().navTo("home");
 		}
 	});

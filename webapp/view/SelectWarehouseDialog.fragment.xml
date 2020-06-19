@@ -1,0 +1,18 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		noDataText="Keine Lager gefunden"
+		title="Lager Auswahl"
+		search="handleSearch"
+		confirm="handleClose"
+		cancel="handleClose"
+		items="{
+			path: '/Warehouses'
+		}" >
+		<StandardListItem
+			title="{LGNUM}"
+			description="{Name}"
+			type="Active" />
+	</SelectDialog>
+</core:FragmentDefinition>
