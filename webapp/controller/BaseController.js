@@ -128,21 +128,12 @@ sap.ui.define([
 			}.bind(this));
 		},
 
-		popoverModelDataChanged: function () {
-			if (this._oMessagePopover) {
-				this._oMessagePopover.navigateBack();
-			};
-		},
-		
 		/**
 		 * Only validation on client side, does not involve a back-end server.
 		 * @param {sap.ui.base.Event} oEvent Press event of the button to display the MessagePopover
 		 * From: openui5/src/sap.m/test/sap/m/demokit/cart/webapp/
 		 */
 		handleMessagePopoverPress: function (oEvent) {
-			// if (!this._oMessagePopover) {
-			// 	this._createMessagePopover();
-			// };
 			this._oMessagePopover.toggle(oEvent.getSource()); //.openBy(oEvent.getSource());
 		},
 
@@ -192,7 +183,6 @@ sap.ui.define([
 		 * @override
 		 */
 		onHome: function () {
-			this.popoverModelDataChanged();
 			this.getRouter().navTo("home");
 		}
 	});
