@@ -27,7 +27,7 @@
 								forceSelection="false"
 								enabled="true"
 								valueState="Error"
-								valueStateText="Bitte Lager auswählen!"
+								valueStateText="{i18n>select.Warehouse}"
 								selectedKey="{/viewProperties>SelectedLGNUM}"
 								change="onLagerSelected"
 								items="{
@@ -77,8 +77,7 @@
 						</secondStatus>
 						<ObjectAttribute text="{path: 'CreateDate',
 												formatter: '.formatter.formatDate'}"/>
-						<ObjectAttribute text="{CreatedBy}"/>
-						<ObjectAttribute text="{Warehouse}"/>
+						<ObjectAttribute text="{CreatedBy} / {Warehouse}"/>
 					</ObjectListItem>
 				</items>
 			</List>

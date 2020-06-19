@@ -21,23 +21,6 @@ sap.ui.define([
 			return numberFormat.format(sValue);
 		},
 
-		/**
-		 * Returns the status text based on the delivery  status
-		 * @param {string} sStatus delivery  status
-		 * @return {string} the corresponding text if found or the original value
-		 */
-		statusText: function (sStatus) {
-			var oBundle = this.getResourceBundle();
-
-			var mStatusText = {
-				"0": oBundle.getText("statusNew"),
-				"1": oBundle.getText("statusProcessed"),
-				"2": oBundle.getText("statusError")
-			};
-
-			return mStatusText[sStatus] || sStatus;
-		},
-
 		formatFloeId: function (sFloeId) {
 			if (sFloeId && sFloeId !== "0000000000") {
 				return sFloeId;

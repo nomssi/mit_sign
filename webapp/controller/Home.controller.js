@@ -1,6 +1,7 @@
 sap.ui.define([
 	"./BaseController",
 	"sap/ui/model/json/JSONModel",
+	"sap/m/MessageToast",	
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
 	"sap/ui/model/Sorter",
@@ -8,6 +9,7 @@ sap.ui.define([
 ], function (
 	BaseController,
 	JSONModel,
+	MessageToast,
 	Fragment,
 	Filter,
 	Sorter,
@@ -42,6 +44,9 @@ sap.ui.define([
 
 			this._initViewPropertiesModel();
 			this.initMessageManager(this);
+			this._enableAutoReload();
+			
+			MessageToast.show(this.getResourceBundle().getText("select.Warehouse"));
 		},
 
 		onRefresh: function () {
@@ -74,7 +79,7 @@ sap.ui.define([
 			this._oViewProperties = new JSONModel({
 				updateTime: date.toLocaleTimeString("de-DE"),
 				listTableTitle: this.getResourceBundle().getText("ReceiverName"),
-				SelectedLGNUM: "Zentrallager eins HKW"
+				SelectedLGNUM: ""
 			});
 			this.setModel(this._oViewProperties, "viewProperties");
 		},
@@ -114,7 +119,8 @@ sap.ui.define([
 
 		onFilterEvents: function (oEvent) {
 			var aTabFilters = []; // reset current filters
-			aTabFilters.push(new Filter("Warehouse", FilterOperator.EQ, this.getSelectedWarehouse()));
+			aTabFilters.push(new Filter("Warehouse", FilterOperator.EQ, 
+				this.getView().byId("lagerSelect").getSelectedKey()));
 			
 			var sQuery = oEvent.getParameter("query");
 			if (sQuery) {
@@ -203,49 +209,16 @@ sap.ui.define([
 			oListBinding.sort([]);
 		},
 
-		selectWarehouseDialog: function () {
-			if (this._oWarehouseDialog) {
-				this._warehouseDialog(this._oWarehouseDialog);
-			} else {
-				Fragment.load({
-					name: "Signature.view.SelectWarehousDialog",
-					controller: this
-				}).then(function (oDialog) {
-					this._oWarehouseDialog = oDialog;
-					this._oWarehouseDialog.setModel(this.getView().getModel());
-					this._warehouseDialog(this._oWarehouseDialog);
-				}.bind(this));
-			}
-		},
-	
-		_configWarehouseDialog: function(oDialog) {
-			// Multi-select if required
-			oDialog.setMultiSelect(false);
-			oDialog.setConfirmButtonText("Auswählen");
-			oDialog.setRememberSelections(true);
-			oDialog.setShowClearButton(false);
-			oDialog.setGrowing(false);
-
-			// clear the old search filter
-			// oDialog.getBinding("items").filter([]);
-		    oDialog.open();
-		},
-
-		getSelectedWarehouse: function() {
-			var oModel = this.getView().getModel("viewProperties");
-			return oModel.getProperty("/SelectedLGNUM");
-		},
-		
 		onLagerSelected: function(oEvent) {
 			var oSource = oEvent.getSource();
+			var oSelectedKey = oSource.getSelectedKey();
 			
-			if (oSource && this.getSelectedWarehouse()) {	
-				oSource.setEditable(false);
+			if (oSource && oSelectedKey) {
+				oSource.setEnabled(false);
 				oSource.setValueState("None");
 				oSource.setValueStateText("");
 				//
-				this._reloadData();
-				this._enableAutoReload();
+				this.onFilterEvents(oEvent);
 			};
 		}
 
