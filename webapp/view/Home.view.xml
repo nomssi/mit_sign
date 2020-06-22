@@ -4,7 +4,7 @@
 		<headerContent>
 			<MenuButton id="homeIcon" icon="sap-icon://hint" tooltip="{i18n>Version}">
 				<Menu>
-					<MenuItem text="Version 0.9.5" />
+					<MenuItem text="Version 0.9.6" />
 				</Menu>				
 			</MenuButton>
 		</headerContent>

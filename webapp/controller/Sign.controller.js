@@ -4,37 +4,21 @@ sap.ui.define([
 	"../model/formatter",
 	"../util/messages",
 	"../util/controls",
-	"sap/ui/core/Core",
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
 	"sap/m/MessageToast",
-	"sap/m/library",
-	"sap/m/Text",
-	"sap/m/Button",
-	"sap/m/Dialog",
-	"sap/ui/core/IconPool"
+	"sap/m/MessageBox"
 ], function (
 	BaseController,
 	Signature,
 	formatter,
 	Messages,
 	controls,
-	Core,
 	Fragment,
 	Filter,
 	MessageToast,
-	mobileLibrary,
-	Text,
-	Button,
-	Dialog,
-	IconPool) {
+	MessageBox) {
 	"use strict";
-
-	// shortcut for sap.m.DialogType
-	var DialogType = mobileLibrary.DialogType;
-
-	// shortcut for sap.m.ButtonType
-	var ButtonType = mobileLibrary.ButtonType;
 
 	// shortcut for sap.ui.core.MessageType
 	var MessageType = sap.ui.core.MessageType;
@@ -67,8 +51,12 @@ sap.ui.define([
 				field: this.byId("sName"),
 				button: this.byId("btnClear")
 			};
-			this._oReleaserSign = Object.assign({property: "/SignatureIssuer"}, this._oReleaser);
-			this._oReleaserName = Object.assign({property: "/Issuer"}, this._oReleaser);
+			this._oReleaserSign = Object.assign({
+				property: "/SignatureIssuer"
+			}, this._oReleaser);
+			this._oReleaserName = Object.assign({
+				property: "/Issuer"
+			}, this._oReleaser);
 
 			this._oReceiver = {
 				step: this.byId("signReceiverStep"),
@@ -76,8 +64,12 @@ sap.ui.define([
 				field: this.byId("sRecvName"),
 				button: this.byId("btnClear2")
 			};
-			this._oReceiverSign = Object.assign({property: "/SignatureReceiver"}, this._oReceiver);
-			this._oReceiverName = Object.assign({property: "/Receiver"}, this._oReceiver);
+			this._oReceiverSign = Object.assign({
+				property: "/SignatureReceiver"
+			}, this._oReceiver);
+			this._oReceiverName = Object.assign({
+				property: "/Receiver"
+			}, this._oReceiver);
 		},
 
 		_routePatternMatched: function (oEvent) {
@@ -87,33 +79,33 @@ sap.ui.define([
 
 			this._oMessageManager.removeAllMessages(); // reset potential server-side messages
 
-			var oStep = this.byId("contentStep");
-			this._wizard.setCurrentStep(oStep);
-			oStep.setValidated(true);
-			
-			var oSegmBtn = this.byId("signScenario");
-			oSegmBtn.setSelectedKey("normal");
+			this._validateWizardStep("contentStep");
+
+			this.byId("signScenario").setSelectedKey("normal");		// Set default scenario
 		},
 
-		onReviewCompleted: function (oEvent) {
+		_validateWizardStep: function (sStepName) {
+			var oStep = this.byId(sStepName);
+			this._wizard.setCurrentStep(oStep);
+			oStep.setValidated(true);
+		},
+
+		onReviewCompleted: function () {
 			// Check if scenario without signature is active (Blanko, nur Drucken und abschliessen)
-			var oSegmBtn = this.byId("signScenario");
-			var oSelectedKey = oSegmBtn.getSelectedKey();
-			
+			var oSelectedKey = this.byId("signScenario").getSelectedKey();
+
 			if (oSelectedKey === "blanko") {
 				MessageToast.show(this._oResourceBundle.getText("blank.output"));
-				
-				//var sVbeln = oEvent.getSource().getBindingContext().getProperty("VBELN");
-				
+
 				this.getRouter().navTo("blanko", {
 					id: this.sVbeln
-				});				
+				});
 			};
 		},
-		
+
 		_validateSign: function (oSource) {
 			var oInput = oSource.field; // First check Input field	
-			var sPath = "draft>"; // oInput.getBindingContext().getPath() + "/";
+			var sPath = "draft>";		// oInput.getBindingContext().getPath() + "/";
 			var sTarget = sPath + oInput.getBindingPath("value");
 
 			this.removeMessageFromTarget(sTarget);
@@ -132,11 +124,11 @@ sap.ui.define([
 			};
 			if (!oState.valid) {
 				var sMessage = this._oResourceBundle.getText(oState.errorId);
+				oInput.setValueStateText(sMessage);				
 				Messages.popoverMessage(sMessage,
 					oInput.getLabels()[0].getText(),
 					MessageType.Error,
 					sTarget, this);
-				oInput.setValueStateText(sMessage);
 			};
 
 			oInput.setValueState(oState.state);
@@ -246,7 +238,7 @@ sap.ui.define([
 			};
 		},
 
-		onWizardCompleted: function (oEvent) {
+		onWizardCompleted: function () {
 
 			var fnSaveError = function (oDetails) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
@@ -259,7 +251,7 @@ sap.ui.define([
 				});
 			};
 
-			var fnAfterSave = function (oData) {
+			var fnAfterSave = function () {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
 
 				Messages.popoverTechnicalMessage(this.sVbeln,
@@ -320,39 +312,20 @@ sap.ui.define([
 				!oControl._oReceiver.pad.isEmpty());
 		},
 
-		_createConfirmationDialog: function () {
-			this._confirmEscapeDialog = new Dialog({
-				icon: IconPool.getIconURI("message-warning"),
-				title: this.getResourceBundle().getText("confirm.Title"),
-				content: new Text({
-					text: this.getResourceBundle().getText("confirm.Content")
-				}),
-				type: DialogType.Message,
-				beginButton: new Button({
-					icon: IconPool.getIconURI("home"),
-					text: this.getResourceBundle().getText("confirm.Yes"),
-					press: function () {
-						this._confirmEscapeDialog.close();
-						this.onBack();
-					}.bind(this)
-				}),
-				endButton: new Button({
-					type: ButtonType.Emphasized,
-					text: this.getResourceBundle().getText("confirm.No"),
-					press: function () {
-						this._confirmEscapeDialog.close();
-						// reject();
-					}.bind(this)
-				})
-			});
-		},
-
 		confirmBack: function () {
 			if (this._draftExists(this)) {
-				if (!this._confirmEscapeDialog) {
-					this._createConfirmationDialog();
-				};
-				this._confirmEscapeDialog.open();
+				var oActionHome = this.getResourceBundle().getText("homeButtonText");
+
+				MessageBox.confirm(this.getResourceBundle().getText("confirm.Content"), {
+					title: this.getResourceBundle().getText("confirm.Title"),
+					actions: [oActionHome, MessageBox.Action.CANCEL],
+					emphasizedAction: MessageBox.Action.CANCEL,
+					onClose: function (sAction) {
+						if (sAction === oActionHome) {
+							this.onBack();
+						}
+					}.bind(this)
+				});
 			} else {
 				this.onBack();
 			}

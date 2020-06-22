@@ -61,7 +61,7 @@ sap.ui.define([
 			this._reloadData();
 		},
 
-		onDataReload: function (oEvent) {
+		onDataReload: function () {
 			this._disableAutoReload();
 			this._reloadData();
 			this._enableAutoReload();
