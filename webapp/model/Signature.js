@@ -30,17 +30,19 @@ sap.ui.define([
 				Vbeln: sVbeln
 			};
 			this._callFunctionImport("/TriggerOutput", oOutputData, fnAfterTrigger, fnOutputFailed);
-			// this._submitChanges(fnOutputFailed, fnAfterTrigger);  "isBusySaving"
+
 			this._submitChanges(null, null);
 		},
 		
 		// Saves Draft 
-		saveSignature: function (fnAfterSaved, fnSaveFailed, oSignData) {
-			if (typeof oSignData !== "undefined") {
-				this._callFunctionImport("/SaveSignature", oSignData, fnAfterSaved, fnSaveFailed);
-			};
+		saveSignature: function (fnAfterSaved, fnSaveFailed, oData) {
+			if (typeof oData !== "undefined" && typeof oData.Issuer !== "undefined" && 
+				typeof oData.Receiver !== "undefined" && typeof oData.SignatureIssuer !== "undefined" && 
+				typeof oData.SignatureReceiver !== "undefined") {
+
+				this._callFunctionImport("/SaveSignature", oData, fnAfterSaved, fnSaveFailed);
+			};			
 			this._submitChanges(null, null);
-			// this._submitChanges(fnSaveFailed, fnAfterSaved);
 		},
 
 		_submitChanges: function (fnSaveFailed, fnAfterSaved) {

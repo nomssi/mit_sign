@@ -229,15 +229,6 @@ sap.ui.define([
 			return oModel.getProperty("/"); // read JSON Model
 		},
 
-		_getDraftData: function (oControl) {
-			var oData = this._readDraftModel(oControl);
-
-			if (typeof oData.Issuer !== "undefined" && typeof oData.Receiver !== "undefined" &&
-				typeof oData.SignatureIssuer !== "undefined" && typeof oData.SignatureReceiver !== "undefined") {
-				return oData;
-			};
-		},
-
 		onWizardCompleted: function () {
 
 			var fnSaveError = function (oDetails) {
@@ -268,7 +259,7 @@ sap.ui.define([
 			};
 
 			// save draft to oData model
-			var oSignData = this._getDraftData(this);
+			var oSignData = this._readDraftModel(this);
 
 			if (this._oBusyDialog) {
 				this._oBusyDialog.open();
