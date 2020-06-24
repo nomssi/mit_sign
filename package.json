@@ -1,0 +1,20 @@
+{
+  "name": "Signature",
+  "version": "0.9.6",
+  "description": "Signature",
+  "private": true,
+  "devDependencies": {
+    "@ui5/cli": "^1.7.0",
+    "eslint": "^5.16.0",
+    "rimraf": "^2.7.1"
+  },
+  "dependencies": {
+    "@openui5/sap.m": "^1.69.1",
+    "@openui5/sap.ui.core": "^1.69.1",
+    "@openui5/sap.ui.layout": "^1.69.1",
+    "@openui5/themelib_sap_belize": "^1.69.1"
+  },
+  "scripts": {
+    "build": "rimraf dist && ui5 build -a"
+  }
+}
