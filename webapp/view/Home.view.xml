@@ -4,7 +4,7 @@
 		<headerContent>
 			<MenuButton id="homeIcon" icon="sap-icon://hint" tooltip="{i18n>Version}">
 				<Menu>
-					<MenuItem text="Version 0.9.6" />
+					<MenuItem text="Version 0.9.7" />
 				</Menu>				
 			</MenuButton>
 		</headerContent>
@@ -76,7 +76,7 @@
 											                formatter: '.formatter.formatFloeId' }"/>
 						</secondStatus>
 						<ObjectAttribute text="{path: 'CreateDate',
-												formatter: '.formatter.formatDate'} / {Warehouse}"/>
+												formatter: '.formatter.formatDate'}"/>
 						<ObjectAttribute text="{CreatedBy}"/>
 					</ObjectListItem>
 				</items>

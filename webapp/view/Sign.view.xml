@@ -1,9 +1,6 @@
-<core:View xmlns:layout="sap.ui.layout" 
-			xmlns="sap.m" 
-			xmlns:core="sap.ui.core"
-			xmlns:pad="Signature.controls" xmlns:f="sap.ui.layout.form"
-			xmlns:html="http://www.w3.org/1999/xhtml"
-	controllerName="Signature.controller.Sign" busy="{draft>/busy}" busyIndicatorDelay="{draft>/delay}">
+<core:View xmlns:layout="sap.ui.layout" xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:pad="Signature.controls" xmlns:f="sap.ui.layout.form"
+	xmlns:html="http://www.w3.org/1999/xhtml" controllerName="Signature.controller.Sign" busy="{draft>/busy}"
+	busyIndicatorDelay="{draft>/delay}">
 	<NavContainer id="wizardNavContainer">
 		<pages>
 			<Page id="wizardContentPage" showHeader="true" title="{i18n&gt;signTitle} {Vbeln}">
@@ -17,8 +14,7 @@
 				<content>
 					<Wizard id="signWizard" complete="onWizardCompleted" finishButtonText="{i18n&gt;checkoutWizardReviewbtn}">
 						<steps>
-							<WizardStep id="contentStep" nextStep="signReleaserStep" icon="sap-icon://detail-view" validated="true"
-								complete="onReviewCompleted"
+							<WizardStep id="contentStep" nextStep="signReleaserStep" icon="sap-icon://detail-view" validated="true" complete="onReviewCompleted"
 								title="{i18n&gt;contentTitle} {VBELN}">
 								<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Review}" showIcon="true"/>
 								<Table id="lDelPos" inset="false" alternateRowColors="true" noDataText="{i18n&gt;homeNoData}" busyIndicatorDelay="0"
@@ -28,7 +24,7 @@
 											<content>
 												<Title text="{i18n>ReceiverName} {ReceiverPartner}" level="H2"/>
 												<ToolbarSpacer/>
-												<Label text="{i18n>CreatedBy} {CreatedBy}"/>
+												<Label text="{i18n>CreatedBy} {CreatedBy}  / {Warehouse}"/>
 											</content>
 										</OverflowToolbar>
 									</headerToolbar>
@@ -57,17 +53,14 @@
 										</ColumnListItem>
 									</items>
 								</Table>
-							<HBox alignItems="Center"
-									justifyContent="Center"
-									width="100%">
-								<SegmentedButton id="signScenario" selectionChange="setSignScenerario" selectedKey="normal">
-									<items>
-										<SegmentedButtonItem key="normal" text="Unterschrift" icon="sap-icon://signature" />
-										<SegmentedButtonItem key="blanko" text="nur Drucken" icon="sap-icon://print" />
-									</items>
-								</SegmentedButton>
-							</HBox>
-							
+								<HBox alignItems="Center" justifyContent="Center" width="100%">
+									<SegmentedButton id="signScenario" selectionChange="setSignScenerario" selectedKey="normal">
+										<items>
+											<SegmentedButtonItem key="normal" text="Unterschrift" icon="sap-icon://signature"/>
+											<SegmentedButtonItem key="blanko" text="nur Drucken" icon="sap-icon://print"/>
+										</items>
+									</SegmentedButton>
+								</HBox>
 							</WizardStep>
 							<WizardStep id="signReleaserStep" nextStep="signReceiverStep" title="{i18n&gt;SignPad1Title}" icon="sap-icon://signature" validated="false">
 								<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.ReleaseStorage}" showIcon="true"/>
@@ -80,15 +73,9 @@
 											</layoutData>
 										</Label>
 										<Input id="sName" required="true"
-											value="{ path: 'draft>/Issuer', 
-													type: 'sap.ui.model.type.String', 
-													constraints: { maxLength: '80', 
-													               search: '^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\\- ]+$' } }"											
-											liveChange="onSignChange" type="Text" valueLiveUpdate="true" 
-											showValueHelp="true" showSuggestion="true"
-											placeholder="{i18n>placeholder.Signer}" 
-											suggestionItems="{/Users}" 
-											valueHelpRequest="onSignerNameValueHelp">
+											value="{ path: 'draft>/Issuer', type: 'sap.ui.model.type.String', constraints: { maxLength: '80', search: '^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\\- ]+$' } }"
+											liveChange="onSignChange" type="Text" valueLiveUpdate="true" showValueHelp="true" showSuggestion="true"
+											placeholder="{i18n>placeholder.Signer}" suggestionItems="{/Users}" valueHelpRequest="onSignerNameValueHelp">
 											<suggestionItems>
 												<core:Item text="{Name}"/>
 											</suggestionItems>
@@ -121,10 +108,7 @@
 											</layoutData>
 										</Label>
 										<Input id="sRecvName"
-											value="{ path: 'draft>/Receiver', 
-													type: 'sap.ui.model.type.String', 
-													constraints: { maxLength: '80', 
-													               search: '^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\\- ]+$' } }"													
+											value="{ path: 'draft>/Receiver', type: 'sap.ui.model.type.String', constraints: { maxLength: '80', search: '^[a-zA-ZäöüÄÖÜÀ-ÿŠŒšœžŽŸ\\- ]+$' } }"
 											type="Text" liveChange="onSignChange" placeholder="{i18n>placeholder.Receiver}">
 											<layoutData>
 												<layout:GridData span="L8 M8"/>
@@ -135,8 +119,8 @@
 												<layout:GridData span="L2 M2" linebreak="true"/>
 											</layoutData>
 										</Label>
-										<pad:SignaturePad id="signature-pad2" value="{draft>SignatureReceiver}" onEndEvent="onSignChange"
-															signcolor="mediumblue" width="800px" height="200px"/>
+										<pad:SignaturePad id="signature-pad2" value="{draft>SignatureReceiver}" onEndEvent="onSignChange" signcolor="mediumblue" width="800px"
+											height="200px"/>
 										<Button icon="sap-icon://undo" text="{i18n&gt;Clear}" press="onClearButton" type="Transparent" id="btnClear2">
 											<layoutData>
 												<layout:GridData span="L2 M2"/>
@@ -151,10 +135,7 @@
 				<footer>
 					<Bar id="wizardFooterBar" visible="{= ${message&gt;/}.length === 0 ? false : true}">
 						<contentLeft>
-							<Button id="showPopoverButton" 
-									icon="sap-icon://message-popup" 
-									type="Emphasized" 
-									text="{= ${message&gt;/}.length }"
+							<Button id="showPopoverButton" icon="sap-icon://message-popup" type="Emphasized" text="{= ${message&gt;/}.length }"
 								press=".handleMessagePopoverPress"/>
 						</contentLeft>
 					</Bar>
