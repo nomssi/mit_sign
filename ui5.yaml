@@ -2,3 +2,6 @@ specVersion: '1.0'
 metadata:
   name: Signature
 type: application
+resources:
+  configuration:
+    propertiesFileSourceEncoding: UTF-8
