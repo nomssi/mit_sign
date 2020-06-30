@@ -69,13 +69,13 @@ sap.ui.define([
 			return fnExtractErrorMessageFromDetails(sDetails);
 		},
 
-		createDefaultLink: function () {
-			return new Link({
-				text: "Allgemeine Informationen anzeigen",
-				href: "https://eins.de",
-				target: "_blank"
-			});
-		},
+		// createDefaultLink: function () {
+		// 	return new Link({
+		// 		text: "Allgemeine Informationen anzeigen",
+		// 		href: "https://eins.de",
+		// 		target: "_blank"
+		// 	});
+		// },
 
 		popoverMessage: function (sMessage, sText, sType, sTarget, oControl) {
 			oControl._oMessageManager.addMessages(
