@@ -2,7 +2,6 @@ sap.ui.define([
 	"./BaseController",
 	"../model/Signature",
 	"../model/formatter",
-	"../util/messages",
 	"../util/controls",
 	"sap/ui/core/Fragment",
 	"sap/ui/model/Filter",
@@ -12,7 +11,6 @@ sap.ui.define([
 	BaseController,
 	Signature,
 	formatter,
-	Messages,
 	controls,
 	Fragment,
 	Filter,
@@ -21,7 +19,7 @@ sap.ui.define([
 	"use strict";
 
 	// shortcut for sap.ui.core.MessageType
-	var MessageType = sap.ui.core.MessageType;
+	//	var MessageType = sap.ui.core.MessageType;
 
 	return BaseController.extend("Signature.controller.Sign", {
 
@@ -124,11 +122,11 @@ sap.ui.define([
 			};
 			if (!oState.valid) {
 				var sMessage = this._oResourceBundle.getText(oState.errorId);
-				oInput.setValueStateText(sMessage);				
-				Messages.popoverMessage(sMessage,
-					oInput.getLabels()[0].getText(),
-					MessageType.Error,
-					sTarget, this);
+				oInput.setValueStateText(sMessage);		
+				// Messages.popoverMessage(sMessage,
+				// 	oInput.getLabels()[0].getText(),
+				// 	MessageType.Error,
+				// 	sTarget, this);
 			};
 
 			oInput.setValueState(oState.state);
@@ -233,7 +231,7 @@ sap.ui.define([
 
 			var fnSaveError = function (oDetails) {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
-				Messages.popoverHelpMessage(this.sVbeln, oDetails, this);
+				//	Messages.popoverHelpMessage(this.sVbeln, oDetails, this);
 
 				this._oBusyDialog.close();
 
@@ -245,11 +243,11 @@ sap.ui.define([
 			var fnAfterSave = function () {
 				// this._oApplicationProperties.setProperty("/isBusySaving", false);
 
-				Messages.popoverTechnicalMessage(this.sVbeln,
-					this._oResourceBundle.getText("step.save"),
-					this._oResourceBundle.getText("pdf.Created"),
-					MessageType.Success,
-					null, this);
+				// Messages.popoverTechnicalMessage(this.sVbeln,
+				// 	this._oResourceBundle.getText("step.save"),
+				// 	this._oResourceBundle.getText("pdf.Created"),
+				// 	MessageType.Success,
+				// 	null, this);
 
 				this._oBusyDialog.close();
 

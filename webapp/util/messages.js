@@ -18,8 +18,9 @@ sap.ui.define([
 	}
 
 	function fnParseError(oParameter) {
-		var oError = { sDetails: "",
-			           sMessage: ""
+		var oError = {
+				sDetails: "",
+				sMessage: ""
 			},
 			oParameters = null,
 			oResponse = null;
@@ -70,10 +71,10 @@ sap.ui.define([
 
 		createDefaultLink: function () {
 			return new Link({
-					text: "Allgemeine Informationen anzeigen",
-					href: "https://eins.de",
-					target: "_blank"
-				});
+				text: "Allgemeine Informationen anzeigen",
+				href: "https://eins.de",
+				target: "_blank"
+			});
 		},
 
 		popoverMessage: function (sMessage, sText, sType, sTarget, oControl) {
@@ -119,18 +120,20 @@ sap.ui.define([
 		},
 
 		popoverTechnicalMessage: function (sMessage, sText, sDetails, sType, sTarget, oControl) {
-			oControl._oMessageManager.addMessages(
-				new Message({
-					message: sMessage,
-					type: sType,
-					description: sText,
-					technicalDetails: sDetails,
-					technical: true,
-					additionalText: sText,
-					target: sTarget,
-					processor: oControl._oProcessor
-				})
-			);
+			if (oControl && oControl._oMessageManager) {
+				oControl._oMessageManager.addMessages(
+					new Message({
+						message: sMessage,
+						type: sType,
+						description: sText,
+						technicalDetails: sDetails,
+						technical: true,
+						additionalText: sText,
+						target: sTarget,
+						processor: oControl._oProcessor
+					})
+				);
+			};
 		}
 
 	};
