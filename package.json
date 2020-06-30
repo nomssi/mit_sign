@@ -1,6 +1,6 @@
 {
   "name": "Signature",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "Signature",
   "private": true,
   "devDependencies": {
@@ -9,12 +9,12 @@
     "rimraf": "^2.7.1"
   },
   "dependencies": {
-    "@openui5/sap.m": "^1.69.1",
-    "@openui5/sap.ui.core": "^1.69.1",
-    "@openui5/sap.ui.layout": "^1.69.1",
-    "@openui5/themelib_sap_belize": "^1.69.1"
+    "@openui5/sap.m": "^1.78.2",
+    "@openui5/sap.ui.core": "^1.78.2",
+    "@openui5/sap.ui.layout": "^1.78.2",
+    "@openui5/themelib_sap_belize": "^1.78.2"
   },
   "scripts": {
-    "build": "rimraf dist && ui5 build --include-task escapeNonAsciiCharacters -a"
+    "build": "rimraf dist && ui5 build self-contained --include-task escapeNonAsciiCharacters -a"
   }
 }
