@@ -56,8 +56,8 @@
 								<HBox alignItems="Center" justifyContent="Center" width="100%">
 									<SegmentedButton id="signScenario" selectionChange="setSignScenerario" selectedKey="normal">
 										<items>
-											<SegmentedButtonItem key="normal" text="Unterschrift" icon="sap-icon://signature"/>
-											<SegmentedButtonItem key="blanko" text="nur Drucken" icon="sap-icon://print"/>
+											<SegmentedButtonItem key="normal" text="{i18n>Process.Sign}" icon="sap-icon://signature"/>
+											<SegmentedButtonItem key="blanko" text="{i18n>Process.Blanko}" icon="sap-icon://print"/>
 										</items>
 									</SegmentedButton>
 								</HBox>
