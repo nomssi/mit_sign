@@ -15,6 +15,6 @@
     "@openui5/themelib_sap_belize": "^1.78.2"
   },
   "scripts": {
-    "build": "rimraf dist && ui5 build self-contained --include-task escapeNonAsciiCharacters -a"
+    "build": "rimraf dist && ui5 build --include-task escapeNonAsciiCharacters -a"
   }
 }
