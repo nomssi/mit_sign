@@ -31,6 +31,7 @@ sap.ui.define([
 
 			this._confirmEscapeDialog = null;
 			this._wizard = this.byId("signWizard");
+			this._oNavContainer = this.byId("wizardNavContainer");
 
 			this.initMessageManager(this);
 
@@ -79,31 +80,38 @@ sap.ui.define([
 
 			this._validateWizardStep("contentStep");
 
-			this.byId("signScenario").setSelectedKey("normal");		// Set default scenario
+			this.byId("signScenario").setSelectedKey("normal"); // Set default scenario
 		},
 
 		_validateWizardStep: function (sStepName) {
 			var oStep = this.byId(sStepName);
-			this._wizard.setCurrentStep(oStep);
-			oStep.setValidated(true);
+			if (oStep && this._wizard) {
+				this._wizard.setCurrentStep(oStep);
+				oStep.setValidated(true);
+			};
 		},
 
 		onReviewCompleted: function () {
 			// Check if scenario without signature is active (Blanko, nur Drucken und abschliessen)
-			var oSelectedKey = this.byId("signScenario").getSelectedKey();
+			var oStep = this.byId("signScenario");
 
-			if (oSelectedKey === "blanko") {
+			switch (oStep.getSelectedKey()) {
+			case "blanko":
 				MessageToast.show(this._oResourceBundle.getText("blank.output"));
 
+				this._wizard.goToStep(this.byId("signReceiverStep"));
 				this.getRouter().navTo("blanko", {
 					id: this.sVbeln
 				});
+				break;
+			default:
+				break;
 			};
 		},
 
 		_validateSign: function (oSource) {
 			var oInput = oSource.field; // First check Input field	
-			var sPath = "draft>";		// oInput.getBindingContext().getPath() + "/";
+			var sPath = "draft>"; // oInput.getBindingContext().getPath() + "/";
 			var sTarget = sPath + oInput.getBindingPath("value");
 
 			this.removeMessageFromTarget(sTarget);
@@ -122,7 +130,7 @@ sap.ui.define([
 			};
 			if (!oState.valid) {
 				var sMessage = this._oResourceBundle.getText(oState.errorId);
-				oInput.setValueStateText(sMessage);		
+				oInput.setValueStateText(sMessage);
 				// Messages.popoverMessage(sMessage,
 				// 	oInput.getLabels()[0].getText(),
 				// 	MessageType.Error,
