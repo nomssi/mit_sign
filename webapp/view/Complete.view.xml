@@ -8,7 +8,7 @@
 				<headerContent>
 					<Button id="homeButton" icon="sap-icon://home" type="Emphasized" text="{i18n&gt;homeButtonText}" press=".onHome"/>
 				</headerContent>
-		<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Finish}" type="{= ${FloeId} === '0000000000' ? Warning : Success}" showIcon="true"/>
+		<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Finish}" type="{= ${FloeId} === '0000000000' ? 'Warning' : 'Success'}" showIcon="true"/>
 		<content>
 			<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 				<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
