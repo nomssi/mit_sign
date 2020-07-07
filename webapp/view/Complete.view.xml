@@ -13,7 +13,7 @@
 			<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true">
 				<FlexBox direction="Column" renderType="Div" class="sapUiSmallMargin">
 					<Text text="Auslieferung {VBELN} wurde verarbeitet. Datei {PDFUrl} wurde erzeugt. E-Mail an {ReceiverName} wurde mit Id {FloeId} versandt."/>
-					<Text text="{= ${FloeId} === '0000000000' ? 'Es wurde keine E-Mail versandt. Erstellen Sie Bitte den Ausdruck der PDF Datei!'}" />
+					<Text text="{= ${FloeId} === '0000000000' ? 'Es wurde keine E-Mail versandt. Erstellen Sie Bitte den Ausdruck der PDF Datei!'} : '' " />
 					<PDFViewer source="{ path: 'PDFUrl' }" title="{/PDFUrl}" height="800px" id="PDF" displayType="Embedded">
 						<layoutData>
 							<FlexItemData growFactor="1"/>
