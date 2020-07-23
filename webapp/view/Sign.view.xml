@@ -3,7 +3,7 @@
 	busyIndicatorDelay="{draft>/delay}">
 	<NavContainer id="wizardNavContainer">
 		<pages>
-			<Page id="wizardContentPage" showHeader="true" title="{i18n&gt;signTitle} {Vbeln}">
+			<Page id="wizardContentPage" showHeader="true" title="{i18n&gt;signTitle}">
 				<landmarkInfo>
 					<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n&gt;Checkout_rootLabel}" contentRole="Main"
 						contentLabel="{i18n&gt;Checkout_summaryContentLabel}" footerRole="Banner" footerLabel="{i18n&gt;Checkout_footerLabel}"/>

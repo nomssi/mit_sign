@@ -9,6 +9,7 @@ sap.ui.define([
 
 		onInit: function () {
 			this.getRouter().getRoute("error").attachPatternMatched(this._routePatternMatched, this);
+			this.getRouter().getRoute("blanko").attachPatternMatched(this._routePatternMatched, this);
 
 			this.initMessageManager(this);
 			// this._oMessagePopover.getBinding("items").attachChange(this.popoverModelDataChanged.bind(this));

@@ -16,6 +16,11 @@ sap.ui.define([
 			var sVbeln = oEvent.getParameter("arguments").id;
 			this.bindVbelnTo(this.getModel(), sVbeln, this);
 			// this._sTitle = this.getResourceBundle().getText("complete.Text", [sVbeln, PDFUrl, ReceiverName, FloeId]);
+		},
+		
+		formatCompleteText: function (sFloeId) {
+			return this.getResourceBundle().getText(this.formatter.formatCompleteTextId(sFloeId));
 		}
+		
 	});
 });
