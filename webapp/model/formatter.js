@@ -28,6 +28,16 @@ sap.ui.define([
 			return "";
 		},
 
+		formatCompleteTextId: function (sFloeId) {
+			var sTextId;
+			if (sFloeId && sFloeId !== "0000000000") {
+				sTextId = "complete.Text";
+			} else {
+				sTextId = "pdf.mailNotSent";
+			};
+			return sTextId;
+		},
+
 		validateInput: function (sCurrentValue) {
 			
 			var oState = {
