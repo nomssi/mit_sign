@@ -1,43 +1,27 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:form="sap.ui.layout.form"
 	controllerName="Signature.controller.Error" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page id="signError" title="{i18n>Error.Title} Auslieferung {VBELN}" showNavButton="true" 
-	      navButtonTooltip="{i18n>homeButtonText}" navButtonPress="onHome">
-				<landmarkInfo>
-					<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n>Checkout_rootLabel}" contentRole="Main"
-						contentLabel="{i18n>Checkout_summaryContentLabel}" footerRole="Banner" footerLabel="{i18n>Checkout_footerLabel}"/>
-				</landmarkInfo>
-				<headerContent>
-					<Button id="homeButton" icon="sap-icon://home" type="Emphasized" text="{i18n&gt;homeButtonText}" press=".onHome"/>
-				</headerContent>		
-			<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Error}" type="Error" showIcon="true"/>
-			<Button id="buttonPrint" 
-				text="{i18n>trigger.Reprocessing}"
-				icon="sap-icon://print"
-				press="onActionPrint">
-			</Button>
-			<Button id="buttonClose" 
-				text="{i18n>set.Completed}"
-				icon="sap-icon://complete"
-				press="onActionClose">
-			</Button>			
-				<MessageView items="{message>/}">
-					<MessageItem
-						type="{message>type}"
-						title="{message>message}"
-						subtitle="{message>additionalText}"
-						description="{message>description}">
-					</MessageItem>
-				</MessageView>		
-				<footer>
-					<Bar id="wizardFooterBar" visible="true">
-						<contentLeft>
-						<Button id="showPopoverButton" 
-							icon="{ path: '/', formatter: '.formatter.buttonIconFormatter' }"
-							type="Emphasized" 							
-							text="{= ${message&gt;/}.length }"
-							press=".handleMessagePopoverPress"/>
-						</contentLeft>
-					</Bar>
-				</footer>				
+	<Page id="signError" title="{i18n>Error.Title} Auslieferung {VBELN}" showNavButton="true" navButtonTooltip="{i18n>homeButtonText}"
+		navButtonPress="onHome">
+		<landmarkInfo>
+			<PageAccessibleLandmarkInfo rootRole="Region" rootLabel="{i18n>Checkout_rootLabel}" contentRole="Main"
+				contentLabel="{i18n>Checkout_summaryContentLabel}" footerRole="Banner" footerLabel="{i18n>Checkout_footerLabel}"/>
+		</landmarkInfo>
+		<headerContent>
+			<Button id="homeButton" icon="sap-icon://home" type="Emphasized" text="{i18n&gt;homeButtonText}" press=".onHome"/>
+		</headerContent>
+		<MessageStrip class="sapUiSmallMarginBottom" text="{i18n&gt;strip.Error}" type="Error" showIcon="true"/>
+		<Button id="buttonPrint" text="{i18n>trigger.Reprocessing}" icon="sap-icon://print" press="onActionPrint"></Button>
+		<Button id="buttonClose" text="{i18n>set.Completed}" icon="sap-icon://complete" press="onActionClose"></Button>
+		<MessageView items="{message>/}">
+			<MessageItem type="{message>type}" title="{message>message}" subtitle="{message>additionalText}" description="{message>description}"></MessageItem>
+		</MessageView>
+		<footer>
+			<Bar id="wizardFooterBar" visible="true">
+				<contentLeft>
+					<Button id="showPopoverButton" icon="{ path: '/', formatter: '.formatter.buttonIconFormatter' }" type="Emphasized"
+						text="{= ${message&gt;/}.length }" press=".handleMessagePopoverPress"/>
+				</contentLeft>
+			</Bar>
+		</footer>
 	</Page>
 </core:View>
