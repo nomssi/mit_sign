@@ -4,7 +4,7 @@
   "description": "Signature",
   "private": true,
   "devDependencies": {
-    "@ui5/cli": "^1.7.0",
+    "@ui5/cli": "^3.1.2",
     "eslint": "^5.16.0",
     "rimraf": "^2.7.1"
   },
